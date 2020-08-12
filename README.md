@@ -1,9 +1,9 @@
 # plotKML
 plotKML: Visualization of Spatial and Spatio-Temporal Objects in Google Earth
 
-[![Build Status](https://travis-ci.org/Envirometrix/landmap.svg?branch=master)](https://travis-ci.org/Envirometrix/landmap)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/landmap)](https://cran.r-project.org/package=landmap)
-[![Github_Status_Badge](https://img.shields.io/badge/Github-0.0--3-blue.svg)](https://github.com/Envirometrix/landmap)
+[![Build Status](https://travis-ci.org/Envirometrix/plotKML.svg?branch=master)](https://travis-ci.org/Envirometrix/plotKML)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/plotKML)](https://cran.r-project.org/package=plotKML)
+[![Github_Status_Badge](https://img.shields.io/badge/Github-0.0--3-blue.svg)](https://github.com/Envirometrix/plotKML)
 
 How to cite:
 
