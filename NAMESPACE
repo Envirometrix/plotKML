@@ -1,0 +1,53 @@
+import(methods, tools)
+importFrom("grDevices", "col2rgb", "dev.cur", "dev.list", "dev.new", "dev.off", "dev.set", "colorRamp", "colorRampPalette", "png", "rgb")
+importFrom("graphics", "barplot", "image", "par", "persp", "pie", "polygon", "rect", "segments", "abline", "axis", "boxplot", "dotchart", "hist", "lines", "mtext", "points", "text")
+importFrom("stats", "cutree", "dist", "dnorm", "hclust", "na.omit", "rnorm", "runif", "as.formula", "median", "quantile", "time", "var")
+importFrom("utils", "compareVersion", "head", "write.table", "data", "glob2rx", "object.size", "read.csv", "setTxtProgressBar", "txtProgressBar")
+importFrom("RColorBrewer", brewer.pal)
+importFrom("scales", rescale)
+importFrom("colorspace", coords, hex, mixcolor, HSV)
+importFrom("classInt", classIntervals, findColours)
+importFrom("plotrix", color.legend)
+importFrom("dismo", maxent)
+importFrom("gstat", variogram, variogramLine)
+importFrom("zoo", as.Date, index)
+importFrom("pixmap", pixmapIndexed, pixmapRGB)
+importFrom("plyr", aaply, laply, llply, ldply)
+importFrom("RSAGA", set.file.extension, rsaga.env, rsaga.get.version, rsaga.geoprocessor)
+importFrom("raster", extract, stack, brick, rotate, nlayers, shift, projectRaster, extension, is.factor, as.factor, removeTmpFiles, rasterToPolygons, raster, projection, rasterize, writeRaster, extent, calc, getValues, "values<-", getZ, setZ, minValue, maxValue, image, ncol, nrow, ncell, res)
+importFrom("XML", xmlValue, "xmlValue<-", xmlAttrs, "xmlAttrs<-", xmlNode, xmlSize, xmlParse, xmlTreeParse, xmlInternalTreeParse, xmlGetAttr, xmlName, xmlToList, newXMLDoc, newXMLNode, parseXMLAndAdd, xmlChildren, saveXML, xmlRoot, xpathApply, compareXMLDocs, append.XMLNode, xmlSchemaValidate, xmlSApply)
+importClassFrom(XML, XMLInternalDocument, XMLAbstractNode, XMLNode, HTMLInternalDocument)
+importFrom("aqp", profile_id, idname, horizonDepths, siteNames, site, horizons)
+importClassFrom(aqp, SoilProfileCollection)
+
+import("sp")
+import(rgdal)
+import(stringr)
+import(colorRamps)
+importClassFrom(spacetime, STTDF, STIDF)
+
+exportClasses(SpatialMetadata,
+	sp.palette,
+	SpatialPhotoOverlay,
+	SpatialPredictions,
+	SpatialVectorsSimulations,
+	RasterBrickSimulations,
+	RasterBrickTimeSeries,
+	SpatialMaxEntOutput,
+	SpatialSamplingPattern)
+exportMethods(
+	getCRS,
+	GetNames,
+	GetPalette,
+	kml,
+	kml_layer,
+	kml_metadata,
+	reproject,
+	spMetadata,
+	metadata2SLD,
+	plotKML,
+	vect2rast,
+  summary)
+S3method(plot, SpatialPredictions)
+export(check_projection, parse_proj4)
+exportPattern("^[^\\.]")

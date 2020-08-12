@@ -1,0 +1,687 @@
+%% If you want to use the JSS style for a non-JSS paper (or a modification of a JSS
+%% paper, e.g., in a vignette), you can set the option nojss in the \documentclass statement
+\documentclass[article,shortnames]{jss}
+
+\author{Tomislav Hengl\\ISRIC --- World Soil Information\\the Netherlands \And
+        Pierre Roudier\\Landcare Research\\New Zealand \AND
+        Dylan Beaudette\\USDA-NRCS, Soil Science Division\\USA  \And
+        Edzer Pebesma\\Institute for Geoinformatics\\University of M\"{u}nster, Germany
+}
+\title{\pkg{plotKML}: Scientific Visualization of Spatio-Temporal Data}
+
+%% for pretty printing and a nice hypersummary also set:
+\Plainauthor{Tomislav Hengl, Pierre Roudier, Dylan Beaudette, Edzer Pebesma} %% comma-separated
+\Plaintitle{plotKML: Scientific Visualization of Spatio-temporal Data} %% without formatting
+\Shorttitle{\pkg{plotKML}: visualization of spatio-temporal data} %% a short title (if necessary)
+
+%% an abstract and keywords
+\Abstract{
+  \pkg{plotKML} is an \proglang{R} package that provides methods for writing the most common \proglang{R} spatial classes into KML files. It builds up on the existing XML parsing functionality (\pkg{XML} package), and provides similar plotting functionality as the \pkg{lattice} package. Its main objective is to provide a simple interface to generate KML files with a small number of arguments, and allows users to visually explore spatio-temporal data available in \proglang{R}: points, polygons, gridded maps, trajectory-type data, vertical profiles, ground photographs, time series vector objects or raster images, along with the results of spatial analysis such as geostatistical mapping, spatial simulations of vector and gridded objects, optimized sampling designs, species distribution models and similar. A generic \code{plotKML()} function automatically determines the parsing order and visualizes data directly from \proglang{R}; lower level functions can be combined to allow for new user-created visualization templates. In comparison to other KML writing packages, \pkg{plotKML} seems to be more object oriented, it links more closely to the existing \proglang{R} classes for spatio-temporal data (\pkg{sp}, \pkg{spacetime} and \pkg{raster} packages) than the alternatives, and provides users with the possibility to create their own templates.
+}
+\Keywords{space-time objects, scientific visualization, \proglang{R}, KML, geostatistics}
+\Plainkeywords{space-time objects, scientific visualization, R, KML, geostatistics} %% without formatting
+
+%% publication information
+%% NOTE: Typically, this can be left commented and will be filled out by the technical editor
+\Volume{63}
+\Issue{5}
+\Month{February}
+\Year{2015}
+\Submitdate{2013-01-22}
+\Acceptdate{2014-07-08}
+
+%% The address of (at least) one author should be given
+%% in the following format:
+\Address{
+  T. Hengl \\
+  OpenGeoHub foundation \\
+  Roghorst 206, 6708 KT Wageningen, the Netherlands \\
+  Tel.: +31- 317-427537\\
+  E-mail: \email{tom.hengl@opengeohub.org}\\
+}
+
+%% for those who use Sweave please include the following line (with % symbols):
+%% need no \usepackage{Sweave.sty}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage{xcolor,graphicx}
+\usepackage{booktabs}
+\usepackage{latexsym}
+\usepackage{array,tabularx,rotating} %Table format packages
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{textcomp}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black,
+        urlcolor=black, bookmarksnumbered=true,
+        bookmarksopen=true, pdfview=FitH, pdfstartview=FitH,
+        pdftitle={plotKML: scientific visualization of spatio-temporal data},
+        pdfauthor={Hengl T., Roudier P., D. Beaudette and E. Pebesma},}
+
+%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
+
+\begin{document}
+
+%\VignetteIndexEntry{ plotKML: Scientific Visualization of Spatio-temporal Data }
+%% jss options, see http://www.jstatsoft.org/style
+
+%% make sure all packages are there already, if not go and get them
+<<echo=false, results=hide>>=
+if(!require(gstat)){install.packages("gstat"); library(gstat)}
+if(!require(raster)){install.packages("raster"); library(raster)}
+if(!require(plotKML)){install.packages("plotKML"); library(plotKML)}
+if(!require(GSIF)){install.packages("GSIF"); library(GSIF)}
+@
+
+<<eval=TRUE,echo=FALSE>>=
+options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
+@
+
+%% R options and initialisation
+%% options(prompt="> ", continue="+ ", digits=3, width=70, show.signif.stars=T)
+%% par(mfrow=c(1,1))
+<<echo=false, results=hide>>=
+rm(list=ls())
+plotKML.version <- sessionInfo()[["otherPkgs"]][["plotKML"]][["Version"]]
+plotKML.env(show.env = FALSE)
+@
+
+%\begin{pagewiselinenumbers}
+
+\section{Introduction}\label{intro}
+
+Keyhole Markup Language (KML) is an XML language focused on geographic visualization, including annotation of maps and images \citep{OGCKML2008,wernecke2009kml}. It is the standard adopted by Google and now used by Google Earth{\texttrademark} as its primary exchange format. There is a growing interest in using Google Earth to visualize spatio-temporal data produced in the \proglang{R} environment for statistical computing. We believe that the main reasons responsible for this growth are:
+
+\begin{enumerate}
+  \item Google Earth is one of the most wide-spread geographical data browsers available with $>$1 billion downloads as of October 2011\footnote{\url{http://www.google.com/earth/connect/newsletter/oct11.html}}. It is a largely intuitive software, easily accessible to people without any professional GIS training, and most importantly, a framework which can be used to increase a project reach to the general public \citep{Butler2006,Patterson2007,Goodchild2008}.
+  \item According to \citet{McGavra2009DPC}, KML is one of the leading Open Geospatial Consortium (OGC) XML encoding standards.
+  \item Google Earth provides access to high-resolution remote sensing data (Ikonos, GeoEye and Cnes/Spot images, administrative vector data, SRTM DEM and similar), which allows users to qualitatively interpret the analysis results by matching the produced outputs with background imagery \citep{Craglia2008IJSDIR,fritz2012geo}.
+  \item As KML provides a diversity of visualization options, it is one of the more attractive platforms for scientific visualization of geographical phenomena --- it can enable scientists to detect patterns in their data not visible in other software, but it can also help engaging a wider public into scientific research and decision making \citep{Butler2006}. \citet{Goodchild2008} refers to this as the \emph{`citizen science'}.
+\end{enumerate}
+
+Although \proglang{R} is primarily known as a statistical computing environment \citep{RTeam2005R}, it is of increasing interest to the field of geoinformatics and applied spatial data analysis due to its extensibility and the growing diversity of spatial and spatio-temporal data structures \citep{pebesma2005classes,Pebesma2010Ifgi,Bivand2013Springer}. Geo-visualization functions in \proglang{R}, on the other hand, are limited because \proglang{R} was not originally designed for interactive exploration of spatial data or as a GIS platform. Although there are many packages in \proglang{R} already that allow interactive visualization, overlay and animated display of geographical phenomena (via packages \href{http://www.ggobi.org/rggobi/}{\pkg{RGGOBI}} and \pkg{iPlots}; for a review refer to \citep{CookSwayne2007} and/or \citep{theus2009interactive}), \proglang{R} has its limitations for interactively exploring geographical data. \par
+
+There is considerable potential for building connectivity between the sophisticated spatial analysis possible in \proglang{R} and the geo-visualization capacities afforded by Google Earth. However, the export of spatial data from \proglang{R} to KML is not trivial. KML files can be produced using the using GDAL (Geospatial Data Abstraction Library) KML driver, but so far only limited functionality is supported. As the driver description page indicates: \emph{``At this time, only vector layers are handled by the KML driver$\ldots$ limited support is available for fills, line color and other styling attributes.''}\footnote{\url{http://www.gdal.org/ogr/drv_kml.html}}\par
+
+Within the \proglang{R} community, other packages produced specifically to allow creation of KML files include: \pkg{rgdal} \citep{rgdal} and \pkg{raster} \citep{raster}, while truly specialized KML writing packages include \pkg{R2G2} \citep{Arigo2012} and \pkg{RKML}\footnote{\url{http://www.omegahat.org/RKML/}}. Our objective with the \pkg{plotKML} package was to provide a simple interface to generate KML files with a small number of arguments, and allow users to directly plot spatio-temporal data classes, available in \proglang{R} via the \pkg{sp} \citep{pebesma2005classes}, \pkg{spacetime} \citep{spacetime}, \pkg{aqp} \citep{aqp} and \pkg{raster} \citep{raster} packages, in a virtual globe type of browser. \par
+
+This article describes the main functionality and the design of the \pkg{plotKML} package and provides a number of examples of how to produce some common KML visualization templates. Some limitations of the package in comparison with other alternative KML writing software and possibilities to improve the package are given in the discussion section. More detailed tutorials including YouTube videos can be found via the package homepage\footnote{\url{http://plotkml.r-forge.r-project.org/}}. \par
+
+
+\section{Basic concepts}
+
+\subsection{Scientific visualization of geographic phenomena}
+
+The purpose of scientific visualization is to \emph{``graphically illustrate scientific data to enable scientists to understand, illustrate, and glean insight from their data.''}\footnote{\url{http://en.wikipedia.org/wiki/Scientific_visualization}} According to \citet{Friendly2001}, scientific visualization can be primarily connected with visualization of 3D data \emph{``where the emphasis is on realistic renderings of volumes, surfaces, illumination sources, and so forth, perhaps with a dynamic (time) component.''} In that context, the main purpose of \pkg{plotKML} package is to enable interactive scientific visualization of geographic phenomena i.e.\@ scientific geovisualization \citep{dykes2005exploring}.\par
+
+Interactive geovisualization, i.e.\@ dynamic user-controlled visualization of geographical phenomena, can be today closely connected with 3D computer environments referred to as the \emph{`Virtual globe'}, \emph{`Virtual Earth'} or \emph{`Digital Earth'} \citep{gore1998digital,bleisch2011evaluating}. At the beginning of 21st century, the most known virtual globes are \citep{bleisch2011evaluating}:
+
+\begin{itemize}
+  \item Google Earth
+  \item Microsoft Bing Maps 3D
+  \item AutoDesk LandXplorer
+  \item NASA World Wind
+  \item ESRI's ArcGlobe
+  \item Leica's Virtual Explorer
+\end{itemize}
+
+Open source alternatives to Google Earth and Microsoft Bing Maps 3D are: (KDE) Marble\footnote{\url{http://marble.kde.org/}}, OSSIM Planet\footnote{\url{http://trac.osgeo.org/ossim/}}, and Cesium\footnote{\url{http://cesium.agi.com}}.\par
+
+According to \citet{elmqvist2007occlusion}, there are two main reasons for creating 3D virtual globes:
+
+\begin{enumerate}\renewcommand{\labelenumi}{(\alph{enumi})}
+  \item replicate or simulate the real world,
+  \item use 3D as canvas for abstract information.
+\end{enumerate}
+
+The \pkg{plotKML} package offers both. As we will show later, it allows Google Earth to be used not only for visualization of maps, but also as a canvas for 3D or 3D+T visualization of any such data created and analyzed in \proglang{R} (see further Figures~\ref{Fig:eberg_two_aesthetics} and \ref{Fig:RasterBrickTimeSeries}). \par
+
+Although one can argue whether virtual globes should be used more broadly for decision making and land management, two significant developments can not be disputed: (1) ubiquitous access to free high resolution satellite imagery through Google Earth, Yahoo and Bing has revolutionized applications of GIS for both commercial and non-commercial projects, and (2) anyone is today invited to make, edit, mash-up and share geodata \citep{fritz2012geo}.\par
+
+\subsection{Space-time continuum}\label{sec:stcontinuum}
+
+Everything we measure on Earth can be linked to some space-time \emph{`location'}:
+
+\begin{enumerate}
+  \item \emph{geographic location} (longitude and latitude)
+  \item \emph{height above the ground surface} (altitude)
+  \item \emph{time of measurement} (year, month, day, hour, minute, second)
+  \item \emph{spatio-temporal support} (size of the blocks of material associated with measurements; time interval or duration of measurement).
+\end{enumerate}
+
+\begin{figure*}[!htb]
+\begin{center}
+\includegraphics[width=\textwidth]{Fig_space_time_cube.png} \caption{Space-time cube visualized in \proglang{R}: (a) cloud plot showing location of meteorological stations in Croatia (data set from \citet{Hengl2011TAC}), (b) illustration of spatial and temporal support in the space-time cube.}
+\label{Fig:space_time_cube}
+\end{center}
+\end{figure*}
+
+By attaching spatio-temporal reference to measurements we can dynamically visualize them, but also run spatio-temporal data analysis \citep{Bivand2008Springer,Pebesma2010Ifgi}. Many analysts already find it useful to be able to visualize all input and derived maps or results of spatial analysis in a Virtual Earth type of environment such as Google Earth \citep{Patterson2007}. In addition, creating a realistic visualization of observed dynamic phenomena can improve the spatial analysis process, in part, because it can help us make more thoroughly considered interpretations of analysis results \citep{Craglia2008IJSDIR}. \par
+
+Figure~\ref{Fig:space_time_cube} for example shows how spatio-temporal data can be visualized in a 2D+T space-time cube. The same data-set is further shown in Figure~\ref{Fig:RasterBrickTimeSeries} visualized in Google Earth.\par
+
+\subsection{Spatial and spatio-temporal objects}
+
+For \citet{Erwig1999GeoInformatica} spatio-temporal data sets and corresponding data\-bases represent two major groups of features: (1) \emph{moving or dynamic objects} (discrete or vector geometries), and (2) \emph{regions or fields} (continuous). Objects and fields can be further based on \emph{regular} or \emph{irregular} sampling systems and representation models. Many features can be modeled and represented both using discrete (vector) and continuous (raster) GIS models. For example, objects such as a population of animals can be modeled and represented as discrete objects (trajectories or points), but also as densities (\emph{regions}) or polygons representing home ranges. Likewise, earthquakes are in their essence \emph{regions} (of sudden and violent shaking of the ground), but are often represented as points. This is just to illustrate the complexity of choosing the right model for representing such dynamic features. For an introduction to the complexity of spatial and spatio-temporal objects and fields refer also to \citet{galton2004fields}. \par
+
+\citet[pp.28--55]{Bivand2008Springer} and \citet{Pebesma2010Ifgi} implemented classes for spatial and spatio-temporal data in \proglang{R} via the \pkg{sp} and \pkg{spacetime} packages. These classes are also highly extendable and are already widely used inside the \proglang{R} spatial data analysis community. The \pkg{sp} package \citep{pebesma2005classes} is currently one of the top 10 packages with highest number of dependencies on CRAN\footnote{See blog by Dirk Eddelb\"{u}ttel published at \url{http://dirk.eddelbuettel.com} on Thursday, 16th August 2012.}, and has been used as the main starting point for building visualization functionality in \pkg{plotKML}. \par
+
+\begin{table*}[!htb]\label{Fig:spacetime_objects_types}
+\begin{center}
+\includegraphics[width=\textwidth]{Fig_spacetime_objects_types.pdf}
+\vspace{6pt}
+\caption{Types of spatio-temporal objects (points and regions) based on the number of dimensions (2D, 3D, 2D+T and 3D+T) and support type and corresponding \proglang{R} classes. \texttt{STFDF} stands for a class for spatio-temporal data with full space-time grid, \texttt{STIDF} stands for a class for unstructured spatio-temporal or irregular data, and \texttt{STTDF} stands for a class for spatio-temporal trajectory data \citep{Pebesma2010Ifgi}. $\star$ --- classes not yet available in \proglang{R}.}
+\end{center}
+\end{table*}
+
+A schematic overview of 2D, 3D, 2D+T and 3D+T combinations of spatio-temporal object types is given in Table~\ref{Fig:spacetime_objects_types}. Note that not all space-time combinations of 2D/3D+T objects are yet implemented in \proglang{R}, and some are implemented but are still rather experimental. For example, voxels can be constructed by adding the third dimension to object of class \verb"SpatialPixels", but methods for such type of data are still limited.\par
+
+Although KML can probably accommodate all spatio-temporal objects listed in Table~\ref{Fig:spacetime_objects_types}, visualization of densely sampled 3D+T objects, e.g.\@ millions of voxels, is probably still not recommended in KML. For example, by making COLLADA (COLLAborative Design Activity; an open standard XML schema) 3D objects one can potentially generate any type of 3D spatio-temporal object, but this is then highly complex and requires good knowledge of COLLADA and KML. \par
+
+\subsection[Spatial data structures in R and KML]{Spatial data structures in \proglang{R} and KML}
+
+Consider for example the Google headquarters in Mountain View, CA. The point location can be prepared in \proglang{R} as object of class \verb"SpatialPoints*", as implemented in the \pkg{sp} package, which takes few steps:
+
+<<>>=
+library("sp")
+lat = 37.423156
+lon = -122.084917
+name = "Google headquarters"
+pnt = data.frame(name, lat, lon)
+coordinates(pnt) <- ~lon+lat
+proj4string(pnt) <- CRS("+proj=longlat +datum=WGS84")
+@
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> pnt
+\end{CodeInput}
+\begin{CodeOutput}
+class : SpatialPointsDataFrame
+features : 1
+extent : -122.0849, -122.0849, 37.42316, 37.42316
+coord. ref. : +proj=longlat +datum=WGS84
+variables : 1
+names : name
+min values : Google headquarters
+max values : Google headquarters
+\end{CodeOutput}
+\end{CodeChunk}
+
+The same object in KML can be generated by using the \pkg{XML} package \citep{XML}:
+
+<<>>=
+library("XML")
+pnt.kml <- newXMLNode("kml")
+h2 <- newXMLNode("Document", parent = pnt.kml)
+h3 <- newXMLNode("name", "Google headquarters", parent = h2)
+h4 <- newXMLNode("Folder", parent=pnt.kml[["Document"]])
+txtc <- sprintf('<Placemark><Point><coordinates>
+    %.5f,%.5f,%.0f</coordinates></Point></Placemark>',
+    coordinates(pnt)[,1], coordinates(pnt)[,2], rep(0, length(pnt)))
+parseXMLAndAdd(txtc, parent = h4)
+pnt.kml
+@
+
+\noindent where \verb"newXMLNode" creates nodes in an XML object, \verb"sprintf" is the wrapper for the fast \textsf{C} function that returns a character vector, and \verb"saveXML" writes the object to a file (this function is does most of the work in the \pkg{plotKML} package). An XML object is basically a hierarchically structured object with nodes of different type. The rules to build and extend such objects are defined via the specific XML scheme, in this case the OGC KML 2.2 scheme \citep{OGCKML2008}.\par
+
+Note that, although both \proglang{R} objects and KML (XML) files are human readable and have similar hierarchical structure, they have some systematic differences. First, KML accepts only geographical coordinates in WGS84 system, which must include altitude i.e.\@ only 3D georeference is acceptable, while in \proglang{R} any \textsf{proj4} supported projection can be used and the georeference can be 2D or 3D. Secondly, KML is by default used to display objects (\emph{``placemarks''}) on Earth's surface, while the \pkg{sp} package does not restrict considering the bounding box and relative position based on land surface. To understand all rules and validity checks of the KML format refer to \citet{wernecke2009kml}, and for an introduction to the \pkg{sp} class objects refer to \citet{Bivand2013Springer}.\par
+
+\section{Implementation and code examples}
+
+\subsection{Basic principles and main use}\label{sec:installation}
+
+The purpose of \pkg{plotKML} is to write standard spatio-temporal objects --- spatial and space-time points, lines, polygons and grids, trajectories, georeferenced photographs and similar --- from \proglang{R} to KML/KMZ files in such a way that they correspond, as much as possible, to standard cartographic plots or standard scientific visualizations. The main philosophy of \pkg{plotKML} is thus: \par
+
+\begin{enumerate}
+  \item \emph{Create a spatio-temporal object of some class},
+  \item \emph{Transform coordinates to a coordinate reference system compatible with a virtual globe (geographical coordinates in WGS84; altitude in meters; time in the UTC system)},
+  \item \emph{Visualize it using the plotKML function}.
+\end{enumerate}
+
+We refer to complete scientific visualization templates in \pkg{plotKML} as \emph{`views'}. Views are generated using a combination of low level KML writing functions, which basically coerce the spatio-temporal objects in \proglang{R} to the KML schema.\par
+
+Visualization-specific generic settings such as icons, color and size of icons (icon styles), labels etc.\@ are referred to as \emph{`aesthetics'} in \pkg{plotKML}. These can be set by changing function arguments within each \verb'"kml_layer"' function. Views and their components have been designed to be cartographically \emph{`complete'}, meaning that:
+
+\begin{itemize}
+  \item All spatio-temporal objects are automatically converted to the WGS84 geographical coordinates. Hence the projection system needs to be specified for each input spatial layer.
+  \item Legends for all aesthetics are provided using screen overlays or at least labels are attached to individual plotting objects.
+  \item Missing values (NA), extrapolation areas and/or masked pixels are automatically removed or made transparent.
+  \item Each spatial layer carries some minimum metadata that can be entered via the description tag. This way the distributed KML files can be used as official representations of registered data sets.
+\end{itemize}
+
+The following example shows how to produce a bubble type plot using the \pkg{plotKML} package (plot shown in Figure~\ref{Fig:bubble_plot}). We start by loading the Eberg\"{o}tzen soil mapping data set (available via the \pkg{plotKML} package):
+
+<<>>=
+library("plotKML")
+data("eberg")
+eberg <- eberg[runif(nrow(eberg))<.2,]
+coordinates(eberg) <- ~X+Y
+proj4string(eberg) <- CRS("+init=epsg:31467")
+@
+
+Next, we can reproject this object to the WGS84 coordinate system:
+
+<<>>=
+eberg.ll <- reproject(eberg)
+@
+
+\noindent so that it can be plotted in Google Earth by using:
+
+<<echo=false, results=hide>>=
+kml(eberg.ll["CLYMHT_A"], colour=CLYMHT_A)
+@
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plotKML(eberg.ll["CLYMHT_A"])
+\end{CodeInput}
+\begin{CodeOutput}
+Plotting the first variable on the list
+KML file opened for writing...
+Parsing to KML...
+Closing  eberg.ll__CLYMHT_A__.kml
+\end{CodeOutput}
+\end{CodeChunk}
+
+\noindent and which largely mimics the existing plotting functionality available for spatial data in \proglang{R}, e.g.\@ the \verb"spplot" functionality from the \pkg{sp} package:
+
+<<>>=
+spplot(eberg.ll["CLYMHT_A"], edge.col="black",
+  alpha=0.8, cex=seq(.3,3,length=5))
+@
+
+Note that the generic \verb"reproject" function available in the \pkg{plotKML} package will try to reproject any \pkg{sp} class objects to the referent WGS84 system, also within the \verb"plotKML()" function:
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plotKML(eberg["CLYMHT_A"])
+\end{CodeInput}
+\begin{CodeOutput}
+Plotting the first variable on the list
+KML file opened for writing...
+Reprojecting to +proj=longlat +datum=WGS84 ...
+Parsing to KML...
+Closing  eberg__CLYMHT_A__.kml
+\end{CodeOutput}
+\end{CodeChunk}
+
+This means that both \verb"plotKML(eberg)" and \verb"plotKML(eberg.ll)" would work with the same object. It is recommended, however, that the users pre-transform spatial objects into the WGS84 geographic coordinate system as this step can be time consuming when working with large data sets.\par
+
+\begin{figure*}[!htb] \begin{center}
+  \includegraphics[width=\textwidth]{Fig_bubble_plot.jpg}
+\caption{Bubble-type plots in \proglang{R} and the same plot produced using the \pkg{plotKML} shown in Google Earth.} \label{Fig:bubble_plot}
+\end{center}
+\end{figure*}
+
+\begin{figure*}[!htb]
+\begin{center}
+  \includegraphics[width=.8\textwidth]{Fig_eberg_two_aesthetics.jpg}
+\caption{Multivariate visualization using three aesthetics parameters (in the case above: color, labels and elevation). The plot shows changes in sand content in the soil for the Eberg\"{o}tzen case study.} \label{Fig:eberg_two_aesthetics}
+\end{center}
+\end{figure*}
+
+By combining multiple aesthetics, \pkg{plotKML} can be used also to visualize multivariate data (Figure~\ref{Fig:eberg_two_aesthetics}). For example, to visualize two variables at the same time we would run:
+
+<<>>=
+shape = "http://maps.google.com/mapfiles/kml/pal2/icon18.png"
+kml(eberg.ll, shape = shape, colour = CLYMHT_A, labels = SNDMHT_A,
+  altitude = SNDMHT_A*10, extrude = TRUE)
+@
+
+\noindent which would use colors to visualize the clay content, and labels and altitude to represent the sand content. Possibility of multivariate visualization makes \pkg{plotKML} comparable to the \pkg{lattice} package for \proglang{R} \citep{Grothendieck:2008:JSSOBK:v25b02}.\par
+
+
+\subsection{KML building utilities}\label{sec:kml_functions}
+
+Aside from the generic \verb'plotKML()' method, the package also contains a number of dedicated methods and functions, which can be referred to as the KML building utilities. The basic KML building utilities are (Figure~\ref{Fig:plotKML_utilities}):
+
+\begin{itemize}
+  \item \verb'kml_open()' --- opens a KML file in write mode, manages the KML specific URL, and the name of the KML file. It also writes the header of the KML file.
+  \item \verb'kml_close()' --- closes the KML file.
+  \item \verb'kml_layer()' --- writes any \pkg{sp} object into a KML layer (\verb'<Folder>' tag).
+  \item \verb'kml_screenoverlay()' --- puts a PNG file on the Google Earth screen; usually a legend attached to the map or a logo image.
+  \item \verb'kml_compress()' --- compresses a KML file to a KMZ file.
+  \item \verb'kml_legend()' --- generates a legend depending on the type of spatio-temporal object.
+\end{itemize}
+
+\begin{figure*}[!htb]
+\begin{center}
+  \includegraphics[width=.95\textwidth]{Fig_plotKML_utilities.pdf}
+\caption{Overview of the KML building utilities available in the \pkg{plotKML} package.} \label{Fig:plotKML_utilities}
+\end{center}
+\end{figure*}
+
+These utilities actually provide an advanced mode for KML creation, and allow the user to create multi-layers KML with specific legends. This means that a single KML file can be created that contains all layers of interest (e.g.\@ grids and points), associated legends and explanations of how were the maps derived.\par
+
+\begin{figure*}[!htb]
+\begin{center}
+  \includegraphics[width=.8\textwidth]{Fig_layerRaster_legend.jpg}
+\caption{Example of a multi-layer KML file produced using \pkg{plotKML}: Topographic Wetness Index derived in \textsf{SAGA GIS} (raster image with legend) and contour lines overlaid. This visualization template has been largely inspired by the \textsf{SAGA GIS} software \citep{Conrad2007PhD}.} \label{Fig:layerRaster_legend}
+\end{center}
+\end{figure*}
+
+The following example demonstrates how several layers can be put together in the same KML file. We start by loading some gridded layers:
+
+<<echo=false, results=hide>>=
+data("eberg_grid")
+coordinates(eberg_grid) <- ~x+y
+gridded(eberg_grid) <- TRUE
+proj4string(eberg_grid) <- CRS("+init=epsg:31467")
+@
+
+To write a gridded layer with a point layer on the top we can run:
+
+<<>>=
+kml_open("eberg.kml")
+kml_layer(eberg_grid, colour=TWISRT6)
+kml_layer(eberg.ll[1,], colour=CLYMHT_A)
+kml_close("eberg.kml")
+@
+
+The resulting plot is shown in Figure~\ref{Fig:layerRaster_legend}. \par
+
+
+\subsection{plotKML specific classes}
+
+In addition to the existing classes already available in \proglang{R}, we have constructed several new \pkg{plotKML} classes to provide even richer visualization possibilities:
+
+\begin{itemize}
+  \item \verb'"SpatialMetadata"' --- \emph{a class to store and exchange spatial metadata}.
+  \item \verb'"SpatialPhoto"' --- \emph{a class to store spatial location, image (photograph) and its geometric properties}.
+  \item \verb'"SpatialPredictions"' --- \emph{a class to store results of geostatistical mapping}.
+  \item \verb'"SpatialVectorsSimulations"' --- \emph{a class to store list of equiprobable simulations of point, line and polygon features}.
+  \item \verb'"RasterBrickSimulations"' --- \emph{a class to store a list of equiprobable realizations of the same feature}.
+  \item \verb'"RasterBrickTimeSeries"' --- \emph{a class to store a time series of grids representing the same feature}.
+\end{itemize}
+
+Most of the classes listed above extend the basic \pkg{sp} and \pkg{raster} based classes by attaching the inputs and outputs of the spatial analysis. For example, the \verb'"SpatialPredictions"' class contains both the input sampled values, the results of model fitting (regression and the variogram model), predictions and the results of cross validation. By plotting such object via the \verb"plotKML-method", one can prepare complete scientific visualization for Google Earth (see Figure~\ref{Fig:SpatialPredictions_meuse}).\par
+
+\begin{figure*}[!htb]
+\begin{center}
+\includegraphics[width=\textwidth]{Fig_SpatialPredictions_meuse.jpg}
+\caption{Scientific visualization of the results of geostatistical mapping (percent organic matter in top-soil) in Google Earth{\texttrademark}: a combination of visualization of gridded map with a legend and map showing the sampling locations and fitted regression and variogram models.} \label{Fig:SpatialPredictions_meuse}
+\end{center}
+\end{figure*}
+
+The process of getting from input data (\proglang{R}) to a map in Google Earth is now straightforward and requires only four steps:
+
+\begin{enumerate}\renewcommand{\labelenumi}{(\textit{\arabic{enumi}})}
+  \item \emph{load/format the data},
+  \item \emph{fit the geostatistical model},
+  \item \emph{make predictions},
+  \item \emph{visualize maps},
+\end{enumerate}
+
+Consider for example the Meuse data set commonly used for geostatistical exercises \citep{Pebesma2004CG}:
+
+<<>>=
+library("sp")
+demo(meuse, echo=FALSE)
+@
+
+Via the \pkg{GSIF} package we can automate the model fitting and prediction:
+
+<<>>=
+library("GSIF")
+omm <- fit.gstatModel(meuse, om~dist+ffreq, meuse.grid,
+   family = gaussian(log))
+om.rk <- predict(omm, meuse.grid)
+@
+
+\noindent here the generic function \verb"fit.gstatModel" from the \pkg{GSIF} package \citep{GSIF} tries to fit a linear regression-kriging model following the input samples (\verb"meuse") and gridded maps (\verb"meuse.grid"). The output (object of class \verb'"SpatialPredictions"') can be plotted in Google Earth by running:
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plotKML(om.rk)
+\end{CodeInput}
+\begin{CodeOutput}
+KML file opened for writing...
+Reprojecting to +proj=longlat +datum=WGS84 ...
+Writing to KML...
+Reprojecting to +proj=longlat +datum=WGS84 ...
+Parsing to KML...
+Loading required package: gstat
+Closing  om.rk.kml
+\end{CodeOutput}
+\end{CodeChunk}
+
+\noindent which shows most of elements of geostatistical mapping of interest: sampling locations, resulting spatial predictions, but also success of regression model fitting, variogram fitting and cross-validation. Note also that wrapping model fitting and export to KML allows full automation of the mapping process, so that the process can be run on a server \citep{pebesma2011intamap}.\par
+
+\subsection{Visualization of spatio-temporal classes}\label{sec:spacetime_example}
+
+From 2012, there are several implementations of spatio-temporal classes in \proglang{R}. \citet{Pebesma2010Ifgi} shows how purely spatial classes can be extended to space-time classes (via the \pkg{spacetime} \citep{spacetime} package): spatio-temporal full data frame (STFDF), sparse spatio-temporal data frame (STSDF), spatio-temporal irregular data frames (STIDF). \pkg{plotKML} works with most of the space-time classes implemented in \proglang{R}, especially the ones extending the \pkg{sp} classes, but the package should also work with the \pkg{raster} package class objects.\par
+
+\begin{figure*}[!htb]
+\begin{center}
+\includegraphics[width=.8\textwidth]{Fig_fmd_stplot.pdf}
+\caption{Spatio-temporal plot of point pattern in time: foot-and-mouth epidemic data from north Cumbria (UK) \citep{diggle2005point}.}
+\label{Fig:fmd_stplot}
+\end{center}
+\end{figure*}
+
+\begin{figure*}[!hp]
+\begin{center}
+\includegraphics[width=.85\textwidth]{Fig_fmd_google_earth_1.jpg}\\
+\includegraphics[width=.85\textwidth]{Fig_fmd_google_earth_2.jpg}\\
+\includegraphics[width=.85\textwidth]{Fig_fmd_google_earth_3.jpg}
+\caption{Visualization of the food-and-mouth epidemic data from north Cumbria (UK) in Google Earth (compare with Figure~\ref{Fig:fmd_stplot}). Note that Google Earth allows users to slide through an event, but also to set the temporal support (width in the slide bar).}
+\label{Fig:fmd_google_earth}
+\end{center}
+\end{figure*}
+
+Consider for example the foot-and-mouth epidemic data from north Cumbria (UK) \citep{diggle2005point}. This is a spatio-temporal point pattern represented with a matrix containing ($x,y,t$) coordinates of the 648 observations. To visualize this data in \proglang{R} (\pkg{spacetime} package) we would run:
+
+<<>>=
+data("fmd")
+fmd0 <- data.frame(fmd)
+coordinates(fmd0) <- c("X", "Y")
+proj4string(fmd0) <- CRS("+init=epsg:27700")
+fmd_sp <- as(fmd0, "SpatialPoints")
+dates <- as.Date("2001-02-18")+fmd0$ReportedDay
+library("spacetime")
+fmd_ST <- STIDF(fmd_sp, dates, data.frame(ReportedDay=fmd0$ReportedDay))
+data("northcumbria")
+ln <- Line(northcumbria)
+NC <- SpatialLines(list(Lines(list(ln), ID="NC")))
+proj4string(NC)  <- CRS("+init=epsg:27700")
+stplot(fmd_ST, sp.layout=list("sp.lines", NC), col.regions=SAGA_pal[[1]])
+@
+
+\noindent which produces a plot shown in Figure~\ref{Fig:fmd_stplot}.\par
+
+To plot this data in Google Earth we can do (Figure~\ref{Fig:fmd_google_earth}):
+
+<<echo=false, results=hide>>=
+kml(fmd_ST, colour=ReportedDay, colour_scale=SAGA_pal[[1]])
+@
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plotKML(fmd_ST, colour_scale=SAGA_pal[[1]])
+\end{CodeInput}
+\begin{CodeOutput}
+Plotting the first variable on the list
+KML file opened for writing...
+Reprojecting to +proj=longlat +datum=WGS84 ...
+Parsing to KML...
+Closing  fmd_ST.kml
+\end{CodeOutput}
+\end{CodeChunk}
+
+Some advantages of getting this data to Google Earth, as compared to using the \verb"stplot()" function (Figure~\ref{Fig:fmd_stplot}), are:
+
+\begin{enumerate}
+  \item We can animate spread of disease by moving the time slider.
+  \item We can observe the event with different temporal support size.
+  \item We can zoom in into the specific points and locate the actual farm.
+  \item We can try to analyze whether the spread of disease has anything to do with the proximity to roads, type of land cover etc.
+  \item We do not necessarily need to prepare any administrative data for the study area as these are already available in Google Earth.
+\end{enumerate}
+
+
+\subsection{Visualization of time series of rasters}\label{sec:rasterTimeSeries}
+
+\pkg{plotKML} can also be used to visualize raster stacks i.e.\@ time series of rasters. Raster stacks or raster bricks \citep{raster} can be different type of remote sensing data or predicted or modelled values. The plot shown in Figure~\ref{Fig:RasterBrickTimeSeries} is based on generic functions for plotting of \verb'"RasterBrickTimeSeries"' class data. It shows a time series of MODIS Land Surface Temperature images for a small area in Istria. We start by building an spatio-temporal object from table data:
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> data("LST")
+R> gridded(LST) <- ~lon+lat
+R> proj4string(LST) <- CRS("+proj=utm +zone=33 +datum=WGS84 +units=m")
+\end{CodeInput}
+\end{CodeChunk}
+
+\begin{figure*}[!htb]
+\begin{center}
+\includegraphics[width=.8\textwidth]{Fig_RasterBrickTimeSeries.jpg}
+\caption{Example of a time series of MODIS images (\texttt{RasterBrickTimeSeries} class) plotted in Google Earth. The values of MODIS Land Surface Temperature at ground stations can be interactively explored by clicking at the points of interest. This way both changes in 2D+T and T can be visually explored.}
+\label{Fig:RasterBrickTimeSeries}
+\end{center}
+\end{figure*}
+
+Next, format dates:
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> dates <- sapply(strsplit(names(LST), "LST"), function(x){x[[2]]})
+R> datesf <- format(as.Date(dates, "%Y_%m_%d"), "%Y-%m-%dT%H:%M:%SZ")
+\end{CodeInput}
+\end{CodeChunk}
+
+\noindent we subtract and add $\pm$4 days to derive begin and end period:
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> TimeSpan.begin = as.POSIXct(unclass(as.POSIXct(datesf))-4*24*60*60,
++    origin="1970-01-01")
+R> TimeSpan.end = as.POSIXct(unclass(as.POSIXct(datesf))+4*24*60*60,
++     origin="1970-01-01")
+R> LST_ll <- reproject(LST)
+\end{CodeInput}
+\begin{CodeOutput}
+Reprojecting to +proj=longlat +datum=WGS84 ...
+Reprojecting to +proj=longlat +datum=WGS84 ...
+...
+\end{CodeOutput}
+\end{CodeChunk}
+
+Next, we can select three climatic stations in the area (to allow for visualization of time-series data) and prepare an object of class \verb'"RasterBrickTimeSeries"':
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> st.names <- c("Pazin", "Crni Lug - NP Risnjak", "Cres")
+R> pnts <- HRtemp08[which(HRtemp08$NAME==st.names[1])[1],]
+R> pnts <- rbind(pnts, HRtemp08[which(HRtemp08$NAME==st.names[2])[1],])
+R> pnts <- rbind(pnts, HRtemp08[which(HRtemp08$NAME==st.names[3])[1],])
+R> coordinates(pnts) <- ~Lon + Lat
+R> proj4string(pnts) <- CRS("+proj=longlat +datum=WGS84")
+R> LST_ll <- brick(LST_ll)
+R> LST_ll@title = "Time series of MODIS Land Surface Temperature"
+R> LST.ts <- new("RasterBrickTimeSeries", variable = "LST", sampled = pnts,
++         rasters = LST_ll, TimeSpan.begin = TimeSpan.begin[1:5],
++         TimeSpan.end = TimeSpan.end[1:5])
+\end{CodeInput}
+\end{CodeChunk}
+
+\noindent so that we can plot the MODIS images in Google Earth by running:
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plotKML(LST.ts, colour_scale=SAGA_pal[[1]])
+\end{CodeInput}
+\begin{CodeOutput}
+KML file opened for writing...
+Parsing to KML...
+Writing to KML...
+Closing  LST.ts.kml
+\end{CodeOutput}
+\end{CodeChunk}
+
+The resulting plot allows us to explore the changes in values both in space (by using the slide bar in Google Earth) and time (by browsing the individual time-series plots). Again, temporal support can be controlled by the width of the time slider. Setting up a wider temporal support Google Earth will interpolate the displayed colors automatically and display patterns that we would otherwise not be able to see. \par
+
+\subsection[plotKML in comparison to other KML writing software]{\pkg{plotKML} in comparison to other KML writing software}
+
+Table~\ref{Tbl:comparison} list some common KML writing software and provides our quick assessment of their functionality. In comparison to other KML writing packages in \proglang{R} and \proglang{python} (e.g.\@ \pkg{R2G2} and \pkg{pyKML}), we see the potential of \pkg{plotKML} primarily within its ambition to provide a larger family of lower-level and wrapper functions that allow both fast generation of complete plots, and customization of KML plots by binding several lower level functions (Table~\ref{Tbl:comparison}). \par
+
+\begin{table*}[!hp]\label{Tbl:comparison}
+\begin{center}
+{\footnotesize % \setlength{\extrarowheight}{6pt}
+\begin{tabular}{m{.4\textwidth}ccccccccccc}
+\toprule
+\emph{Aspect} &
+{\begin{turn}{90}\textsf{GDAL/OGR}\end{turn}}&
+{\begin{turn}{90}\textsf{SAGA GIS}\end{turn}} &
+{\begin{turn}{90}\textsf{GRASS GIS}\end{turn}} &
+{\begin{turn}{90}\textsf{Autodesk}\end{turn}} &
+{\begin{turn}{90}\textsf{Geomedia}\end{turn}} &
+{\begin{turn}{90}\textsf{ArcGIS}\end{turn}} &
+{\begin{turn}{90}\textsf{Mapping Toolbox}\end{turn}} &
+{\begin{turn}{90}\pkg{pyKML}\end{turn}} &
+{\begin{turn}{90}\pkg{R2G2}\end{turn}} &
+{\begin{turn}{90}\pkg{plotKML}\end{turn}} \\
+\toprule
+\raggedright{Programming language} & {\begin{turn}{90}\proglang{C++} / \proglang{Python}\end{turn}} & {\begin{turn}{90}\proglang{C++} / \proglang{Python}\end{turn}} & {\begin{turn}{90}\proglang{C++} / \proglang{Python} $\ldots$ \end{turn}} & {\begin{turn}{90}$-$\end{turn}} & {\begin{turn}{90}\proglang{SQL} $\ldots$\end{turn}} & {\begin{turn}{90}\proglang{AML} / \proglang{Python} $\ldots$ \end{turn}} & {\begin{turn}{90}\textsf{MatLab}\end{turn}} & {\begin{turn}{90}\proglang{Python}\end{turn}} & {\begin{turn}{90}\proglang{R}\end{turn}} & {\begin{turn}{90}\proglang{R}\end{turn}} \\
+\midrule
+\raggedright{Open Source software} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $-$ & $-$ & $-$ & $-$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+\midrule
+\raggedright{Writes vector data (points, lines, polygons)} & $\star$ & $-$ & $\star$ & $\bigstar$ & $\bigstar$ & $\bigstar$ & $\bigstar$ & $\star$ & $\star$ & $\bigstar$ \\
+\midrule
+\raggedright{Writes rasters (single raster layer, raster stacks)} & $-$ & $\star$ & $\star$ & $-$ & $-$ & $\bigstar$ & $\star$ & $\star$ & $-$ & $\bigstar$ \\
+\midrule
+\raggedright{Writes spatio-temporal data (spatio-temporal classes)} & $-$ & $-$ & $-$ & $-$ & $-$ & $\star$ & $\star$ & $-$ & $-$ & $\bigstar$ \\
+\midrule
+\raggedright{Can efficiently handle large data (Gigapixel images and large vectors)} & $\bigstar$ & $\star$ & $\bigstar$ & $\bigstar$ & $\bigstar$ & $\bigstar$ & $\bigstar$ & $\bigstar$ & $\star$ & $\star$ \\
+\midrule
+\raggedright{Allows creation of visualization templates (KML writing utilities)} & $\star$ & $-$ & $\star$ & $-$ & $-$ & $\star$ & $\star$ & $\bigstar$ & $\star$ & $\bigstar$ \\
+\midrule
+\raggedright{Allows styling (icons size and colors, line width, transparency etc.)} & $-$ & $-$ & $-$ & $-$ & $-$ & $\star$ & $\bigstar$ & $\star$ & $\star$ & $\bigstar$ \\
+\midrule
+\raggedright{Supports visualization of scientific data (statistical plots and charts)} & $-$ & $-$ & $-$ & $-$ & $-$ & $\star$ & $\bigstar$ & $\star$ & $-$ & $\bigstar$ \\
+\midrule
+\raggedright{Coding efficiency (ease of writing the spatial objects to KML files)} & $\bigstar$ & $-$ & $\bigstar$ & $-$ & $\star$ & $\bigstar$ & $\bigstar$ & $\star$ & $\bigstar$ & $\bigstar$ \\
+\midrule
+\raggedright{Provides user-friendly GUI} & $-$ & $\bigstar$ & $\star$ & $\bigstar$ & $\bigstar$ & $\bigstar$ & $\star$ & $-$ & $-$ & $-$ \\
+\bottomrule
+\end{tabular}}
+\vspace{6pt}
+\caption{A matrix comparison of some KML writing software. $\bigstar$ --- full capability, $\star$ --- possible but with limitations, $-$ --- not possible in this package. Functionality subjectively approximated by the authors (subject to discussion).}
+\end{center}
+\end{table*}
+
+Although spatial objects in \proglang{R} can be converted to KML formats using a range of different approaches, the \pkg{plotKML} package tries to simplify the process considerably. It has a potential particularly for visualising time series of spatial layers and outputs of spatial analysis (as shown in sections~\ref{sec:spacetime_example} and \ref{sec:rasterTimeSeries}), which is a task that is always rather challenging.\par
+
+A possible limitation of using \pkg{plotKML} will be visualization of large data sets, which is at the moment not recommended. Instead of attempting direct export of large GIS layers into a single KML file, we advice the user to consider some of the following strategies to optimize export and visualization of large data sets:
+
+\begin{enumerate}
+  \item Tile large study areas into regular blocks.
+  \item Consider increasing the grid cell size in the raster images and/or remove redundant nodes in the vector layers by various thinning procedures.
+  \item Consider putting the data into a database and then generate KML in chunks.
+\end{enumerate}
+
+
+\section{Discussion}
+
+We have described the design of the \proglang{R} package \pkg{plotKML} in comparison to the other existing packages and software for visualization of similar data. The \verb"plotKML()" method is suggested as a straightforward approach to get the results of spatial analysis quickly from \proglang{R} to Google Earth, but this of course does not alleviate the need for a comprehensive understanding of (geo)statistical analysis and spatial data object structures.\par
+
+Indirectly, \pkg{plotKML} promotes KML as a standard to use for scientific visualization of spatio-temporal data. Can this be justified? We think that there are several attractive features of using KML schema for scientific visualization. First of all, KML often goes beyond what we typically use within a desktop GIS. KML files can contain both spatial, textual and multimedia information, hence anyone can virtually explore geographical data as standing about the Earth's surface, but then also read all required information about how was the data produced and where to find more information via the embedded HTML content \citep{wernecke2009kml}. Second, as indicated in the introduction already, KML is the format used by Google Earth, and this is likely to remain the most popular geographical browser in the years to come. We believe that packages that connect statistical and geographical programming environments with Google Earth type of browsers are also critical for engaging the wider public in project outcomes. Both researchers and applied users like to see patterns in data clearly and they like to explore data in user-friendly Virtual Earth type of environment. It is also worth mentioning that, Elsevier\footnote{\url{http://www.elsevier.com/googlemaps}} now encourages authors to attach to attach KML files to their article submission. This option is now available for over 80 of their journals in earth sciences, life sciences, and social sciences, so it is in a way already a standard for scientific visualization. \par
+
+But there are still much room for improvements. As we have demonstrated, both \proglang{R} and KML/Google Earth are fairly flexible and can be used to represent spatial objects and features in 4D (geographical coordinates, altitude, time), nevertheless, both are not ideal for specific tasks. For example, KML is not (yet) suitable to represent complex geological structures, although some authors (e.g.\@ \citet{DePaor2011GGM} and \citet{Blenkinsop2012CG}) have suggested ways around the problem. \par
+
+We foresee that the future of our package will be in linking our scripts with Java scripts and/or PHP scripts i.e.\@ implementing the functionality that subsets and tiles data from large databases on the fly. We also hope to constantly update and expand the number of supported classes in \pkg{plotKML} (especially following the matrix in Table~\ref{Fig:spacetime_objects_types}) and then add more and more functionality for visualizing distributed data via network links and web mapping services.\par
+
+
+\section*{Acknowledgments}
+
+This package has been developed as a part of the Global Soil Information Facilities initiative --- tools for collating and serving global soil data developed jointly by the ISRIC --- World Soil Information institute and collaborators. ISRIC is a non-profit organization with a mandate to serve the international community as custodian of global soil information and to increase awareness and understanding of the role of soils in major global issues.\par
+
+The authors would like to thank the two anonymous reviewers for their suggestions and \proglang{R} code chunks that were largely incorporated in this article.\par
+
+\bibliography{jss1079}
+
+%\end{pagewiselinenumbers}
+
+\end{document}

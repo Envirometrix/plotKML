@@ -1,0 +1,119 @@
+<metadata>
+	<idinfo>
+		<citation>
+			<citeinfo>
+				<origin>Gehrt, E., Bohner, J., and Hengl, T.</origin>
+				<pubdate>2001</pubdate>
+				<title>Ebergoetzen data set</title>
+				<geoform>tabular digital data</geoform>
+				<pubinfo>
+					<pubplace>Hannover, Germany</pubplace>
+					<publish>The State Authority for Mining, Energy and Geology</publish>
+				</pubinfo>
+				<onlink>http://www.worldcat.org/oclc/613721298</onlink>
+			</citeinfo>
+		</citation>
+		<descript>
+			<abstract>The table contains 2937 observations (augers) of soil textures and soil types. Ebergotzen
+is 10 by 10 km study area in the vicinity of the city of Gottingen in Central Germany.</abstract>
+			<purpose>This area has been extensively surveyed over the years, mainly for the purposes of
+developing operational digital soil mapping techniques (Gehrt and Bohner, 2001).</purpose>
+			<supplinf>Texture by hand method (Ad-hoc-AG Boden, 2005) can be used to determine the content of soil earth fractions only to an accuracy of +-5-10% (Skaggs et al. 2001). A surveyor distinguishes to which of the 32 texture classes a soil samples belongs to, and then estimates the content of fractions. E.g. texture class St2 has 10% clay, 25% silt and 65% sand.</supplinf>
+		</descript>
+		<timeperd>
+			<timeinfo>
+				<rngdates>
+					<begdate>2000</begdate>
+					<enddate>2001</enddate>
+				</rngdates>
+			</timeinfo>
+			<current>ground condition</current>
+		</timeperd>
+		<status>
+			<progress>Complete</progress>
+			<update>None planned</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc>3569328.0</westbc>
+                <eastbc>3580992.0</eastbc>
+                <northbc>5718874.0</northbc>
+                <southbc>5707620.0</southbc>
+			</bounding>
+		</spdom>
+		<keywords>
+			<theme>
+				<themekt>None</themekt>
+				<themekey>SAMPLE</themekey>
+			</theme>
+			<theme>
+				<themekt>ISO 19115 Topic Category</themekt>
+				<themekey>soil</themekey>
+			</theme>
+		</keywords>
+		<accconst>None.</accconst>
+		<useconst>None.</useconst>
+		<ptcontac>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>The State Authority for Mining, Energy and Geology, Hannover, Germany</cntorg>
+					<cntper>Gehrt Ernst</cntper>
+				</cntorgp>
+				<cntaddr>
+					<addrtype>mailing and physical</addrtype>
+					<city>Hannover</city>
+					<country>GERMANY</country>
+                    <cntemail>Ernst.Gehrt@niedersachsen.de</cntemail>
+				</cntaddr>
+			</cntinfo>
+		</ptcontac>
+	</idinfo>
+	<distinfo>
+		<resdesc>Downloadable Data</resdesc>
+		<distliab>None.</distliab>
+		<stdorder>
+			<digform>
+				<digtinfo>
+					<formname>table</formname>
+				</digtinfo>
+				<digtopt>
+					<onlinopt>
+						<computer>
+							<networka>
+								<networkr>http://geomorphometry.org/content/ebergotzen</networkr>
+							</networka>
+						</computer>
+						<accinstr>None.</accinstr>
+					</onlinopt>
+				</digtopt>
+			</digform>
+			<fees>None.</fees>
+		</stdorder>
+	</distinfo>
+	<metainfo>
+		<metd>20110608</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>Esri</cntorg>
+				</cntorgp>
+				<cntpos>SDI Solutions</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical</addrtype>
+					<city>Hannover</city>
+					<country>GERMANY</country>
+				</cntaddr>
+				<cntvoice>909-793-2853</cntvoice>
+			</cntinfo>
+		</metc>
+		<metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+		<metstdv>FGDC-STD-001-1998</metstdv>
+		<metac>None</metac>
+		<metuc>None</metuc>
+		<metsi>
+			<metscs>None</metscs>
+			<metsc>Unclassified</metsc>
+			<metshd>None</metshd>
+		</metsi>
+	</metainfo>
+</metadata>

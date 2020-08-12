@@ -1,0 +1,19 @@
+Package: plotKML
+Version: 0.7-1
+Date: 2020-08-12
+Title: Visualization of Spatial and Spatio-Temporal Objects in Google Earth
+Authors@R: c(person("Tomislav", "Hengl", role = c("cre", "aut"),
+        email = "tom.hengl@opengeohub.org"),
+    person("Andrea", "Gilardi", role = "ctb"),
+    person("Pierre", "Roudier", role = "ctb"),
+    person("Dylan", "Beaudette", role = "ctb"),
+	person("Edzer", "Pebesma", role = "ctb"),
+  person("Michael", "Blaschek", role = "ctb"))
+Maintainer: Tomislav Hengl <tom.hengl@opengeohub.org>
+Depends: R (>= 3.5.0)
+Imports: methods, tools, utils, XML, sp, raster, rgdal, aqp, spacetime, colorspace, plotrix, dismo, pixmap, plyr, stringr, colorRamps, scales, gstat, zoo, RColorBrewer, RSAGA, classInt
+Suggests: adehabitatLT, maptools, fossil, spcosa, rjson, animation, spatstat, RCurl, rgbif, Hmisc, GSIF, uuid, intervals, reshape, gdalUtils, snowfall, parallel
+Description: Writes sp-class, spacetime-class, raster-class and similar spatial and spatio-temporal objects to KML following some basic cartographic rules.
+License: GPL
+URL: http://plotkml.r-forge.r-project.org/
+LazyLoad: yes 

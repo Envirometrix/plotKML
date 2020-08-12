@@ -1,0 +1,262 @@
+<metadata>
+	<idinfo>
+		<citation>
+			<citeinfo>
+				<origin>Esri</origin>
+				<pubdate>2014-03-15</pubdate>
+				<title>Custom Link Sample</title>
+				<geoform>vector digital data</geoform>
+				<pubinfo>
+					<pubplace>380 New York St., Redlands, CA, USA</pubplace>
+					<publish>Esri</publish>
+				</pubinfo>
+                <othercit>Other information required to complete the citation.</othercit>
+				<onlink>http://www.esri.com</onlink>
+			</citeinfo>
+		</citation>
+		<descript>
+			<abstract>This is a test metadata record for use in the Add a custom link to a search result web help
+topic. Note, the ftp URL here is just a sample and does not open an actual ftp site.</abstract>
+			<purpose>SAMPLE</purpose>
+			<supplinf>This does not represent an actual dataset</supplinf>
+		</descript>
+		<timeperd>
+			<timeinfo>
+				<rngdates>
+					<begdate>2014-03-15</begdate>
+					<enddate>Present</enddate>
+				</rngdates>
+			</timeinfo>
+			<current>ground condition</current>
+		</timeperd>
+		<status>
+			<progress>Complete</progress>
+			<update>None planned</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc>-96</westbc>
+				<eastbc>-83</eastbc>
+				<northbc>34</northbc>
+				<southbc>20</southbc>
+			</bounding>
+		</spdom>
+		<keywords>
+			<theme>
+				<themekt>None</themekt>
+				<themekey>SAMPLE</themekey>
+			</theme>
+			<theme>
+				<themekt>ISO 19115 Topic Category</themekt>
+				<themekey>oceans</themekey>
+			</theme>
+		</keywords>
+		<accconst>None.</accconst>
+		<useconst>None.</useconst>
+		<ptcontac>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>Esri</cntorg>
+					<cntper>SDI Solutions Team</cntper>
+				</cntorgp>
+				<cntaddr>
+					<addrtype>mailing and physical</addrtype>
+					<address>380 New York St.</address>
+					<city>Redlands</city>
+					<state>CA</state>
+					<postal>92373</postal>
+					<country>UNITED STATES</country>
+				</cntaddr>
+				<cntvoice>909-793-2853</cntvoice>
+			</cntinfo>
+		</ptcontac>
+        <browse>
+            <browsen>Name of a related graphic file that provides an illustration of the data set.</browsen>
+            <browsed>A text description of the illustration.</browsed>
+            <browset>PNG</browset>
+        </browse>
+        <datacred>Recognition of those who contributed to the data set.</datacred>
+        <native>Software and version (operating system and version), platform</native>
+	</idinfo>
+	<eainfo>
+        <detailed>
+            <enttyp>
+                <enttypl>The name of the entity type.</enttypl>
+                <enttypd>The description of the entity type.</enttypd>
+                <enttypds>Entity Type Definition Source -- the authority of the definition.</enttypds>
+            </enttyp>
+            <attr>
+                <attrlabl>The name of the attribute.</attrlabl>
+                <attrdef>The description of the attribute.</attrdef>
+                <attrdefs>Attribute Definition Source -- the authority of the definition.</attrdefs>
+                <attrdomv>
+                    <rdom>
+                        <rdommin>0</rdommin>
+                        <rdommax>100</rdommax>
+                        <attrunit>The standard of measurement for an attribute value.</attrunit>
+                        <attrmres>1</attrmres>
+                    </rdom>
+                </attrdomv>
+                <begdatea>2014-01-01</begdatea>
+                <enddatea>2014-03-15</enddatea>
+                <attrvai>
+                    <attrva>1</attrva>
+                    <attrvae>The definition of the Attribute Value Accuracy measure and units, and a description of how the estimate was 
+derived.</attrvae>
+                </attrvai>
+                <attrmfrq>None planned</attrmfrq>
+            </attr>
+        </detailed>
+        <overview>
+            <eaover>Detailed summary of the information contained in a data set.</eaover>
+            <eadetcit>Reference to the complete description of the entity types, attributes, and attribute values for the data set.</eadetcit>
+        </overview>
+    </eainfo>
+    <spdoinfo>
+        <indspref>Name of types of geographic features, addressing schemes, or other means through which locations are referenced in 
+the data set.</indspref>
+        <direct>Vector</direct>
+        <ptvctinf>
+            <sdtsterm>
+                <sdtstype>Point</sdtstype>
+                <ptvctcnt>1000</ptvctcnt>
+            </sdtsterm>
+        </ptvctinf>
+    </spdoinfo>
+    <spref>
+        <horizsys>
+            <geograph>
+                <latres>0.001</latres>
+                <longres>0.001</longres>
+                <geogunit>Decimal degrees</geogunit>
+            </geograph>
+            <geodetic>
+                <horizdn>EPSG:4326</horizdn>
+                <ellips>WGS_1984</ellips>
+                <semiaxis>6378137</semiaxis>
+                <denflat>298.257223563</denflat>
+            </geodetic>
+        </horizsys>
+    </spref>
+    <distinfo>
+		<distrib>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>Esri</cntorg>
+				</cntorgp>
+				<cntpos>Customer Service</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical</addrtype>
+					<address>380 New York St.</address>
+					<city>Redlands</city>
+					<state>CA</state>
+					<postal>92373</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>909-793-2853</cntvoice>
+			</cntinfo>
+		</distrib>
+		<resdesc>Downloadable Data</resdesc>
+		<distliab>None.</distliab>
+		<stdorder>
+			<digform>
+				<digtinfo>
+					<formname>TIFF</formname>
+                    <formvern>Version number of the format.</formvern>
+                    <formcont>Description of the content of the data encoded in a format.</formcont>
+                    <filedec>ZIP</filedec>
+                    <transize>10</transize>
+				</digtinfo>
+				<digtopt>
+					<onlinopt>
+						<computer>
+							<networka>
+								<networkr>ftp://ftp.sample.com</networkr>
+							</networka>
+						</computer>
+						<accinstr>None.</accinstr>
+						<oncomp>Standard Internet browser, PC, Mac, UNIX, Linux
+              systems</oncomp>
+					</onlinopt>
+				</digtopt>
+			</digform>
+			<fees>None.</fees>
+		</stdorder>
+	</distinfo>
+	<dataqual>
+       <attracc>
+            <attraccr>An explanation of the accuracy of the identification of the entities and assignments of values in the data set and a 
+description of the tests used.</attraccr>
+       </attracc>
+       <logic>An explanation of the fidelity of the relationships in the data set and the tests used.</logic>
+       <complete>Information about omissions, selection criteria, generalization, definitions used, and other rules used to derive the data 
+set.</complete>
+       <posacc>
+            <horizpa>
+                <horizpar>An explanation of the accuracy of the horizontal coordinate measurements and a description of the tests 
+used.</horizpar>
+            </horizpa>
+            <vertacc>
+                <vertaccr>An explanation of the accuracy of the vertical coordinate measurements and a description of the tests 
+used.</vertaccr>
+            </vertacc>
+        </posacc>
+        <lineage>
+            <srcinfo>
+                <srccite>
+                    <citeinfo>
+                        <origin>Esri</origin>
+				        <pubdate>2014-03-15</pubdate>
+				        <title>Custom Link Sample</title>
+                        <onlink>http://www.worldcat.org/oclc/*</onlink>
+                    </citeinfo>
+                </srccite>
+                <srcscale>25000</srcscale>
+                <typesrc>online</typesrc>
+                <srctime>
+                    <timeinfo>
+                        <sngdate>
+                            <caldate>2014-03-15</caldate>
+                        </sngdate>
+                    </timeinfo>
+                    <srccurr>The basis on which the source time period of content information of the source data set is determined.</srccurr>
+                </srctime>
+                <srccitea>Short-form alias for the source citation.</srccitea>
+<srccontr>Brief statement identifying the information contributed by the source to the data set.</srccontr>
+            </srcinfo>
+            <procstep>
+                <procdesc>An explanation of the event and related parameters or tolerances.</procdesc>
+                <procdate>2014-03-15</procdate>
+            </procstep>
+        </lineage>
+    </dataqual>
+    <metainfo>
+		<metd>20110608</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>Esri</cntorg>
+				</cntorgp>
+				<cntpos>SDI Solutions</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical</addrtype>
+					<address>380 New York St.</address>
+					<city>Redlands</city>
+					<state>CA</state>
+					<postal>92373</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>909-793-2853</cntvoice>
+			</cntinfo>
+		</metc>
+		<metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+		<metstdv>FGDC-STD-001-1998</metstdv>
+		<metac>None</metac>
+		<metuc>None</metuc>
+		<metsi>
+			<metscs>None</metscs>
+			<metsc>Unclassified</metsc>
+			<metshd>None</metshd>
+		</metsi>
+	</metainfo>
+</metadata>

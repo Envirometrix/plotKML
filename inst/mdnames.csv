@@ -1,0 +1,166 @@
+metadata,field.names,description,type
+fileIdentifier.CharacterString,UUID,Universally unique identifier.,INSPIRE
+language.LanguageCode.text,Language_code,"""eng"", ""bul"", ""hrv"", ""cze"", ""dan"", ""dut"", ""est"", ""fin"", ""fre"", ""ger"", ""gre"", ""hun"", ""gle"", ""ita"", ""lav"", ""lit"", ""mlt"", ""pol"", ""por"", ""rum"", ""slo"", ""slv"", ""spa"", ""swe""",INSPIRE
+characterSet.MD_CharacterSetCode.text,MD_Character_set_code,E.g. MD_CharacterSetCode_utf8,INSPIRE
+hierarchyLevel.MD_ScopeCode.text,MD_scope_code,Scope of the character set.,INSPIRE
+contact.CI_ResponsibleParty.organisationName.CharacterString,CI_Organisation_name,Name of the organization generating the metadata.,INSPIRE
+contact.CI_ResponsibleParty.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress.CharacterString,CI_Electronic_mail_address,E-mail address.,INSPIRE
+contact.CI_ResponsibleParty.role.CI_RoleCode.text,CI_Role,"""resourceProvider"", ""custodian"", ""owner"", ""user"", ""distributor"", ""originator"", ""pointOfContact"", ""principalInvestigator"", ""processor"", ""publisher"", ""author""",INSPIRE
+dateStamp.Date,Date_stamp,Date when the metadata file has been created.,INSPIRE
+metadataStandardName.CharacterString,MD_Standard_name,Metadata ISO number e.g. ISO 19115.,INSPIRE
+metadataStandardVersion.CharacterString,MD_Standard_version,Metadata version.,INSPIRE
+identificationInfo.MD_DataIdentification.citation.CI_Citation.title.CharacterString,CI_Citation_title,Title of the dataset.,INSPIRE
+identificationInfo.MD_DataIdentification.citation.CI_Citation.date.CI_Date.date.Date,CI_Citation_date,Date when the citation has been created.,INSPIRE
+identificationInfo.MD_DataIdentification.citation.CI_Citation.date.CI_Date.dateType.CI_DateTypeCode.text,CI_Citation_date_type,"""publication"", ""creation"", ""revision""",INSPIRE
+identificationInfo.MD_DataIdentification.citation.CI_Citation.identifier.RS_Identifier.code.CharacterString,CI_Unique_name,Unique dataset name or identifier.,INSPIRE
+identificationInfo.MD_DataIdentification.citation.CI_Citation.identifier.RS_Identifier.codeSpace.CharacterString,CI_RS_identifier,Unique Reference System identifier.,INSPIRE
+identificationInfo.MD_DataIdentification.abstract.CharacterString,MD_Abstract,A brief narrative summary of the data set.,INSPIRE
+identificationInfo.MD_DataIdentification.pointOfContact.CI_ResponsibleParty.organisationName.CharacterString,MD_Organisation_name,Name of the organization that produced the dataset.,INSPIRE
+identificationInfo.MD_DataIdentification.pointOfContact.CI_ResponsibleParty.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress.CharacterString,MD_Electronic_mail_address,E-mail address of the person that generated the metadata.,INSPIRE
+identificationInfo.MD_DataIdentification.pointOfContact.CI_ResponsibleParty.role.CI_RoleCode.text,MD_Role,"""pointOfContact""",INSPIRE
+identificationInfo.MD_DataIdentification.descriptiveKeywords.MD_Keywords.keyword.CharacterString,MD_Keyword,"""Coordinate reference systems"", ""Geographical grid systems"", ""Geographical names"", ""Administrative units"", ""Addresses"", ""Cadastral parcels"", ""Transport networks"", ""Hydrography"", ""Protected sites"", ""Elevation"", ""Land cover"", ""Orthoimagery"", ""Geology"", ""Statistical units"", ""Buildings"", ""Soil"", ""Land use"", ""Human health and safety"", ""Utility and governmental services"", ""Environmental monitoring facilities"", ""Production and industrial facilities"", ""Agricultural and aquaculture facilities"", ""Population distribution - demography"", ""Area management/restriction/regulation zones and reporting units"", ""Natural risk zones"", ""Atmospheric conditions"", ""Meteorological geographical features"", ""Oceanographic geographical features"", ""Sea regions"", ""Bio-geographical regions"", ""Habitats and biotopes"", ""Species distribution"", ""Energy resources"", ""Mineral resources""",INSPIRE
+identificationInfo.MD_DataIdentification.descriptiveKeywords.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString,MD_Thesaurus_name,"GEMET - INSPIRE themes, version 1.0",INSPIRE
+identificationInfo.MD_DataIdentification.descriptiveKeywords.MD_Keywords.thesaurusName.CI_Citation.date.CI_Date.date.Date,MD_Thesaurus_date,Date of creation of thesaurus.,INSPIRE
+identificationInfo.MD_DataIdentification.descriptiveKeywords.MD_Keywords.thesaurusName.CI_Citation.date.CI_Date.dateType.CI_DateTypeCode.text,MD_Thesaurus_date_type,"""publication"", ""creation"", ""revision""",INSPIRE
+identificationInfo.MD_DataIdentification.resourceConstraints.MD_Constraints.useLimitation.CharacterString,MD_Use_limitations,Defines the conditions for access and use of the dataset.,INSPIRE
+identificationInfo.MD_DataIdentification.resourceConstraints.MD_LegalConstraints.accessConstraints.MD_RestrictionCode.text,MD_Access_constraints,"""otherRestrictions"", ""copyright"", ""patent"", ""patentPending"", ""trademark"", ""license"", ""intellectualPropertyRights"", ""restricted""",INSPIRE
+identificationInfo.MD_DataIdentification.resourceConstraints.MD_LegalConstraints.otherConstraints.CharacterString,MD_Other_restrictions,Other restrictions and legal prerequisites for accessing and using the resource or metadata.,INSPIRE
+identificationInfo.MD_DataIdentification.spatialResolution.MD_Resolution.equivalentScale.MD_RepresentativeFraction.denominator.Integer,MD_Equivalent_scale,Representative fraction denominator as integer.,INSPIRE
+identificationInfo.MD_DataIdentification.spatialResolution.MD_Resolution.distance.Distance.text,MD_Resolution,,INSPIRE
+identificationInfo.MD_DataIdentification.language.LanguageCode.text,MD_Language_code,"""eng"", ""bul"", ""hrv"", ""cze"", ""dan"", ""dut"", ""est"", ""fin"", ""fre"", ""ger"", ""gre"", ""hun"", ""gle"", ""ita"", ""lav"", ""lit"", ""mlt"", ""pol"", ""por"", ""rum"", ""slo"", ""slv"", ""spa"", ""swe""",INSPIRE
+identificationInfo.MD_DataIdentification.topicCategory.MD_TopicCategoryCode,MD_Topic_category_code,"""geoscientificInformation"", ""farming"", ""biota"", ""boundaries"", ""climatologyMeteorologyAtmosphere"",  ""economy"", ""elevation"", ""environment"", ""health"", ""imageryBaseMapsEarthCover"", ""intelligenceMilitary"", ""inlandWaters"", ""location"", ""oceans"", ""planningCadastre"", ""society"", ""structure"", ""transportation"", ""utilitiesCommunication""",INSPIRE
+identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.westBoundLongitude.Decimal,Extent_West_Longitude,Western-most coordinate of the limit of coverage expressed in longitude.,INSPIRE
+identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.eastBoundLongitude.Decimal,Extent_East_Longitude,Eastern-most coordinate of the limit of coverage expressed in longitude.,INSPIRE
+identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.southBoundLatitude.Decimal,Extent_South_Latitude,Southern-most coordinate of the limit of coverage expressed in latitude.,INSPIRE
+identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.northBoundLatitude.Decimal,Extent_North_Latitude,Northern-most coordinate of the limit of coverage expressed in latitude.,INSPIRE
+identificationInfo.MD_DataIdentification.extent.EX_Extent.temporalElement.EX_TemporalExtent.extent.TimePeriod.beginPosition,Time_period_begin,The date indicating begin of the event.,INSPIRE
+identificationInfo.MD_DataIdentification.extent.EX_Extent.temporalElement.EX_TemporalExtent.extent.TimePeriod.endPosition,Time_period_end,The date indicating end of the event.,INSPIRE
+distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.CI_OnlineResource.linkage.URL,CI_Online_resource_URL,URL specifying where the data set can be obtained.,INSPIRE
+dataQualityInfo.DQ_DataQuality.scope.DQ_Scope.level.MD_ScopeCode.text,DQ_Scope_code,"""dataset""",INSPIRE
+dataQualityInfo.DQ_DataQuality.report.DQ_DomainConsistency.result.DQ_ConformanceResult.specification.CI_Citation.title.CharacterString,DQ_Citation_title,Commission Regulation (EU) No 1089/2010 of 23 November 2010 implementing Directive 2007/2/EC of the European Parliament and of the Council as regards interoperability of spatial data sets and services.,INSPIRE
+dataQualityInfo.DQ_DataQuality.report.DQ_DomainConsistency.result.DQ_ConformanceResult.specification.CI_Citation.date.CI_Date.date.Date,DQ_Citation_date,Data quality check production date.,INSPIRE
+dataQualityInfo.DQ_DataQuality.report.DQ_DomainConsistency.result.DQ_ConformanceResult.specification.CI_Citation.date.CI_Date.dateType.CI_DateTypeCode.text,DQ_Citation_date_type,Data quality release type.,INSPIRE
+dataQualityInfo.DQ_DataQuality.report.DQ_DomainConsistency.result.DQ_ConformanceResult.explanation.CharacterString,DQ_Conformance_result,Conformance results explanation.,INSPIRE
+dataQualityInfo.DQ_DataQuality.report.DQ_DomainConsistency.result.DQ_ConformanceResult.pass.nilReason,DQ_Conformance_result_pass,Conformance results pass.,INSPIRE
+dataQualityInfo.DQ_DataQuality.lineage.LI_Lineage.statement.CharacterString,DQ_Lineage_statement,Other information required to complete the citation.,INSPIRE
+.attrs.schemaLocation,Schema_location,MD schema URL.,INSPIRE
+dataqual.attracc.attraccr,Attribute_accuracy_report,An explanation of the accuracy of the identification of the entities and assignments of values in the data set and a description of the tests used.,FGDC
+dataqual.complete,Completeness_Report,"Information about omissions, selection criteria, generalization, definitions used, and other rules used to derive the data set.",FGDC
+dataqual.lineage.procstep.procdate,Process_Date,The date when the event was completed.,FGDC
+dataqual.lineage.procstep.procdesc,Process_Description,An explanation of the event and related parameters or tolerances.,FGDC
+dataqual.lineage.srcinfo.srccite.citeinfo.onlink,Online_Linkage,URL of a script that can reproduce this data.,FGDC
+dataqual.lineage.srcinfo.srccite.citeinfo.origin,Data_Quality_Citation_Originator,The name of an organization or individual that quality assessment for the data set.,FGDC
+dataqual.lineage.srcinfo.srccite.citeinfo.pubdate,Data_Quality_Publication_Date,The date when the quality assessment is published or otherwise made available for release.,FGDC
+dataqual.lineage.srcinfo.srccite.citeinfo.title,Data_Quality_Citation_Title,"The name by which the quality assessment is known (what, why, source).",FGDC
+dataqual.lineage.srcinfo.srccitea,Data_Quality_Citation_Abbreviation,Short-form alias for the source citation for quality assessment.,FGDC
+dataqual.lineage.srcinfo.srccontr,Data_Quality_Contribution,Brief statement identifying the information contributed by the source to the quality assessment.,FGDC
+dataqual.lineage.srcinfo.srcscale,Source_Scale_Denominator,The scale denominator of the representative fraction on a map.,FGDC
+dataqual.lineage.srcinfo.srctime.srccurr,Source_Currentness_Reference,The basis on which the source time period of content information of the source data set is determined.,FGDC
+dataqual.lineage.srcinfo.srctime.timeinfo.sngdate.caldate,Source_Date_of_Content,"The year (and optionally month, or month and day).",FGDC
+dataqual.lineage.srcinfo.typesrc,Type_of_Source_Media,"""paper"", ""stable-base material"", ""microfiche"", ""microfilm"", ""audiocassette"", ""chart"", ""filmstrip"", ""transparency"", ""videocassette"", ""videodisc"", ""videotape"", ""physical model"", ""computer program"", ""disc"", ""cartridge tape"", ""magnetic tape"", ""online"", ""CD-ROM"", ""electronic bulletin board"", ""electronic mail system""",FGDC
+dataqual.logic,Logical_Consistency_Report,An explanation of the fidelity of the relationships in the data set and the tests used.,FGDC
+dataqual.posacc.horizpa.horizpar,Horizontal_accuracy_report,An explanation of the accuracy of the horizontal coordinate measurements and a description of the tests used.,FGDC
+dataqual.posacc.vertacc.vertaccr,Vertical_accuracy_report,An explanation of the accuracy of the vertical coordinate measurements and a description of the tests used.,FGDC
+distinfo.distliab,Distribution_Liability,Statement of the liability assumed by the distributor.,FGDC
+distinfo.distrib.cntinfo.cntaddr.address,Distributor_address,Street house number or PO Box.,FGDC
+distinfo.distrib.cntinfo.cntaddr.addrtype,Distributor_address_type,Address type.,FGDC
+distinfo.distrib.cntinfo.cntaddr.city,Distributor_city,City for distributing organization.,FGDC
+distinfo.distrib.cntinfo.cntaddr.country,Distributor_country,Country for distributing organization.,FGDC
+distinfo.distrib.cntinfo.cntaddr.postal,Distributior_postal,Postal code for distributing organization.,FGDC
+distinfo.distrib.cntinfo.cntaddr.state,Distributor_state,State distributing organization.,FGDC
+distinfo.distrib.cntinfo.cntorgp.cntorg,Data_Distributing_Organization,The identifier by which the distributor knows the data set.,FGDC
+distinfo.distrib.cntinfo.cntpos,Distributor_Name,Type of contact service.,FGDC
+distinfo.distrib.cntinfo.cntvoice,Distributor_Telephone,Telephone number for direct contact.,FGDC
+distinfo.resdesc,Resource_Description,The identifier by which the distributor knows the data set.,FGDC
+distinfo.stdorder.digform.digtinfo.filedec,File_Decompression_Technique,"""ZIP"", RAR"", ""No compression applied""",FGDC
+distinfo.stdorder.digform.digtinfo.formcont,Format_Information_Content,Description of the content of the data encoded in a format.,FGDC
+distinfo.stdorder.digform.digtinfo.formname,Format_Name,GDAL driver name,FGDC
+distinfo.stdorder.digform.digtinfo.formvern,Format_Version_Number,Version number of the format.,FGDC
+distinfo.stdorder.digform.digtinfo.transize,Transfer_Size,"The size, or estimated size, of the transferred data set in megabytes.",FGDC
+distinfo.stdorder.digform.digtopt.onlinopt.accinstr,Access_Instructions,Instructions on the steps required to access the data set.,FGDC
+distinfo.stdorder.digform.digtopt.onlinopt.computer.networka.networkr,Data_Order_URL,The name of the file or service from which the data set can be obtained.,FGDC
+distinfo.stdorder.digform.digtopt.onlinopt.oncomp,Online_Computer,The brand of distribution computer and its operating system.,FGDC
+distinfo.stdorder.fees,Order_fees,The fees and terms for retrieving the data set.,FGDC
+eainfo.detailed.attr.attrdef,Attribute_Definition,The description of the attribute.,FGDC
+eainfo.detailed.attr.attrdefs,Attribute_Definition_Source,The authority of the definition.,FGDC
+eainfo.detailed.attr.attrdomv.rdom.attrmres,Attribute_Measurement_Resolution,The smallest unit increment to which an attribute value is measured.,FGDC
+eainfo.detailed.attr.attrdomv.rdom.attrunit,Attribute_Units_of_Measure,The standard of measurement for an attribute value.,FGDC
+eainfo.detailed.attr.attrdomv.rdom.rdommax,Range_Domain_Maximum,The greatest value that the attribute can be assigned.,FGDC
+eainfo.detailed.attr.attrdomv.rdom.rdommin,Range_Domain_Minimum,The least value that the attribute can be assigned.,FGDC
+eainfo.detailed.attr.attrlabl,Attribute_Label,The name of the attribute.,FGDC
+eainfo.detailed.attr.attrmfrq,Attribute_Measurement_Frequency,"As needed, ""Irregular"", ""None planned""",FGDC
+eainfo.detailed.attr.attrvai.attrva,Attribute_Value_Accuracy,An estimate of the accuracy of the assignment of attribute values.,FGDC
+eainfo.detailed.attr.attrvai.attrvae,Attribute_Value_Accuracy_Explanation,"The definition of the Attribute Value Accuracy measure and units, and a description of how the estimate was derived.",FGDC
+eainfo.detailed.attr.begdatea,Beginning_Date_of_Attribute_Values,Earliest or only date for which the attribute values are current.,FGDC
+eainfo.detailed.attr.enddatea,Ending_Date_of_Attribute_Values,Latest date for which the information are current.,FGDC
+eainfo.detailed.enttyp.enttypd,Entity_Type_Definition,The description of the entity type.,FGDC
+eainfo.detailed.enttyp.enttypds,Entity_Type_Definition_Source,The authority of the definition.,FGDC
+eainfo.detailed.enttyp.enttypl,Entity_Type_Label,The name of the entity type.,FGDC
+eainfo.overview.eadetcit,Entity_and_Attribute_Detail_Citation,"Reference to the complete description of the entity types, attributes, and attribute values for the data set.",FGDC
+eainfo.overview.eaover,Entity_and_Attribute_Overview,Detailed summary of the information contained in a data set.,FGDC
+idinfo.accconst,Access_Constraints,Restrictions and legal prerequisites for accessing the data set.,FGDC
+idinfo.browse.browsed,Browse_Graphic_File_Description,A text description of the illustration.,FGDC
+idinfo.browse.browsen,Browse_Graphic_File_Name,Name of a related graphic file that provides an illustration of the data set.,FGDC
+idinfo.browse.browset,Browse_Graphic_File_Type,"""CGM"" Computer Graphics Metafile, ""EPS"" Encapsulated Postscript format, ""EMF"" Enhanced Metafile, ""GIF"" GraphicInterchange Format, ""JPEG"" Joint Photographic Experts Group format, ""PBM"" Portable Bit Map format, ""PS"" Postscript format, ""TIFF"" Tagged Image File Format, ""WMF"" Windows metafile, ""XWD"" X-Windows Dump",FGDC
+idinfo.citation.citeinfo.geoform,Geospatial_Data_Presentation_Form,"""atlas"", ""audio"", ""diagram"", ""document"", ""globe"", ""map"", ""model"", ""multimedia presentation"", ""profile"", ""raster digital data"", ""remote-sensing image"", ""section"", ""spreadsheet"", ""tabular digital data"", ""vector digital data"", ""video"", ""view""",FGDC
+idinfo.citation.citeinfo.onlink,Citation_URL,http://www.worldcat.org/oclc/*,FGDC
+idinfo.citation.citeinfo.origin,Citation_Originator,The name of an organization or individual that developed the data set.,FGDC
+idinfo.citation.citeinfo.othercit,Other_Citation_Details,Other information required to complete the citation.,FGDC
+idinfo.citation.citeinfo.pubdate,Publication_Date,The date when the data set is published or otherwise made available for release.,FGDC
+idinfo.citation.citeinfo.pubinfo.publish,Citation_Publisher,The name of the individual or organization that published the data set.,FGDC
+idinfo.citation.citeinfo.pubinfo.pubplace,Publication_Place,"The name of the city (and state or province, and country, if needed to identify the city) where the data set was published or released.",FGDC
+idinfo.citation.citeinfo.title,Citation_title,"The name by which the data set is known (what, why, source).",FGDC
+idinfo.datacred,Data_Set_Credit,Recognition of those who contributed to the data set.,FGDC
+idinfo.descript.abstract,Abstract,A brief narrative summary of the data set.,FGDC
+idinfo.descript.purpose,Purpose,A summary of the intentions with which the data set was developed.,FGDC
+idinfo.descript.supplinf,Supplemental_Information,Other descriptive information about the data set.,FGDC
+idinfo.keywords.theme.themekey,Theme_Keyword,Common-use word or phrase used to describe the subject of the data set.,FGDC
+idinfo.keywords.theme.themekt,Theme_Keyword_Thesaurus,Reference to a formally registered thesaurus or a similar authoritative source of place keywords.,FGDC
+idinfo.native,Native_Data_Set_Environment,"Software and version (operating system and version), platform",FGDC
+idinfo.ptcontac.cntinfo.cntaddr.address,Contact_Information_Address,Contact information (address) for an individual or organization that is knowledgeable about the data set.,FGDC
+idinfo.ptcontac.cntinfo.cntaddr.addrtype,Contact_Address_Type,Type of contact inormation.,FGDC
+idinfo.ptcontac.cntinfo.cntaddr.city,Contact_Information_City,Contact information (city) for an individual or organization that is knowledgeable about the data set.,FGDC
+idinfo.ptcontac.cntinfo.cntaddr.country,Contact_Information_Country,Contact information (country) for an individual or organization that is knowledgeable about the data set.,FGDC
+idinfo.ptcontac.cntinfo.cntaddr.postal,Contact_Information_Postal,Contact information postal code.,FGDC
+idinfo.ptcontac.cntinfo.cntaddr.state,Contact_Information_State,Contact information state.,FGDC
+idinfo.ptcontac.cntinfo.cntorgp.cntorg,Contact_Information_Organization,Contact information organization name.,FGDC
+idinfo.ptcontac.cntinfo.cntorgp.cntper,Contact_Information_Person,Contact information person or group name.,FGDC
+idinfo.ptcontac.cntinfo.cntvoice,Contact_Information_Telephone,Telephone number for direct contact.,FGDC
+idinfo.spdom.bounding.eastbc,East_Bounding_Coordinate,Eastern-most coordinate of the limit of coverage expressed in longitude.,FGDC
+idinfo.spdom.bounding.northbc,North_Bounding_Coordinate,Northern-most coordinate of the limit of coverage expressed in latitude.,FGDC
+idinfo.spdom.bounding.southbc,South_Bounding_Coordinate,Southern-most coordinate of the limit of coverage expressed in latitude.,FGDC
+idinfo.spdom.bounding.westbc,West_Bounding_Coordinate,Western-most coordinate of the limit of coverage expressed in longitude.,FGDC
+idinfo.status.progress,Status_Progress,"""Complete"", ""In work"", ""Planned""",FGDC
+idinfo.status.update,Maintenance_and_Update_Frequency,"""Continually"", ""Daily"", ""Weekly"", ""Monthly"", ""Annually"", ""Unknown"", ""As needed"", ""Irregular"", ""None planned""",FGDC
+idinfo.timeperd.current,Currentness_Reference,"""ground condition"", ""publication date""",FGDC
+idinfo.timeperd.timeinfo.rngdates.begdate,Beginning_Date,"The first year (and optionally month, or month and day) of the event.",FGDC
+idinfo.timeperd.timeinfo.rngdates.enddate,Ending_Date,"The last year (and optionally month, or month and day) for the event.",FGDC
+idinfo.useconst,Use_Constraints,Restrictions and legal prerequisites for using the data set after access is granted.,FGDC
+metainfo.metac,Metadata_Access_Constraints,Restrictions and legal prerequisites for accessing the metadata.,FGDC
+metainfo.metc.cntinfo.cntaddr.address,Metadata_Contact_Address,An address line for the address.,FGDC
+metainfo.metc.cntinfo.cntaddr.addrtype,Metadata_Contact_Address_Type,The name of the individual to which the contact type applies.,FGDC
+metainfo.metc.cntinfo.cntaddr.city,Metadata_Contact_City,The city of the address.,FGDC
+metainfo.metc.cntinfo.cntaddr.country,Metadata_Contact_Country,The country of the address.,FGDC
+metainfo.metc.cntinfo.cntaddr.postal,Metadata_Contact_Postal,The ZIP or other postal code of the address.,FGDC
+metainfo.metc.cntinfo.cntaddr.state,Metadata_Contact_State,The state or province of the address.,FGDC
+metainfo.metc.cntinfo.cntorgp.cntorg,Metadata_Contact_Organization,The name of the organization that generated metadata.,FGDC
+metainfo.metc.cntinfo.cntpos,Metadata_Contact_Position,The position of individual or organization that generated the metadata.,FGDC
+metainfo.metc.cntinfo.cntvoice,Metadata_Contact_Telephone,Contact telephone number.,FGDC
+metainfo.metd,Metadata_Date,The date that the metadata were created or last updated.,FGDC
+metainfo.metsi.metsc,Metadata_Classification,Name of the classification system for the metadata.,FGDC
+metainfo.metsi.metscs,Metadata_Security_Classification_System,Name of the classification system for the metadata.,FGDC
+metainfo.metsi.metshd,Metadata_Restrictions,Additional information about the restrictions on handling the metadata,FGDC
+metainfo.metstdn,Metadata_Standard_Name,Content Standard for Digital Geospatial Metadata,FGDC
+metainfo.metstdv,Metadata_Standard_Version,FGDC-STD-001-1998,FGDC
+metainfo.metuc,Metadata_Use_Constraints,Restrictions and legal prerequisites for using the metadata after access is granted.,FGDC
+spdoinfo.direct,Direct_Spatial_Reference_Method,"""Point"", ""Vector"", ""Raster""",FGDC
+spdoinfo.indspref,Indirect_Spatial_Reference,"Name of types of geographic features, addressing schemes, or other means through which locations are referenced in the data set.",FGDC
+spdoinfo.ptvctinf.sdtsterm.ptvctcnt,Object_Count,The total number of the point or vector object type occurring in the data set.,FGDC
+spdoinfo.ptvctinf.sdtsterm.sdtstype,SDTS_Point_and_Vector_Object_Type,"""Point"", ""Entity point"", ""Label point"", ""Area point"", ""Node, planar graph"", ""Node, network"", ""String"", ""Link"", ""Complete chain"", ""Area chain"", ""Network chain, planar graph"", ""Network chain, nonplanar graph"", ""Circular arc, three point center"", ""Elliptical arc"", ""Uniform B-spline"", ""Piecewise Bezier"", ""Ring with mixed composition"", ""Ring composed of strings"", ""Ring composed of chains"", ""Ring composed of arcs"", ""G-polygon"", ""GT-polygon composed of rings"", ""GT-polygon composed of chains"", ""Universe polygon composed of rings"", ""Universe polygon composed of chains"", ""Void polygon composed of rings"", ""Void polygon composed of chains""",FGDC
+spref.horizsys.geodetic.denflat,Denominator_of_Flattening_Ratio,The denominator of the ratio of the difference between the equatorial and polar radii of the ellipsoid when the numerator is set to 1.,FGDC
+spref.horizsys.geodetic.ellips,Ellipsoid_Name,"Ellipsoid EPSG Geodetic Parameter Registry name e.g. ""Geodetic Reference System 80""",FGDC
+spref.horizsys.geodetic.horizdn,Horizontal_Datum_Name,"Horizontal datum EPSG Geodetic Parameter Registry name e.g. ""North American Datum of 1927""",FGDC
+spref.horizsys.geodetic.semiaxis,Semi_major_Axis,Radius of the equatorial axis of the ellipsoid.,FGDC
+spref.horizsys.geograph.geogunit,Geographic_Coordinate_Units,"""Decimal degrees"", ""Decimal minutes"", ""Decimal seconds"", ""Degrees and decimal minutes"", ""Degrees, minutes, and decimal seconds"", ""Radians"", ""Grads""",FGDC
+spref.horizsys.geograph.latres,Latitude_Resolution,The minimum difference between two adjacent latitude values expressed in Geographic Coordinate Units of measure.,FGDC
+spref.horizsys.geograph.longres,Longitude_Resolution,The minimum difference between two adjacent longitude values expressed in Geographic Coordinate Units of measure.,FGDC
