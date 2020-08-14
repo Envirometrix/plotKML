@@ -8,23 +8,24 @@ kml_altitude <- function(obj, altitude = NULL) {
   }
   else if (is.numeric(altitude)) {
     # If it is numeric this is a single altitude for all points
-    altitude <- rep(altitude, length.out = length(obj))
+    altitude <- rep(altitude, length.out = .length_sp_sf(obj))
   }
   else if (is.null(altitude)) {
-    altitude <- rep(.all_kml_aesthetics[["altitude"]], length.out = length(obj))
+    altitude <- rep(.all_kml_aesthetics[["altitude"]], length.out = .length_sp_sf(obj))
   }
-  else
+  else {
     stop("Incorrect altitude value")
+  }
 
   altitude
 }
 
 # Guesses the appropriate altitudeMode tag
-kml_altitude_mode <- function(altitude, GroundOverlay=FALSE){
+kml_altitude_mode <- function(altitude, GroundOverlay = FALSE){
   
   altitude = as.numeric(altitude)
   if (all(altitude[!is.na(altitude)] > 0)) {
-    if(GroundOverlay == TRUE){
+    if(GroundOverlay) {
       altitude_mode <- "absolute"
     } else {
       altitude_mode <- "relativeToGround"

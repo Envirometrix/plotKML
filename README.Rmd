@@ -1,0 +1,86 @@
+---
+output: github_document
+---
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# plotKML
+plotKML: Visualization of Spatial and Spatio-Temporal Objects in Google Earth
+
+<!-- badges: start -->
+
+[![Build Status](https://travis-ci.org/Envirometrix/plotKML.svg?branch=master)](https://travis-ci.org/Envirometrix/plotKML)
+[![R build status](https://github.com/Envirometrix/plotKML/workflows/R-CMD-check/badge.svg)](https://github.com/Envirometrix/plotKML/actions)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/plotKML)](https://cran.r-project.org/package=plotKML)
+[![Github_Status_Badge](https://img.shields.io/badge/Github-0.7--1-blue.svg)](https://github.com/Envirometrix/plotKML)
+<!-- badges: end -->
+
+How to cite:
+
+- Hengl, T., Roudier, P., Beaudette, D., & Pebesma, E. (2015). **plotKML: Scientific visualization of spatio-temporal data**. Journal of Statistical Software, 63(5), 1-25. https://www.jstatsoft.org/article/view/v063i05
+
+## Installing
+
+Install development versions from github:
+
+```{r, eval = FALSE}
+library(devtools)
+install_github("envirometrix/plotKML")
+```
+
+## Integration with sf
+
+I will now present new `sf` functions and compare with current `sp` functions. Start with POINTS
+
+```{r}
+suppressPackageStartupMessages({
+  library(plotKML)
+  library(sp)
+  library(rgdal)
+  library(sf)
+})
+# Load data
+data(eberg)
+coordinates(eberg) <- ~ X + Y
+proj4string(eberg) <- CRS("+init=epsg:31467")
+## subset to 20 percent:
+eberg <- eberg[runif(nrow(eberg)) < .1, ]
+# sp methods
+plotKML(eberg["CLYMHT_A"], open.kml = FALSE)
+plotKML(eberg["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "", open.kml = FALSE)
+
+# convert eberg to sf format
+eberg_sf <- st_as_sf(eberg)
+
+# and apply sf methods
+plotKML(eberg_sf["CLYMHT_A"], open.kml = FALSE)
+plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "", open.kml = FALSE)
+```
+
+Recent version of sf could show a warning message relative to the old PROJ4string specified by `get("ref_CRS", envir = plotKML.opts)`. 
+Maybe `"ref_CRS"` should be changed or updated. 
+
+We can now compare the two implementations: 
+
+```{r}
+all.equal(readLines("eberg__CLYMHT_A__.kml"), readLines("eberg_sf__CLYMHT_A__.kml"))
+```
+
+I think the warning messages are not important here. . 
+The two string mismatches are simply caused by the different names and classes: 
+
+```{r, warning = FALSE}
+id_mismatches <- readLines("eberg__CLYMHT_A__.kml") != readLines("eberg_sf__CLYMHT_A__.kml")
+readLines("eberg__CLYMHT_A__.kml")[id_mismatches]
+readLines("eberg_sf__CLYMHT_A__.kml")[id_mismatches]
+```

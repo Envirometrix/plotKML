@@ -21,9 +21,14 @@
 \alias{plotKML,RasterBrickTimeSeries-method}
 \alias{plotKML,SpatialSamplingPattern-method}
 \alias{plotKML,list-method}
+\alias{plotKML,sf-method}
 \title{Methods for plotting results of spatial analysis in Google Earth}
 \description{The method writes inputs and outputs of spatial analysis (a list of point, gridded and/or polygon data usually) to KML and opens the KML file in Google Earth (or any other default package used to view KML/KMZ files).}
 \usage{
+\S4method{plotKML}{sf}(obj, 
+      folder.name = normalizeFilename(deparse(substitute(obj, env = parent.frame()))),
+      file.name = paste(folder.name, ".kml", sep=""), 
+      metadata = NULL, kmz = get("kmz", envir = plotKML.opts), open.kml = TRUE, \dots)
 \S4method{plotKML}{SpatialPointsDataFrame}(obj, 
       folder.name = normalizeFilename(deparse(substitute(obj, env = parent.frame()))),
       file.name = paste(folder.name, ".kml", sep=""), 
@@ -180,6 +185,12 @@ kml_legend.bar(x=eberg$CLYMHT_A,
 kml_screen(image.file=leg.file)
 kml_close(kml.file)
 
+## ----- sf objects with sfc_POINT geometry ----- ##
+eberg_sf <- sf::st_as_sf(eberg)
+\dontrun{
+plotKML(eberg_sf["CLYMHT_A"])
+plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "")
+}
 
 ## -------------- SpatialLinesDataFrame --------- ##
 data(eberg_contours)
