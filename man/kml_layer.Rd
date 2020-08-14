@@ -23,6 +23,8 @@
 \alias{kml_layer,SpatialPolygons-method}
 \alias{kml_layer,sfc_POINT-method}
 \alias{kml_layer,sfc_LINESTRING-method}
+\alias{kml_layer,sfc_POLYGON-method}
+\alias{kml_layer,sf-method}
 \title{Write objects to a KML connection}
 \description{
 Writes any \code{Spatial*} object (from the sp package), spatio-temporal object (from the \code{\link[spacetime]{ST-class}} package) or \code{Raster*} object (from the raster package) to a KML file (connection) as a separate layer. Various \emph{aesthetics}, i.e. ways to represent target variables, can be set via colour, transparency, size, width, shape arguments. Their availability depends on the class of the object to plot.

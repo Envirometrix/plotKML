@@ -55,6 +55,16 @@ setMethod(
       } else {
         message(paste("Object written to:", file.name))
       }
+    } else if (inherits(sf::st_geometry(obj), "sfc_POLYGON")) {
+      do.call(".plotKML_sf_POLYGON", list(
+        obj = obj, 
+        folder.name = folder.name,
+        file.name = file.name, 
+        metadata = metadata, 
+        kmz = kmz, 
+        open.kml = open.kml, 
+        ...
+      ))
     } else {
       stop(
         "plotKML function is not defined for sf objects with", 
@@ -140,6 +150,70 @@ setMethod(
       ...
     )
   }
+  
+  # close the file:
+  kml_close(file.name = file.name)
+  if (kmz) {
+    kml_compress(file.name = file.name)
+  }
+  # open KML file in the default browser:
+  if (open.kml) {
+    kml_View(file.name)
+  } else {
+    message(paste("Object written to:", file.name))
+  }
+}
+
+.plotKML_sf_POLYGON <- function(
+  obj,
+  folder.name = normalizeFilename(deparse(substitute(obj, env = parent.frame()))),
+  file.name = paste(folder.name, ".kml", sep = ""),
+  colour,
+  plot.labpt,
+  labels, 
+  metadata = NULL,
+  kmz = get("kmz", envir = plotKML.opts),
+  open.kml = TRUE,
+  ...
+) {
+  # Guess aesthetics if missing:
+  if (missing(labels)) { 
+    obj[, "labels"] <- obj[[1]] 
+  } else {
+    if (is.name(labels) | is.call(labels)) {
+      obj[, "labels"] <- eval(labels, obj)
+    } else {
+      obj[, "labels"] <- obj[[deparse(labels)]]      
+    }
+  }
+  
+  if (missing(colour)) { 
+    obj[, "colour"] <- obj[[1]]
+    message("Plotting the first variable on the list")
+  } else {
+    if (is.name(colour) | is.call(colour)) {
+      obj[, "colour"] <- eval(colour, obj)
+    } else {
+      obj[, "colour"] <- obj[[as.character(colour)]]      
+    }
+  }
+  
+  if (missing(plot.labpt)){
+    plot.labpt <- TRUE 
+  }
+  
+  # open for writing:
+  kml_open(folder.name = folder.name, file.name = file.name)
+  
+  # write layer:
+  .kml_layer_sfc_POLYGON(
+    obj, 
+    colour = colour, 
+    plot.labpt = plot.labpt, 
+    labels = labels, 
+    metadata = metadata,  
+    ...
+  )
   
   # close the file:
   kml_close(file.name = file.name)
