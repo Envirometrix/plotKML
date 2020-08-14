@@ -117,3 +117,59 @@ readLines("eberg_sf__CLYMHT_A__.kml")[id_mismatches]
 #> [1] "    <name>eberg_sf__CLYMHT_A__</name>"
 #> [2] "      <name>sfdata.frame</name>"
 ```
+
+Then I can work with LINESTRINGS:
+
+``` r
+# sp
+data(eberg_contours)
+plotKML(eberg_contours, open.kml = FALSE)
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 ...
+#> Writing to KML...
+#> Closing  eberg_contours.kml
+#> Object written to: eberg_contours.kml
+plotKML(eberg_contours, colour = Z, altitude = Z, open.kml = FALSE)
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 ...
+#> Writing to KML...
+#> Closing  eberg_contours.kml
+#> Object written to: eberg_contours.kml
+# sf
+eberg_contours_sf <- st_as_sf(eberg_contours)
+plotKML(eberg_contours_sf, open.kml = FALSE)
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+#> Closing  eberg_contours_sf.kml
+#> Object written to: eberg_contours_sf.kml
+plotKML(eberg_contours_sf, colour = Z, altitude = Z, open.kml = FALSE)
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+#> Closing  eberg_contours_sf.kml
+#> Object written to: eberg_contours_sf.kml
+```
+
+Again, the kml files are identical but for super small differences due
+to rounding
+errors:
+
+``` r
+all.equal(readLines("eberg_contours.kml"), readLines("eberg_contours_sf.kml"))
+#> [1] "5262 string mismatches"
+
+id_mismatches <- which(readLines("eberg_contours.kml") != readLines("eberg_contours_sf.kml"))
+readLines("eberg_contours.kml")[id_mismatches[1:5]]
+#> [1] "    <name>eberg_contours</name>"         
+#> [2] "      <name>SpatialLinesDataFrame</name>"
+#> [3] " 10.1495311715266,51.5620218482631,160"  
+#> [4] " 10.1455663596992,51.5620606439621,160"  
+#> [5] " 10.1402385008461,51.5652585172413,160"
+readLines("eberg_contours_sf.kml")[id_mismatches[1:5]]
+#> [1] "    <name>eberg_contours_sf</name>"    
+#> [2] "      <name>sfdata.frame</name>"       
+#> [3] " 10.1495311715266,51.562021848263,160" 
+#> [4] " 10.1455663596992,51.562060643962,160" 
+#> [5] " 10.1402385008461,51.5652585172412,160"
+```

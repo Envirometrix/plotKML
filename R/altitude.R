@@ -8,6 +8,7 @@ kml_altitude <- function(obj, altitude = NULL) {
   }
   else if (is.numeric(altitude)) {
     # If it is numeric this is a single altitude for all points
+    # AG: .length_sp_sf is used to generalize length to sp, sf and sfc
     altitude <- rep(altitude, length.out = .length_sp_sf(obj))
   }
   else if (is.null(altitude)) {
@@ -25,7 +26,7 @@ kml_altitude_mode <- function(altitude, GroundOverlay = FALSE){
   
   altitude = as.numeric(altitude)
   if (all(altitude[!is.na(altitude)] > 0)) {
-    if(GroundOverlay) {
+    if (GroundOverlay) {
       altitude_mode <- "absolute"
     } else {
       altitude_mode <- "relativeToGround"

@@ -31,6 +31,30 @@ setMethod(
         open.kml = open.kml, 
         ...
       ))
+    } else if (inherits(sf::st_geometry(obj), "sfc_LINESTRING")) {
+      # AG: here I cannot use do.call approach since the function returns an
+      # error if there is an input like "colour = Z" where Z is one of the
+      # column of obj. The same problem exists for the other approaches but I
+      # didn't find any example where you use this syntax for something which is
+      # not a LINESTRING:
+      
+      # open for writing:
+      kml_open(folder.name = folder.name, file.name = file.name)
+      
+      # write layer:
+      .kml_layer_sfc_LINESTRING(obj, metadata = metadata, ...)
+      
+      # close the file:
+      kml_close(file.name = file.name)
+      if (kmz) {
+        kml_compress(file.name = file.name)
+      }
+      # open KML file in the default browser:
+      if (open.kml) {
+        kml_View(file.name)
+      } else {
+        message(paste("Object written to:", file.name))
+      }
     } else {
       stop(
         "plotKML function is not defined for sf objects with", 

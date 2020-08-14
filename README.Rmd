@@ -84,3 +84,35 @@ id_mismatches <- readLines("eberg__CLYMHT_A__.kml") != readLines("eberg_sf__CLYM
 readLines("eberg__CLYMHT_A__.kml")[id_mismatches]
 readLines("eberg_sf__CLYMHT_A__.kml")[id_mismatches]
 ```
+
+I don't know if that's a problem, but, here, both approaches return an error: 
+
+```{r, error = TRUE}
+plotKML(eberg, colour = CLYMHT_A, open.kml = FALSE)
+plotKML(eberg_sf, colour = CLYMHT_A, open.kml = FALSE)
+```
+
+Then I can work with LINESTRINGS: 
+
+```{r}
+# sp
+data(eberg_contours)
+plotKML(eberg_contours, open.kml = FALSE)
+plotKML(eberg_contours, colour = Z, altitude = Z, open.kml = FALSE)
+# sf
+eberg_contours_sf <- st_as_sf(eberg_contours)
+plotKML(eberg_contours_sf, open.kml = FALSE)
+plotKML(eberg_contours_sf, colour = Z, altitude = Z, open.kml = FALSE)
+```
+
+Again, the kml files are identical but for super small differences due to rounding errors: 
+
+```{r, warning = FALSE}
+all.equal(readLines("eberg_contours.kml"), readLines("eberg_contours_sf.kml"))
+
+id_mismatches <- which(readLines("eberg_contours.kml") != readLines("eberg_contours_sf.kml"))
+readLines("eberg_contours.kml")[id_mismatches[1:5]]
+readLines("eberg_contours_sf.kml")[id_mismatches[1:5]]
+````
+
+
