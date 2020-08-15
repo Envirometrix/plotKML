@@ -128,7 +128,38 @@ plotKML(eberg_sf, colour = CLYMHT_A, open.kml = FALSE)
 #> Error in do.call(".plotKML_sf_POINT", list(obj = obj, folder.name = folder.name, : object 'CLYMHT_A' not found
 ```
 
-Then I can present `sf` functions for MULTIPOINT objects:
+I can also use `kml_layer` functions:
+
+``` r
+data(eberg_grid)
+gridded(eberg_grid) <- ~ x + y
+proj4string(eberg_grid) <- CRS("+init=epsg:31467")
+eberg_grid_sf <- st_as_sf(eberg_grid)
+
+# sfc objects
+kml_open("eberg_grids.kml")
+#> KML file opened for writing...
+kml_layer(st_geometry(eberg_grid_sf))
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+kml_close("eberg_grids.kml")
+#> Closing  eberg_grids.kml
+
+# sf objects
+kml_open("eberg_grid_sf.kml")
+#> KML file opened for writing...
+kml_layer(eberg_grid_sf, colour = DEMSRT6, colour_scale = R_pal[["terrain_colors"]])
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+kml_layer(eberg_grid_sf, colour = TWISRT6, colour_scale = SAGA_pal[[1]])
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+kml_close("eberg_grid_sf.kml")
+#> Closing  eberg_grid_sf.kml
+```
+
+Then I can present `sf` functions for MULTIPOINT objects. The idea is
+exactly the same, but MULTIPOINT object are converted to POINT.
 
 ``` r
 eberg_sf_MULTIPOINT <- eberg_sf %>% 
@@ -147,7 +178,7 @@ plotKML(eberg_sf_MULTIPOINT["random_ID"], open.kml = FALSE)
 #> Object written to: eberg_sf_MULTIPOINT__random_ID__.kml
 ```
 
-Then I can work with LINESTRINGS:
+Then I can work with LINESTRING, starting from `sp` example:
 
 ``` r
 # sp
@@ -201,4 +232,153 @@ readLines("eberg_contours_sf.kml")[id_mismatches[1:5]]
 #> [3] " 10.1495311715266,51.562021848263,160" 
 #> [4] " 10.1455663596992,51.562060643962,160" 
 #> [5] " 10.1402385008461,51.5652585172412,160"
+```
+
+The same ideas can be applied to MULTILINESTRING objects. The only
+problem is that some of the features in `eberg_contous_sf` are not valid
+according to the simple feature definition of linestring. For example
+
+``` r
+eberg_contours@lines[[4]]
+#> An object of class "Lines"
+#> Slot "Lines":
+#> [[1]]
+#> An object of class "Line"
+#> Slot "coords":
+#>         [,1]    [,2]
+#> [1,] 3579412 5714807
+#> 
+#> 
+#> 
+#> Slot "ID":
+#> [1] "3"
+```
+
+since it would represent a LINESTRING with only 1
+point:
+
+``` r
+st_is_valid(st_geometry(eberg_contours_sf)[[4]], NA_on_exception = FALSE, reason = TRUE)
+#> Error in CPL_geos_is_valid_reason(x): Evaluation error: IllegalArgumentException: point array must contain 0 or >1 elements.
+```
+
+So I need to exclude these elements and create a MULTILINESTRING object,
+
+``` r
+ID_valid <- vapply(
+  st_geometry(eberg_contours_sf), 
+  function(x) isTRUE(st_is_valid(x)), 
+  logical(1)
+)
+eberg_contous_sf_multi <- eberg_contours_sf %>% 
+  dplyr::filter(ID_valid) %>% 
+  dplyr::group_by(Z) %>% 
+  dplyr::summarise()
+plotKML(eberg_contous_sf_multi, colour = Z, altitude = Z, open.kml = FALSE)
+#> Casting the input MULTILINESTRING objct into LINESTRING object.
+#> Warning in st_cast.sf(obj, "LINESTRING"): repeating attributes for all sub-
+#> geometries for which they may not be constant
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+#> Closing  eberg_contous_sf_multi.kml
+#> Object written to: eberg_contous_sf_multi.kml
+```
+
+I can also use `kml_layer` functions:
+
+``` r
+# sfc LINESTRING object
+kml_open("eberg_contours_sfc.kml")
+#> KML file opened for writing...
+kml_layer(st_geometry(eberg_contours_sf))
+#> Casting the input MULTILINESTRING object into LINESTRING.
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+kml_close("eberg_contours_sfc.kml")
+#> Closing  eberg_contours_sfc.kml
+```
+
+Then I can work with POLYGON, starting from `sp` example:
+
+``` r
+# sp 
+set.seed(1) # I set the seed to compare the kml files
+data(eberg_zones)
+plotKML(eberg_zones["ZONES"], open.kml = FALSE)
+#> Plotting the first variable on the list
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 ...
+#> Writing to KML...
+#> Closing  eberg_zones__ZONES__.kml
+#> Object written to: eberg_zones__ZONES__.kml
+## add altitude:
+zmin = 230
+plotKML(eberg_zones["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 500, open.kml = FALSE)
+#> Plotting the first variable on the list
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 ...
+#> Writing to KML...
+#> Closing  eberg_zones__ZONES__.kml
+#> Object written to: eberg_zones__ZONES__.kml
+
+# sf objects with sfc_POLYGON geometry
+eberg_zones_sf <- st_as_sf(eberg_zones)
+set.seed(1)
+plotKML(eberg_zones_sf["ZONES"], open.kml = FALSE)
+#> Plotting the first variable on the list
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+#> Closing  eberg_zones_sf__ZONES__.kml
+#> Object written to: eberg_zones_sf__ZONES__.kml
+plotKML(eberg_zones_sf["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 500, open.kml = FALSE)
+#> Plotting the first variable on the list
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+#> Closing  eberg_zones_sf__ZONES__.kml
+#> Object written to: eberg_zones_sf__ZONES__.kml
+```
+
+I can compare the
+results:
+
+``` r
+all.equal(readLines("eberg_zones__ZONES__.kml"), readLines("eberg_zones_sf__ZONES__.kml"))
+#> [1] "336 string mismatches"
+```
+
+The differences here are caused by extremely small rounding
+problems:
+
+``` r
+id_mismatches <- readLines("eberg_zones__ZONES__.kml") != readLines("eberg_zones_sf__ZONES__.kml")
+readLines("eberg_zones__ZONES__.kml")[id_mismatches][1:5]
+#> [1] "    <name>eberg_zones__ZONES__</name>"             
+#> [2] "      <name>SpatialPolygonsDataFrame</name>"       
+#> [3] " 10.0128475331835,51.591802082619,362.75433157105" 
+#> [4] " 10.0180147411512,51.5889485309108,362.75433157105"
+#> [5] " 10.0226378144009,51.5859871365548,362.75433157105"
+readLines("eberg_zones_sf__ZONES__.kml")[id_mismatches][42]
+#> [1] " 10.0650353504248,51.5016807295379,416.061949818395"
+```
+
+Again, the same ideas can be applied to MULTIPOLYGON objects:
+
+``` r
+eberg_zones_sf_MULTI <- eberg_zones_sf %>% 
+  dplyr::group_by(ZONES) %>% 
+  dplyr::summarise() %>% 
+  st_cast("MULTIPOLYGON") 
+plotKML(eberg_zones_sf_MULTI["ZONES"], open.kml = FALSE)
+#> Casting the input MULTIPOLYGON objct into POLYGON object.
+#> Warning in st_cast.sf(obj, "POLYGON"): repeating attributes for all sub-
+#> geometries for which they may not be constant
+#> Plotting the first variable on the list
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+#> Closing  eberg_zones_sf_MULTI__ZONES__.kml
+#> Object written to: eberg_zones_sf_MULTI__ZONES__.kml
 ```

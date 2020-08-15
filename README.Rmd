@@ -92,7 +92,28 @@ plotKML(eberg, colour = CLYMHT_A, open.kml = FALSE)
 plotKML(eberg_sf, colour = CLYMHT_A, open.kml = FALSE)
 ```
 
-Then I can present `sf` functions for MULTIPOINT objects: 
+I can also use `kml_layer` functions: 
+
+```{r}
+data(eberg_grid)
+gridded(eberg_grid) <- ~ x + y
+proj4string(eberg_grid) <- CRS("+init=epsg:31467")
+eberg_grid_sf <- st_as_sf(eberg_grid)
+
+# sfc objects
+kml_open("eberg_grids.kml")
+kml_layer(st_geometry(eberg_grid_sf))
+kml_close("eberg_grids.kml")
+
+# sf objects
+kml_open("eberg_grid_sf.kml")
+kml_layer(eberg_grid_sf, colour = DEMSRT6, colour_scale = R_pal[["terrain_colors"]])
+kml_layer(eberg_grid_sf, colour = TWISRT6, colour_scale = SAGA_pal[[1]])
+kml_close("eberg_grid_sf.kml")
+```
+
+Then I can present `sf` functions for MULTIPOINT objects. 
+The idea is exactly the same, but MULTIPOINT object are converted to POINT. 
 
 ```{r}
 eberg_sf_MULTIPOINT <- eberg_sf %>% 
@@ -102,7 +123,7 @@ eberg_sf_MULTIPOINT <- eberg_sf %>%
 plotKML(eberg_sf_MULTIPOINT["random_ID"], open.kml = FALSE)
 ```
 
-Then I can work with LINESTRINGS: 
+Then I can work with LINESTRING, starting from `sp` example: 
 
 ```{r}
 # sp
@@ -123,6 +144,84 @@ all.equal(readLines("eberg_contours.kml"), readLines("eberg_contours_sf.kml"))
 id_mismatches <- which(readLines("eberg_contours.kml") != readLines("eberg_contours_sf.kml"))
 readLines("eberg_contours.kml")[id_mismatches[1:5]]
 readLines("eberg_contours_sf.kml")[id_mismatches[1:5]]
-````
+```
 
+The same ideas can be applied to MULTILINESTRING objects. 
+The only problem is that  some of the features in `eberg_contous_sf` are not valid according to the simple feature definition of linestring. For example
+
+```{r}
+eberg_contours@lines[[4]]
+```
+
+since it would represent a LINESTRING with only 1 point: 
+
+```{r, error = TRUE}
+st_is_valid(st_geometry(eberg_contours_sf)[[4]], NA_on_exception = FALSE, reason = TRUE)
+```
+
+So I need to exclude these elements and create a MULTILINESTRING object, 
+
+```{r}
+ID_valid <- vapply(
+  st_geometry(eberg_contours_sf), 
+  function(x) isTRUE(st_is_valid(x)), 
+  logical(1)
+)
+eberg_contous_sf_multi <- eberg_contours_sf %>% 
+  dplyr::filter(ID_valid) %>% 
+  dplyr::group_by(Z) %>% 
+  dplyr::summarise()
+plotKML(eberg_contous_sf_multi, colour = Z, altitude = Z, open.kml = FALSE)
+```
+
+I can also use `kml_layer` functions: 
+
+```{r}
+# sfc LINESTRING object
+kml_open("eberg_contours_sfc.kml")
+kml_layer(st_geometry(eberg_contours_sf))
+kml_close("eberg_contours_sfc.kml")
+```
+
+Then I can work with POLYGON, starting from `sp` example: 
+
+```{r}
+# sp 
+set.seed(1) # I set the seed to compare the kml files
+data(eberg_zones)
+plotKML(eberg_zones["ZONES"], open.kml = FALSE)
+## add altitude:
+zmin = 230
+plotKML(eberg_zones["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 500, open.kml = FALSE)
+
+# sf objects with sfc_POLYGON geometry
+eberg_zones_sf <- st_as_sf(eberg_zones)
+set.seed(1)
+plotKML(eberg_zones_sf["ZONES"], open.kml = FALSE)
+plotKML(eberg_zones_sf["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 500, open.kml = FALSE)
+```
+
+I can compare the results:  
+
+```{r, warning = FALSE}
+all.equal(readLines("eberg_zones__ZONES__.kml"), readLines("eberg_zones_sf__ZONES__.kml"))
+```
+
+The differences here are caused by extremely small rounding problems: 
+
+```{r, warning = FALSE}
+id_mismatches <- readLines("eberg_zones__ZONES__.kml") != readLines("eberg_zones_sf__ZONES__.kml")
+readLines("eberg_zones__ZONES__.kml")[id_mismatches][1:5]
+readLines("eberg_zones_sf__ZONES__.kml")[id_mismatches][42]
+```
+
+Again, the same ideas can be applied to MULTIPOLYGON objects: 
+
+```{r}
+eberg_zones_sf_MULTI <- eberg_zones_sf %>% 
+  dplyr::group_by(ZONES) %>% 
+  dplyr::summarise() %>% 
+  st_cast("MULTIPOLYGON") 
+plotKML(eberg_zones_sf_MULTI["ZONES"], open.kml = FALSE)
+```
 
