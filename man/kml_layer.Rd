@@ -24,7 +24,9 @@
 \alias{kml_layer,sfc_POINT-method}
 \alias{kml_layer,sfc_MULTIPOINT-method}
 \alias{kml_layer,sfc_LINESTRING-method}
+\alias{kml_layer,sfc_MULTILINESTRING-method}
 \alias{kml_layer,sfc_POLYGON-method}
+\alias{kml_layer,sfc_MULTIPOLYGON-method}
 \alias{kml_layer,sf-method}
 \title{Write objects to a KML connection}
 \description{

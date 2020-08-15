@@ -289,6 +289,9 @@
   
   # process lines:
   lv <- length(sf::st_geometry(obj)) 
+  # AG: I think the following code is exactly the same as the sp code. The only
+  # difference is that I used sf::st_coordinates() instead of slot(...,
+  # "coords")
   coords <- NULL
   for (i.line in seq_len(lv)) {
     xyz <- matrix(sf::st_coordinates(obj[i.line, ])[, 1:2], ncol = 2)
@@ -616,12 +619,34 @@
         # time span undefined:
         txtc <- sprintf(
           '<Placemark><name>%s</name><styleUrl>#pnt%s</styleUrl><Point><extrude>%.0f</extrude><altitudeMode>%s</altitudeMode><coordinates>%s</coordinates></Point></Placemark>', 
-          unlist(poly_names.l), 1:sum(unlist(pvn)), rep(as.numeric(extrude), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(labpt)))
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(labpt))
+        )
       } else {
-        txtc <- sprintf('<Placemark><name>%s</name><styleUrl>#pnt%s</styleUrl><TimeStamp><when>%s</when></TimeStamp><Point><extrude>%.0f</extrude><altitudeMode>%s</altitudeMode><coordinates>%s</coordinates></Point></Placemark>', unlist(poly_names.l), 1:sum(unlist(pvn)), unlist(when.l), rep(as.numeric(extrude), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(labpt)))  
+        txtc <- sprintf(
+          '<Placemark><name>%s</name><styleUrl>#pnt%s</styleUrl><TimeStamp><when>%s</when></TimeStamp><Point><extrude>%.0f</extrude><altitudeMode>%s</altitudeMode><coordinates>%s</coordinates></Point></Placemark>', 
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          unlist(when.l), 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(labpt))
+        )  
       } } else{
         # fixed begin/end times:
-        txtc <- sprintf('<Placemark><name>%s</name><styleUrl>#pnt%s</styleUrl><TimeSpan><begin>%s</begin><end>%s</end></TimeSpan><Point><extrude>%.0f</extrude><altitudeMode>%s</altitudeMode><coordinates>%s</coordinates></Point></Placemark>', unlist(poly_names.l), 1:sum(unlist(pvn)), unlist(TimeSpan.begin.l), unlist(TimeSpan.end.l), rep(as.numeric(extrude), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(labpt)))
+        txtc <- sprintf(
+          '<Placemark><name>%s</name><styleUrl>#pnt%s</styleUrl><TimeSpan><begin>%s</begin><end>%s</end></TimeSpan><Point><extrude>%.0f</extrude><altitudeMode>%s</altitudeMode><coordinates>%s</coordinates></Point></Placemark>', 
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          unlist(TimeSpan.begin.l), 
+          unlist(TimeSpan.end.l), 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(labpt))
+        )
       }
     
     parseXMLAndAdd(txtc, parent=pl1b)
@@ -631,32 +656,91 @@
   # Writing polygons
   # ================
   
-  if(length(html.table)>0){   
+  if (length(html.table) > 0) {   
     html.table.l <- list(NULL)
-    for(i.poly in 1:pv){ html.table.l[[i.poly]] <- as.vector(rep(html.table[i.poly], pvn[[i.poly]])) }    
+    for (i.poly in seq_len(pv)) { 
+      html.table.l[[i.poly]] <- as.vector(rep(html.table[i.poly], pvn[[i.poly]])) 
+    }    
     
     # with attributes:
-    if(all(is.null(unlist(TimeSpan.begin.l))) & all(is.null(unlist(TimeSpan.end.l)))){
-      if(all(is.null(unlist(when.l)))){
+    if (all(is.null(unlist(TimeSpan.begin.l))) & all(is.null(unlist(TimeSpan.end.l)))) {
+      if (all(is.null(unlist(when.l)))) {
         # time span undefined:
-        txt <- sprintf('<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><description><![CDATA[%s]]></description><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', unlist(poly_names.l), 1:sum(unlist(pvn)), unlist(html.table.l), rep(as.numeric(extrude), sum(unlist(pvn))), rep(as.numeric(tessellate), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(coords)))
+        txt <- sprintf(
+          '<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><description><![CDATA[%s]]></description><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', 
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          unlist(html.table.l), 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(as.numeric(tessellate), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(coords))
+        )
       } else { 
-        txt <- sprintf('<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><TimeStamp><when>%s</when></TimeStamp><description><![CDATA[%s]]></description><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', unlist(poly_names.l), 1:sum(unlist(pvn)), unlist(when.l), unlist(html.table.l), rep(as.numeric(extrude), sum(unlist(pvn))), rep(as.numeric(tessellate), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(coords)))
+        txt <- sprintf(
+          '<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><TimeStamp><when>%s</when></TimeStamp><description><![CDATA[%s]]></description><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', 
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          unlist(when.l), 
+          unlist(html.table.l), 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(as.numeric(tessellate), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(coords))
+        )
       }} else {
-        txt <- sprintf('<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><description><TimeSpan><begin>%s</begin><end>%s</end></TimeSpan><![CDATA[%s]]></description><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', unlist(poly_names.l), 1:sum(unlist(pvn)), unlist(TimeSpan.begin.l), unlist(TimeSpan.end.l), unlist(html.table.l), rep(as.numeric(extrude), sum(unlist(pvn))), rep(as.numeric(tessellate), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(coords)))
+        txt <- sprintf(
+          '<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><description><TimeSpan><begin>%s</begin><end>%s</end></TimeSpan><![CDATA[%s]]></description><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', 
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          unlist(TimeSpan.begin.l), 
+          unlist(TimeSpan.end.l), 
+          unlist(html.table.l), 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(as.numeric(tessellate), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(coords))
+        )
       }
   }
   
   # without attributes:
-  else{
-    if(all(is.null(unlist(TimeSpan.begin.l))) & all(is.null(unlist(TimeSpan.end.l)))){
-      if(all(is.null(unlist(when.l)))){
+  else {
+    if (all(is.null(unlist(TimeSpan.begin.l))) & all(is.null(unlist(TimeSpan.end.l)))) {
+      if (all(is.null(unlist(when.l)))) {
         # time span undefined:
-        txt <- sprintf('<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', unlist(poly_names.l), 1:sum(unlist(pvn)), rep(as.numeric(extrude), sum(unlist(pvn))), rep(as.numeric(tessellate), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(coords)))
+        txt <- sprintf(
+          '<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', 
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(as.numeric(tessellate), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(coords))
+        )
       } else {
-        txt <- sprintf('<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><TimeStamp><when>%s</when></TimeStamp><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', unlist(poly_names.l), 1:sum(unlist(pvn)), unlist(when.l), rep(as.numeric(extrude), sum(unlist(pvn))), rep(as.numeric(tessellate), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(coords)))  
+        txt <- sprintf(
+          '<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><TimeStamp><when>%s</when></TimeStamp><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', 
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          unlist(when.l), 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(as.numeric(tessellate), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(coords))
+        )  
       }} else {   
-        txt <- sprintf('<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><TimeSpan><begin>%s</begin><end>%s</end></TimeSpan><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', unlist(poly_names.l), 1:sum(unlist(pvn)), TimeSpan.begin, TimeSpan.end, rep(as.numeric(extrude), sum(unlist(pvn))), rep(as.numeric(tessellate), sum(unlist(pvn))), rep(altitudeMode, sum(unlist(pvn))), paste(unlist(coords)))     
+        txt <- sprintf(
+          '<Placemark><name>%s</name><styleUrl>#poly%s</styleUrl><TimeSpan><begin>%s</begin><end>%s</end></TimeSpan><Polygon><extrude>%.0f</extrude><tessellate>%.0f</tessellate><altitudeMode>%s</altitudeMode><outerBoundaryIs><LinearRing><coordinates>%s</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>', 
+          unlist(poly_names.l), 
+          seq_len(sum(unlist(pvn))), 
+          TimeSpan.begin, 
+          TimeSpan.end, 
+          rep(as.numeric(extrude), sum(unlist(pvn))), 
+          rep(as.numeric(tessellate), sum(unlist(pvn))), 
+          rep(altitudeMode, sum(unlist(pvn))), 
+          paste(unlist(coords))
+        )     
       }
   }
   
@@ -673,9 +757,21 @@
 ) {
   if (inherits(sf::st_geometry(obj), "sfc_POINT")) {
     .kml_layer_sfc_POINT(obj, ...)
+  } else if (inheritedSlotNames(sf::st_geometry(obj), "sfc_MULTIPOINT")) {
+    message("Casting the input MULTIPOINT object into POINT.")
+    obj <- st_cast(obj, "POINT")
+    .kml_layer_sfc_POINT(obj, ...)
   } else if (inherits(sf::st_geometry(obj), "sfc_LINESTRING")) {
     .kml_layer_sfc_LINESTRING(obj, ...)
+  } else if (inherits(sf::st_geometry(obj), "sfc_MULTILINESTRING")) {
+    message("Casting the input MULTILINESTRING object into LINESTRING.")
+    obj <- st_cast(obj, "LINESTRING")
+    .kml_layer_sfc_LINESTRING(obj, ...)
   } else if (inherits(sf::st_geometry(obj), "sfc_POLYGON")) {
+    .kml_layer_sfc_POLYGON(obj, ...)
+  } else if (inherits(sf::st_geometry(obj), "sfc_MULTIPOLYGON")) {
+    message("Casting the input MULTIPOLYGON object into POLYGON.")
+    obj <- st_cast(obj, "POLYGON")
     .kml_layer_sfc_POLYGON(obj, ...)
   } else {
     stop("There is no method for sf object with geometry not in POINT, LINESTRING, POLYGON")
@@ -684,12 +780,22 @@
 
 setMethod("kml_layer", "sfc_POINT", .kml_layer_sfc_POINT)
 setMethod("kml_layer", "sfc_MULTIPOINT", function(obj, ...) {
-  message("Casting the input MULTIPOINT objct into POINT object.")
+  message("Casting the input MULTIPOINT object into POINT.")
   obj <- st_cast(obj, "POINT")
   .kml_layer_sfc_POINT(obj, ...)
 })
 setMethod("kml_layer", "sfc_LINESTRING", .kml_layer_sfc_LINESTRING)
+setMethod("kml_layer", "sfc_LINESTRING", function(obj, ...) {
+  message("Casting the input MULTILINESTRING object into LINESTRING.")
+  obj <- st_cast(obj, "LINESTRING")
+  .kml_layer_sfc_LINESTRING(obj, ...)
+})
 setMethod("kml_layer", "sfc_POLYGON", .kml_layer_sfc_POLYGON)
+setMethod("kml_layer", "sfc_MULTIPOLYGON", function(obj, ...) {
+  message("Casting the input MULTIPOLYGON object into POLYGON.")
+  obj <- st_cast(obj, "POLYGON")
+  .kml_layer_sfc_POLYGON(obj, ...)
+})
 setMethod("kml_layer", "sf", .kml_layer_sf)
 
 # end of script;

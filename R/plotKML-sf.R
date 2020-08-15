@@ -1,6 +1,7 @@
 # AG: I define here new methods for plotKML, extending it to "sf" objects with
-# POINT, LINESTRING, POLYGON geometry.
-
+# POINT, MULTIPOINT, LINESTRING, MULTILINESTRING, POLYGON, and MULTIPOLYGON
+# geometry. The definition of the new methods for MULTI* objects is the same as
+# for "univariate" objects, after coercing them to their univariate counterpart.
 # The default arguments of the new method are `obj`, `folder.name`, `file.name`,
 # `metadata`, `kmz`, and `open.kml`, while all aesthetic parameters are included
 # in the `...` argument and processed according to the type of the geometry
@@ -19,8 +20,10 @@ setMethod(
     ...
   ) {
     # AG: The behaviour of the function depends on the type of the geometry
-    # column. If the geometry column is sfc_POINT (i.e. POINTs) then the
-    # function calls .plotKML_sf_POINT which is defined below (and not exported)
+    # column. If the geometry column is sfc_POINT (i.e. POINTs) or
+    # sfc_MULTIPOINT (i.e. MULTIPOINT), then the function calls
+    # .plotKML_sf_POINT which is defined below (and not exported), after casting
+    # MULTIPOINT to POINT.
     if (
       inherits(sf::st_geometry(obj), "sfc_POINT") || 
       inherits(sf::st_geometry(obj), "sfc_MULTIPOINT")
@@ -39,12 +42,19 @@ setMethod(
         open.kml = open.kml, 
         ...
       ))
-    } else if (inherits(sf::st_geometry(obj), "sfc_LINESTRING")) {
+    } else if (
+      inherits(sf::st_geometry(obj), "sfc_LINESTRING") ||
+      inherits(sf::st_geometry(obj), "sfc_MULTILINESTRING")
+    ) {
+      if (inherits(sf::st_geometry(obj), "sfc_MULTILINESTRING")) {
+        message("Casting the input MULTILINESTRING objct into LINESTRING object.")
+        obj <- st_cast(obj, "LINESTRING")
+      }
       # AG: here I cannot use do.call approach since the function returns an
-      # error if there is an input like "colour = Z" where Z is one of the
+      # error if there is an input like "colour = Z", where Z is one of the
       # column of obj. The same problem exists for the other approaches but I
-      # didn't find any example where you use this syntax for something which is
-      # not a LINESTRING:
+      # didn't find any example where you use this type of syntax for something
+      # which is not a LINESTRING:
       
       # open for writing:
       kml_open(folder.name = folder.name, file.name = file.name)
@@ -63,7 +73,19 @@ setMethod(
       } else {
         message(paste("Object written to:", file.name))
       }
-    } else if (inherits(sf::st_geometry(obj), "sfc_POLYGON")) {
+    } else if (
+      inherits(sf::st_geometry(obj), "sfc_POLYGON") ||
+      inherits(sf::st_geometry(obj), "sfc_MULTIPOLYGON")
+    ) {
+      # If the geometry column is sfc_POLYGON or sfc_MULTIPOLYGON, then the
+      # function calls .plotKML_sf_POLYGON which is defined below (and not
+      # exported), after casting MULTIPOLYGON to POLYGON.
+      
+      if (inherits(sf::st_geometry(obj), "sfc_MULTIPOLYGON")) {
+        message("Casting the input MULTIPOLYGON objct into POLYGON object.")
+        obj <- st_cast(obj, "POLYGON")
+      }
+      
       do.call(".plotKML_sf_POLYGON", list(
         obj = obj, 
         folder.name = folder.name,
