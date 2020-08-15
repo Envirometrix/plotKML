@@ -121,7 +121,7 @@
       kmz = get("kmz", envir = plotKML.opts), open.kml = TRUE, \dots)
 }
 \arguments{
-  \item{obj}{input object of specific class; either some \href{https://cran.r-project.org/package=sp}{sp}, or \href{https://cran.r-project.org/package=raster}{raster} or \href{https://cran.r-project.org/package=spacetime}{spacetime} package class object, or plotKML composite objects containing both inputs and outputs of analysis}
+  \item{obj}{input object of specific class; either some \href{https://cran.r-project.org/package=sf}{sf}, or \href{https://cran.r-project.org/package=sp}{sp}, or \href{https://cran.r-project.org/package=raster}{raster} or \href{https://cran.r-project.org/package=spacetime}{spacetime} package class object, or plotKML composite objects containing both inputs and outputs of analysis}
   \item{folder.name}{character; folder name in the KML file}
   \item{file.name}{character; output KML file name}
   \item{size}{for point objects for plotting (see \link{aesthetics})}
@@ -153,6 +153,7 @@
 \details{This is a generic function to plot various spatial and spatio-temporal R objects that contain both inputs and outputs of spatial analysis. The resulting plots (referred to as \emph{`views'}) are expected to be cartographically complete as they should contain legends, and data and model descriptions. In principle, \code{plotKML} works with both simple spatial objects, and complex objects such as \code{"SpatialPredictions"}, \code{"SpatialVectorsSimulations"}, \code{"RasterBrickSimulations"}, \code{"RasterBrickTimeSeries"}, \code{"SpatialMaxEntOutput"} and similar. To further customize visualizations consider combining the lower level functions \code{\link{kml_open}}, \code{\link{kml_close}}, \code{\link{kml_compress}}, \code{\link{kml_screen}} into your own \code{plotKML()} method.
 
 All ST-classes are coerced to the STIDF format and hence use the plotKML method for STIDFs.
+The \code{sf} objects are processed according to the class of the geometry column. The aestethics are defined in the same way as for their {sp} counterparts. 
 }
 \note{To prepare a list of objects of class \code{"SpatialPointsDataFrame"}, \code{"SpatialLinesDataFrame"}, \code{"SpatialPolygonsDataFrame"}, or \code{"SpatialPixelsDataFrame"} consider using the \code{GSIF::tile} function. Writting large spatial objects via plotKML can be time consuming. Please refer to the package manual for more information.
 }
@@ -200,6 +201,13 @@ plotKML(eberg_contours)
 plotKML(eberg_contours, colour=Z, altitude=Z)
 }
 
+## ---- sf objects with sfc_LINESTRING geometry ---- ##
+eberg_contours_sf <- sf::st_as_sf(eberg_contours)
+\dontrun{
+plotKML(eberg_contours_sf)
+plotKML(eberg_contours_sf, colour = Z, altitude = Z)
+}
+
 ## -------------- SpatialPolygonsDataFrame --------- ##
 data(eberg_zones)
 \dontrun{
@@ -207,6 +215,13 @@ plotKML(eberg_zones["ZONES"])
 ## add altitude:
 zmin = 230
 plotKML(eberg_zones["ZONES"], altitude=zmin+runif(length(eberg_zones))*500)
+}
+
+## ------ sf objects with sfc_POLYGON geometry ------ ##
+eberg_zones_sf <- sf::st_as_sf(eberg_zones)
+\dontrun{
+plotKML(eberg_zones_sf["ZONES"])
+plotKML(eberg_zones_sf["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 500)
 }
 
 ## -------------- SpatialPixelsDataFrame --------- ##
