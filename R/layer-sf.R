@@ -683,6 +683,11 @@
 }
 
 setMethod("kml_layer", "sfc_POINT", .kml_layer_sfc_POINT)
+setMethod("kml_layer", "sfc_MULTIPOINT", function(obj, ...) {
+  message("Casting the input MULTIPOINT objct into POINT object.")
+  obj <- st_cast(obj, "POINT")
+  .kml_layer_sfc_POINT(obj, ...)
+})
 setMethod("kml_layer", "sfc_LINESTRING", .kml_layer_sfc_LINESTRING)
 setMethod("kml_layer", "sfc_POLYGON", .kml_layer_sfc_POLYGON)
 setMethod("kml_layer", "sf", .kml_layer_sf)

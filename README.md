@@ -118,6 +118,35 @@ readLines("eberg_sf__CLYMHT_A__.kml")[id_mismatches]
 #> [2] "      <name>sfdata.frame</name>"
 ```
 
+I don’t know if that’s a problem, but, here, both approaches return an
+error:
+
+``` r
+plotKML(eberg, colour = CLYMHT_A, open.kml = FALSE)
+#> Error in .local(obj, ...): object 'CLYMHT_A' not found
+plotKML(eberg_sf, colour = CLYMHT_A, open.kml = FALSE)
+#> Error in do.call(".plotKML_sf_POINT", list(obj = obj, folder.name = folder.name, : object 'CLYMHT_A' not found
+```
+
+Then I can present `sf` functions for MULTIPOINT objects:
+
+``` r
+eberg_sf_MULTIPOINT <- eberg_sf %>% 
+  dplyr::mutate(random_ID = sample(1:4, size = dplyr::n(), replace = TRUE)) %>% 
+  dplyr::group_by(random_ID) %>% 
+  dplyr::summarise()
+plotKML(eberg_sf_MULTIPOINT["random_ID"], open.kml = FALSE)
+#> Casting the input MULTIPOINT objct into POINT object.
+#> Warning in st_cast.sf(obj, "POINT"): repeating attributes for all sub-geometries
+#> for which they may not be constant
+#> Plotting the first variable on the list
+#> KML file opened for writing...
+#> Reprojecting to +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+#> Writing to KML...
+#> Closing  eberg_sf_MULTIPOINT__random_ID__.kml
+#> Object written to: eberg_sf_MULTIPOINT__random_ID__.kml
+```
+
 Then I can work with LINESTRINGS:
 
 ``` r

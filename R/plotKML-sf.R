@@ -1,4 +1,4 @@
-# AG: I define here a new method for plotKML, extending it to "sf" objects with
+# AG: I define here new methods for plotKML, extending it to "sf" objects with
 # POINT, LINESTRING, POLYGON geometry.
 
 # The default arguments of the new method are `obj`, `folder.name`, `file.name`,
@@ -21,7 +21,15 @@ setMethod(
     # AG: The behaviour of the function depends on the type of the geometry
     # column. If the geometry column is sfc_POINT (i.e. POINTs) then the
     # function calls .plotKML_sf_POINT which is defined below (and not exported)
-    if (inherits(sf::st_geometry(obj), "sfc_POINT")) {
+    if (
+      inherits(sf::st_geometry(obj), "sfc_POINT") || 
+      inherits(sf::st_geometry(obj), "sfc_MULTIPOINT")
+    ) {
+      if (inherits(sf::st_geometry(obj), "sfc_MULTIPOINT")) {
+        message("Casting the input MULTIPOINT objct into POINT object.")
+        obj <- st_cast(obj, "POINT")
+      }
+      
       do.call(".plotKML_sf_POINT", list(
         obj = obj, 
         folder.name = folder.name,
@@ -67,9 +75,9 @@ setMethod(
       ))
     } else {
       stop(
-        "plotKML function is not defined for sf objects with", 
-        class(sf::st_geometry(obj)), 
-        "geometry. Please raise a new issue at ..."
+        "plotKML function is not defined for sf objects with ", 
+        paste(class(sf::st_geometry(obj)), collapse = " - "), 
+        " geometry. Please raise a new issue at ..."
       )
     }
   }

@@ -92,6 +92,16 @@ plotKML(eberg, colour = CLYMHT_A, open.kml = FALSE)
 plotKML(eberg_sf, colour = CLYMHT_A, open.kml = FALSE)
 ```
 
+Then I can present `sf` functions for MULTIPOINT objects: 
+
+```{r}
+eberg_sf_MULTIPOINT <- eberg_sf %>% 
+  dplyr::mutate(random_ID = sample(1:4, size = dplyr::n(), replace = TRUE)) %>% 
+  dplyr::group_by(random_ID) %>% 
+  dplyr::summarise()
+plotKML(eberg_sf_MULTIPOINT["random_ID"], open.kml = FALSE)
+```
+
 Then I can work with LINESTRINGS: 
 
 ```{r}

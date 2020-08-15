@@ -22,6 +22,7 @@
 \alias{kml_layer,SpatialPoints-method}
 \alias{kml_layer,SpatialPolygons-method}
 \alias{kml_layer,sfc_POINT-method}
+\alias{kml_layer,sfc_MULTIPOINT-method}
 \alias{kml_layer,sfc_LINESTRING-method}
 \alias{kml_layer,sfc_POLYGON-method}
 \alias{kml_layer,sf-method}
