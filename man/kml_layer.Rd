@@ -21,9 +21,16 @@
 \alias{kml_layer,SpatialPixels-method}
 \alias{kml_layer,SpatialPoints-method}
 \alias{kml_layer,SpatialPolygons-method}
+\alias{kml_layer,sfc_POINT-method}
+\alias{kml_layer,sfc_MULTIPOINT-method}
+\alias{kml_layer,sfc_LINESTRING-method}
+\alias{kml_layer,sfc_MULTILINESTRING-method}
+\alias{kml_layer,sfc_POLYGON-method}
+\alias{kml_layer,sfc_MULTIPOLYGON-method}
+\alias{kml_layer,sf-method}
 \title{Write objects to a KML connection}
 \description{
-Writes any \code{Spatial*} object (from the sp package), spatio-temporal object (from the \code{\link[spacetime]{ST-class}} package) or \code{Raster*} object (from the raster package) to a KML file (connection) as a separate layer. Various \emph{aesthetics}, i.e. ways to represent target variables, can be set via colour, transparency, size, width, shape arguments. Their availability depends on the class of the object to plot.
+Writes any \code{Spatial*} object (from the sp package), \code{sfc_*} or \code{sf} object (from the sf package), spatio-temporal object (from the \code{\link[spacetime]{ST-class}} package) or \code{Raster*} object (from the raster package) to a KML file (connection) as a separate layer. Various \emph{aesthetics}, i.e. ways to represent target variables, can be set via colour, transparency, size, width, shape arguments. Their availability depends on the class of the object to plot.
 }
 \usage{
 kml_layer(obj, \dots)
@@ -54,6 +61,24 @@ kml_close("eberg_grids.kml")
 # print the result:
 library(XML)
 xmlRoot(xmlTreeParse("eberg_grids.kml"))[["Document"]]
+}
+
+# examples with sf
+eberg_grid_sf <- sf::st_as_sf(eberg_grid)
+
+# sfc objects
+\dontrun{
+kml_open("eberg_grids.kml")
+kml_layer(st_geometry(eberg_grid_sf))
+kml_close("eberg_grids.kml")
+}
+
+# sf objects
+\dontrun{
+kml_open("eberg_grid_sf.kml")
+kml_layer(eberg_grid_sf, colour = DEMSRT6, colour_scale = R_pal[["terrain_colors"]])
+kml_layer(eberg_grid_sf, colour = TWISRT6, colour_scale = SAGA_pal[[1]])
+kml_close("eberg_grid_sf.kml")
 }
 }
 \keyword{spatial}

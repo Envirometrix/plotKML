@@ -21,6 +21,7 @@ importFrom("aqp", profile_id, idname, horizonDepths, siteNames, site, horizons)
 importClassFrom(aqp, SoilProfileCollection)
 
 import("sp")
+import("sf")
 import(rgdal)
 import(stringr)
 import(colorRamps)
