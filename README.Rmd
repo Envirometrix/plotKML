@@ -225,3 +225,51 @@ eberg_zones_sf_MULTI <- eberg_zones_sf %>%
 plotKML(eberg_zones_sf_MULTI["ZONES"], open.kml = FALSE)
 ```
 
+I will now present `plotKML` function applied to `stars` objects: 
+
+```{r, error = TRUE}
+library(stars)
+# Single raster layer
+(g <- read_stars(system.file("external/test.grd", package = "raster")))
+plotKML(g, open.kml = FALSE)
+
+# Rasterbrick: fails since there is no definition of plotKML function for
+# Rasterbrick objects
+(L7 <- read_stars(system.file("tif/L7_ETMs.tif", package = "stars")))
+plotKML(L7, open.kml = FALSE)
+as(L7, "Raster")
+
+# The code behind as(x, "Raster") is defined here: 
+# https://github.com/r-spatial/stars/blob/e0c8506d8e00413721a1dfe83cc7f3d45b16c912/R/raster.R#L116-L124
+# and it says that if length(dim(x)) > 2 (i.e. there is an extra dimension other than x and y), then it creates a RasterBrick object. 
+
+# I noticed that you defined two classes: RasterBrickTimeSeries and RasterBrickSimulations but I'm not sure if they can be used in this case 
+
+# I can still plot one of the layers in the RasterBrick (and maybe add an extra argument to plotKML function for Raster Data Cubes)
+plotKML(raster::raster(as(L7, "Raster"), layer = 1), open.kml = FALSE)
+
+# Vector data cube
+data(air, package = "spacetime")
+d = st_dimensions(station = st_as_sfc(stations), time = dates)
+(aq = st_as_stars(list(PM10 = air), dimensions = d))
+plotKML(aq[, , 1:1000], open.kml = FALSE) 
+# The problem here is that it takes forver to plot the full data and it crashes R and GE
+
+# Temporal aggregation? How to aggregate attribute wrt to months? year/months? How to add a new dimension? Then I think I can use st_apply. 
+
+# Spatial aggregation: 
+(a = aggregate(aq, st_as_sf(DE_NUTS1), mean, na.rm = TRUE))
+plotKML(a) # error
+
+# I think all the examples fail if the second dimension is not a time (which makes sense since we are working with spacetime stuff)
+
+nc = read_sf(system.file("gpkg/nc.gpkg", package="sf"))
+nc.df = st_set_geometry(nc, NULL)
+mat = as.matrix(nc.df[c("BIR74", "SID74", "NWBIR74", "BIR79", "SID79", "NWBIR79")])
+dim(mat) = c(county = 100, var = 3, year = 2) # make it a 3-dimensional array
+dimnames(mat) = list(county = nc$NAME, var = c("BIR", "SID", "NWBIR"), year = c(1974, 1979))
+(nc.st = st_as_stars(pop = mat))
+(nc.geom <- st_set_dimensions(nc.st, 1, st_geometry(nc)))
+plotKML(nc.geom)
+```
+
