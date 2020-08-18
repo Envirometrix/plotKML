@@ -22,6 +22,7 @@ importClassFrom(aqp, SoilProfileCollection)
 
 import("sp")
 import("sf")
+import("stars")
 import(rgdal)
 import(stringr)
 import(colorRamps)

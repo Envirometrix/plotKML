@@ -11,7 +11,7 @@ Authors@R: c(person("Tomislav", "Hengl", role = c("cre", "aut"),
   person("Michael", "Blaschek", role = "ctb"))
 Maintainer: Tomislav Hengl <tom.hengl@opengeohub.org>
 Depends: R (>= 3.5.0)
-Imports: methods, tools, utils, XML, sp, raster, rgdal, aqp, spacetime, colorspace, plotrix, dismo, pixmap, plyr, stringr, colorRamps, scales, gstat, zoo, RColorBrewer, RSAGA, classInt, sf
+Imports: methods, tools, utils, XML, sp, raster, rgdal, aqp, spacetime, colorspace, plotrix, dismo, pixmap, plyr, stringr, colorRamps, scales, gstat, zoo, RColorBrewer, RSAGA, classInt, sf, stars
 Suggests: 
     adehabitatLT,
     maptools,
