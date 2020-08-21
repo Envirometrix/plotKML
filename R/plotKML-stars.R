@@ -18,7 +18,7 @@ setMethod(
       else {
         if (inherits(getZ(obj), c("POSIXct", "Date")) ) {
           stop(
-            "We are working on the implementation of regular stars objects with temporal dimension."
+            "We are working on adding support for regular stars objects with temporal dimension."
           )
           # Create RasterBrickTimeSeries
           # z <- raster::getZ(obj)
