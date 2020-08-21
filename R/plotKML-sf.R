@@ -29,7 +29,7 @@ setMethod(
       inherits(sf::st_geometry(obj), "sfc_MULTIPOINT")
     ) {
       if (inherits(sf::st_geometry(obj), "sfc_MULTIPOINT")) {
-        message("Casting the input MULTIPOINT objct into POINT object.")
+        message("Casting the input MULTIPOINT object into POINT object.")
         obj <- st_cast(obj, "POINT")
       }
       
@@ -47,7 +47,7 @@ setMethod(
       inherits(sf::st_geometry(obj), "sfc_MULTILINESTRING")
     ) {
       if (inherits(sf::st_geometry(obj), "sfc_MULTILINESTRING")) {
-        message("Casting the input MULTILINESTRING objct into LINESTRING object.")
+        message("Casting the input MULTILINESTRING object into LINESTRING object.")
         obj <- st_cast(obj, "LINESTRING")
       }
       # AG: here I cannot use do.call approach since the function returns an
@@ -82,7 +82,7 @@ setMethod(
       # exported), after casting MULTIPOLYGON to POLYGON.
       
       if (inherits(sf::st_geometry(obj), "sfc_MULTIPOLYGON")) {
-        message("Casting the input MULTIPOLYGON objct into POLYGON object.")
+        message("Casting the input MULTIPOLYGON object into POLYGON object.")
         obj <- st_cast(obj, "POLYGON")
       }
       

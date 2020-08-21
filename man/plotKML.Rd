@@ -22,6 +22,7 @@
 \alias{plotKML,SpatialSamplingPattern-method}
 \alias{plotKML,list-method}
 \alias{plotKML,sf-method}
+\alias{plotKML,stars-method}
 \title{Methods for plotting results of spatial analysis in Google Earth}
 \description{The method writes inputs and outputs of spatial analysis (a list of point, gridded and/or polygon data usually) to KML and opens the KML file in Google Earth (or any other default package used to view KML/KMZ files).}
 \usage{

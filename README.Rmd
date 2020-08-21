@@ -36,11 +36,12 @@ Install development versions from github:
 ```{r, eval = FALSE}
 library(devtools)
 install_github("envirometrix/plotKML")
+# install_github("envirometrix/plotKML", ref = "stars")
 ```
 
 ## Integration with sf
 
-I will now present new `sf` functions and compare with current `sp` functions. Start with POINTS
+We will now present new `sf` methods and compare them with current `sp` approach. Start with POINTS
 
 ```{r}
 suppressPackageStartupMessages({
@@ -64,11 +65,13 @@ eberg_sf <- st_as_sf(eberg)
 
 # and apply sf methods
 plotKML(eberg_sf["CLYMHT_A"], open.kml = FALSE)
-plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "", open.kml = FALSE)
+plotKML(eberg_sf["CLYMHT_A"], points_names = "", colour_scale = SAGA_pal[[2]], open.kml = FALSE) #Change palette
+plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "", open.kml = FALSE) # Degenerate palette
 ```
 
-Recent version of sf could show a warning message relative to the old PROJ4string specified by `get("ref_CRS", envir = plotKML.opts)`. 
-Maybe `"ref_CRS"` should be changed or updated. 
+Recent version of `sf` could show a warning message relative to the old PROJ4string specified by `get("ref_CRS", envir = plotKML.opts)`. 
+
+<!-- Maybe `"ref_CRS"` should be changed or updated.  -->
 
 We can now compare the two implementations: 
 
@@ -76,7 +79,7 @@ We can now compare the two implementations:
 all.equal(readLines("eberg__CLYMHT_A__.kml"), readLines("eberg_sf__CLYMHT_A__.kml"))
 ```
 
-I think the warning messages are not important here. . 
+<!-- I think the warning messages are not important here. .  -->
 The two string mismatches are simply caused by the different names and classes: 
 
 ```{r, warning = FALSE}
@@ -85,14 +88,14 @@ readLines("eberg__CLYMHT_A__.kml")[id_mismatches]
 readLines("eberg_sf__CLYMHT_A__.kml")[id_mismatches]
 ```
 
-I don't know if that's a problem, but, here, both approaches return an error: 
+<!-- I don't know if that's a problem, but, here, both approaches return an error:  -->
 
-```{r, error = TRUE}
-plotKML(eberg, colour = CLYMHT_A, open.kml = FALSE)
-plotKML(eberg_sf, colour = CLYMHT_A, open.kml = FALSE)
-```
+<!-- ```{r, error = TRUE} -->
+<!-- plotKML(eberg, colour = CLYMHT_A, open.kml = FALSE) -->
+<!-- plotKML(eberg_sf, colour = CLYMHT_A, open.kml = FALSE) -->
+<!-- ``` -->
 
-I can also use `kml_layer` functions: 
+We can also use `kml_layer` functions: 
 
 ```{r}
 data(eberg_grid)
@@ -112,7 +115,29 @@ kml_layer(eberg_grid_sf, colour = TWISRT6, colour_scale = SAGA_pal[[1]])
 kml_close("eberg_grid_sf.kml")
 ```
 
-Then I can present `sf` functions for MULTIPOINT objects. 
+This is also a more complex example where we add a legend to the plot: 
+
+```{r, eval = FALSE}
+shape = "http://maps.google.com/mapfiles/kml/pal2/icon18.png" 
+kml_file = "kml_file_point.kml"
+legend_file = "kml_legend.png"
+kml_open(kml_file)
+kml_layer(
+  eberg_sf["CLYMHT_A"], 
+  colour = CLYMHT_A, 
+  points_names = eberg_sf[["CLYMHT_A"]], 
+  size = 1, 
+  shape = shape, 
+  alpha = 0.75, 
+  colour_scale = SAGA_pal[[2]]
+)
+kml_legend.bar(eberg_sf$CLYMHT_A, legend.file = legend_file, legend.pal = SAGA_pal[[1]])
+kml_screen(image.file = legend_file)
+kml_close(kml_file)
+kml_View(kml_file)
+```
+
+Then we present `sf` methods for MULTIPOINT objects. 
 The idea is exactly the same, but MULTIPOINT object are converted to POINT. 
 
 ```{r}
@@ -123,7 +148,7 @@ eberg_sf_MULTIPOINT <- eberg_sf %>%
 plotKML(eberg_sf_MULTIPOINT["random_ID"], open.kml = FALSE)
 ```
 
-Then I can work with LINESTRING, starting from `sp` example: 
+Then we present LINESTRING methods, starting from the `sp` example: 
 
 ```{r}
 # sp
@@ -136,7 +161,7 @@ plotKML(eberg_contours_sf, open.kml = FALSE)
 plotKML(eberg_contours_sf, colour = Z, altitude = Z, open.kml = FALSE)
 ```
 
-Again, the kml files are identical but for super small differences due to rounding errors: 
+Again, the kml files are identical but for super small differences (if they are present) due to rounding errors: 
 
 ```{r, warning = FALSE}
 all.equal(readLines("eberg_contours.kml"), readLines("eberg_contours_sf.kml"))
@@ -147,7 +172,8 @@ readLines("eberg_contours_sf.kml")[id_mismatches[1:5]]
 ```
 
 The same ideas can be applied to MULTILINESTRING objects. 
-The only problem is that  some of the features in `eberg_contous_sf` are not valid according to the simple feature definition of linestring. For example
+The only problem is that  some of the features in `eberg_contous_sf` are not valid according to the simple feature definition of LINESTRING. 
+For example
 
 ```{r}
 eberg_contours@lines[[4]]
@@ -159,7 +185,7 @@ since it would represent a LINESTRING with only 1 point:
 st_is_valid(st_geometry(eberg_contours_sf)[[4]], NA_on_exception = FALSE, reason = TRUE)
 ```
 
-So I need to exclude these elements and create a MULTILINESTRING object, 
+So we need to exclude these elements and create a MULTILINESTRING object, 
 
 ```{r}
 ID_valid <- vapply(
@@ -174,7 +200,7 @@ eberg_contous_sf_multi <- eberg_contours_sf %>%
 plotKML(eberg_contous_sf_multi, colour = Z, altitude = Z, open.kml = FALSE)
 ```
 
-I can also use `kml_layer` functions: 
+We can also use `kml_layer` functions: 
 
 ```{r}
 # sfc LINESTRING object
@@ -183,7 +209,7 @@ kml_layer(st_geometry(eberg_contours_sf))
 kml_close("eberg_contours_sfc.kml")
 ```
 
-Then I can work with POLYGON, starting from `sp` example: 
+Then we can work with POLYGON geometry, starting from `sp` example: 
 
 ```{r}
 # sp 
@@ -201,13 +227,13 @@ plotKML(eberg_zones_sf["ZONES"], open.kml = FALSE)
 plotKML(eberg_zones_sf["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 500, open.kml = FALSE)
 ```
 
-I can compare the results:  
+and compare the results:  
 
 ```{r, warning = FALSE}
 all.equal(readLines("eberg_zones__ZONES__.kml"), readLines("eberg_zones_sf__ZONES__.kml"))
 ```
 
-The differences here are caused by extremely small rounding problems: 
+The differences here (if they are present) are caused by extremely small rounding problems: 
 
 ```{r, warning = FALSE}
 id_mismatches <- readLines("eberg_zones__ZONES__.kml") != readLines("eberg_zones_sf__ZONES__.kml")
@@ -223,5 +249,83 @@ eberg_zones_sf_MULTI <- eberg_zones_sf %>%
   dplyr::summarise() %>% 
   st_cast("MULTIPOLYGON") 
 plotKML(eberg_zones_sf_MULTI["ZONES"], open.kml = FALSE)
+```
+
+We will now present `plotKML` methods applied to `stars` objects. 
+We extended the `plotKML()` function to `stars` objects representing Raster Data Cubes creating a wrapper to RasterLayer method:  
+
+```{r}
+library(stars)
+# Start with a raster data cube
+(g <- read_stars(system.file("external/test.grd", package = "raster")))
+plotKML(g, open.kml = FALSE)
+```
+
+Default methods do not work if the third dimension does not represent a `Date` or `POSIXct` object: 
+
+```{r, error = TRUE}
+# Test with another example: 
+(L7 <- read_stars(system.file("tif/L7_ETMs.tif", package = "stars")))
+plotKML(L7, open.kml = FALSE)
+```
+
+
+It fails. The problems is that there is no method definition for `plotKML()` function for objects of class `RasterBrick`.
+The code behind `as(x, "Raster")` is defined [here](https://github.com/r-spatial/stars/blob/e0c8506d8e00413721a1dfe83cc7f3d45b16c912/R/raster.R#L116-L124) and it says that if `length(dim(x)) > 2` (i.e. there is an extra dimension other than `x` and `y`), then it creates a `RasterBrick` object. 
+We can still plot the raster associated to one of the layers in the `RasterBrick` with a little bit of extra work:
+
+```{r}
+plotKML(raster::raster(as(L7, "Raster"), layer = 1), open.kml = FALSE)
+```
+
+We are working on defining an extension to `stars` object with a temporal dimension as a wrapper around `RasterBrickTimeSeries` methods. 
+
+Let's focus now on Vector Data cubes: 
+
+```{r}
+# Vector data cube
+data(air, package = "spacetime")
+d = st_dimensions(station = st_as_sfc(stations), time = dates)
+(aq = st_as_stars(list(PM10 = air), dimensions = d))
+(agg = aggregate(aq, "months", mean, na.rm = TRUE))
+plotKML(agg, open.kml = FALSE) 
+```
+
+Unfortunately there is a known bug in `plotKML`/`spacetime` and the following example fails:  
+
+```{r, error = TRUE}
+# Spatial aggregation: 
+(a = aggregate(agg, st_as_sf(DE_NUTS1), mean, na.rm = TRUE))
+plotKML(a) # error
+
+# The error is in as(obj, "STIDF"), i.e. the conversion between STFDF and STIDF
+```
+
+Moreover, all the examples fail if the third dimension is not a temporal object (since the methods we defined as wrappers around STFDF class): 
+
+```{r, error = TRUE}
+nc = read_sf(system.file("gpkg/nc.gpkg", package="sf"))
+nc.df = st_set_geometry(nc, NULL)
+mat = as.matrix(nc.df[c("BIR74", "SID74", "NWBIR74", "BIR79", "SID79", "NWBIR79")])
+dim(mat) = c(county = 100, var = 3, year = 2) # make it a 3-dimensional array
+dimnames(mat) = list(county = nc$NAME, var = c("BIR", "SID", "NWBIR"), year = c(1974, 1979))
+(nc.st = st_as_stars(pop = mat))
+(nc.geom <- st_set_dimensions(nc.st, 1, st_geometry(nc)))
+plotKML(nc.geom)
+```
+
+We can somehow fix this problem converting the `stars` object into `sf` format: 
+
+```{r}
+# We can use the following approach
+plotKML(st_as_sf(nc.geom), open.kml = FALSE)
+```
+
+In some cases, it is still possible to redefine a temporal dimension (but unfortunately the example fails for the same bug as the previous case): 
+
+```{r, error = TRUE}
+(nc.geom <- st_set_dimensions(nc.geom, 3, as.Date(c("1974-01-01","1979-01-01"))))
+(nc.geom <- split(aperm(nc.geom, c(1,3,2))))
+plotKML(nc.geom)
 ```
 
