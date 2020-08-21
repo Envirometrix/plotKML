@@ -40,7 +40,7 @@ install_github("envirometrix/plotKML")
 
 ## Integration with sf
 
-I will now present new `sf` functions and compare with current `sp` functions. Start with POINTS
+We will now present new `sf` functions and compare the with current `sp` approach. Start with POINTS
 
 ```{r}
 suppressPackageStartupMessages({
@@ -111,6 +111,21 @@ kml_layer(eberg_grid_sf, colour = DEMSRT6, colour_scale = R_pal[["terrain_colors
 kml_layer(eberg_grid_sf, colour = TWISRT6, colour_scale = SAGA_pal[[1]])
 kml_close("eberg_grid_sf.kml")
 ```
+
+A more complex example: 
+
+```{r, eval = FALSE}
+shape = "http://maps.google.com/mapfiles/kml/pal2/icon18.png" 
+kml_file = "kml_file_point.kml"
+legend_file = "kml_legend.png"
+kml_open(kml_file)
+kml_layer(eberg_sf["CLYMHT_A"], colour = CLYMHT_A, size = 1, points_names = "", shape = shape, alpha = 0.75)
+kml_legend.bar(eberg_sf$CLYMHT_A, legend.file = legend_file, legend.pal = SAGA_pal[[1]])
+kml_screen(image.file = legend_file)
+kml_close(kml_file)
+kml_View(kml_file)
+```
+
 
 Then I can present `sf` functions for MULTIPOINT objects. 
 The idea is exactly the same, but MULTIPOINT object are converted to POINT. 
@@ -225,44 +240,62 @@ eberg_zones_sf_MULTI <- eberg_zones_sf %>%
 plotKML(eberg_zones_sf_MULTI["ZONES"], open.kml = FALSE)
 ```
 
-I will now present `plotKML` function applied to `stars` objects: 
+I will now present `plotKML` function applied to `stars` objects. 
+We extended the `plotKML()` function to `stars` objects representing Raster Data Cubes creating a wrapper to RasterLayer method:  
 
-```{r, error = TRUE}
+```{r}
 library(stars)
-# Single raster layer
+# Start with a raster data cube
 (g <- read_stars(system.file("external/test.grd", package = "raster")))
 plotKML(g, open.kml = FALSE)
+```
 
-# Rasterbrick: fails since there is no definition of plotKML function for
-# Rasterbrick objects
+Default methods do not work if the third dimension in a `stars` object do not represent a Date or POSIXct object: 
+
+```{r, error = TRUE}
+# Test with another example: 
 (L7 <- read_stars(system.file("tif/L7_ETMs.tif", package = "stars")))
 plotKML(L7, open.kml = FALSE)
-as(L7, "Raster")
+
+# It fails. The problems is that there is no method definition for plotKML function for objects of class RasterBrick. 
 
 # The code behind as(x, "Raster") is defined here: 
 # https://github.com/r-spatial/stars/blob/e0c8506d8e00413721a1dfe83cc7f3d45b16c912/R/raster.R#L116-L124
 # and it says that if length(dim(x)) > 2 (i.e. there is an extra dimension other than x and y), then it creates a RasterBrick object. 
+```
 
-# I noticed that you defined two classes: RasterBrickTimeSeries and RasterBrickSimulations but I'm not sure if they can be used in this case 
+but we can still plot the raster associated to one of the layers in the RasterBrick with a little bit of extra work: 
 
-# I can still plot one of the layers in the RasterBrick (and maybe add an extra argument to plotKML function for Raster Data Cubes)
+```{r}
 plotKML(raster::raster(as(L7, "Raster"), layer = 1), open.kml = FALSE)
+```
 
+We are working on defining an extension to `stars` object with a temporal dimension as a wrapper around `RasterBrickTimeSeries` methods. 
+
+Let's focus now on Vector data cubes: 
+
+```{r}
 # Vector data cube
 data(air, package = "spacetime")
 d = st_dimensions(station = st_as_sfc(stations), time = dates)
 (aq = st_as_stars(list(PM10 = air), dimensions = d))
-plotKML(aq[, , 1:1000], open.kml = FALSE) 
-# The problem here is that it takes forver to plot the full data and it crashes R and GE
+(agg = aggregate(aq, "months", mean, na.rm = TRUE))
+plotKML(agg, open.kml = FALSE) 
+```
 
-# Temporal aggregation? How to aggregate attribute wrt to months? year/months? How to add a new dimension? Then I think I can use st_apply. 
+Unfortunately there is a known bug in `plotKML`/`spacetime` and the following example fails:  
 
+```{r, error = TRUE}
 # Spatial aggregation: 
 (a = aggregate(aq, st_as_sf(DE_NUTS1), mean, na.rm = TRUE))
 plotKML(a) # error
 
-# I think all the examples fail if the second dimension is not a time (which makes sense since we are working with spacetime stuff)
+# The error is in as(obj, "STIDF"), i.e. the conversion between STFDF and STIDF
+```
 
+Moreover, all the examples fail if the third dimension is not a temporal object (since the methods we defined as wrappers around STFDF class): 
+
+```{r, error = TRUE}
 nc = read_sf(system.file("gpkg/nc.gpkg", package="sf"))
 nc.df = st_set_geometry(nc, NULL)
 mat = as.matrix(nc.df[c("BIR74", "SID74", "NWBIR74", "BIR79", "SID79", "NWBIR79")])
@@ -270,6 +303,21 @@ dim(mat) = c(county = 100, var = 3, year = 2) # make it a 3-dimensional array
 dimnames(mat) = list(county = nc$NAME, var = c("BIR", "SID", "NWBIR"), year = c(1974, 1979))
 (nc.st = st_as_stars(pop = mat))
 (nc.geom <- st_set_dimensions(nc.st, 1, st_geometry(nc)))
+plotKML(nc.geom)
+```
+
+We can somehow fix this problem converting the `stars` object into `sf` format: 
+
+```{r}
+# We can use the following approach
+plotKML(st_as_sf(nc.geom), open.kml = FALSE)
+```
+
+In some cases, it is still possible to redefine a temporal dimension (but unfortunately the example fails for the same bug as the previous case): 
+
+```{r, error = TRUE}
+(nc.geom <- st_set_dimensions(nc.geom, 3, as.Date(c("1974-01-01","1979-01-01"))))
+(nc.geom <- split(aperm(nc.geom, c(1,3,2))))
 plotKML(nc.geom)
 ```
 

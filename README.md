@@ -36,8 +36,8 @@ Install development versions from github:
 Integration with sf
 -------------------
 
-I will now present new `sf` functions and compare with current `sp`
-functions. Start with POINTS
+We will now present new `sf` functions and compare the with current `sp`
+approach. Start with POINTS
 
     suppressPackageStartupMessages({
       library(plotKML)
@@ -151,6 +151,18 @@ I can also use `kml_layer` functions:
     #> Writing to KML...
     kml_close("eberg_grid_sf.kml")
     #> Closing  eberg_grid_sf.kml
+
+A more complex example:
+
+    shape = "http://maps.google.com/mapfiles/kml/pal2/icon18.png" 
+    kml_file = "kml_file_point.kml"
+    legend_file = "kml_legend.png"
+    kml_open(kml_file)
+    kml_layer(eberg_sf["CLYMHT_A"], colour = CLYMHT_A, size = 1, points_names = "", shape = shape, alpha = 0.75)
+    kml_legend.bar(eberg_sf$CLYMHT_A, legend.file = legend_file, legend.pal = SAGA_pal[[1]])
+    kml_screen(image.file = legend_file)
+    kml_close(kml_file)
+    kml_View(kml_file)
 
 Then I can present `sf` functions for MULTIPOINT objects. The idea is
 exactly the same, but MULTIPOINT object are converted to POINT.
@@ -368,11 +380,13 @@ Again, the same ideas can be applied to MULTIPOLYGON objects:
     #> Closing  eberg_zones_sf_MULTI__ZONES__.kml
     #> Object written to: eberg_zones_sf_MULTI__ZONES__.kml
 
-I will now present `plotKML` function applied to `stars` objects:
+I will now present `plotKML` function applied to `stars` objects. We
+extended the `plotKML()` function to `stars` objects representing Raster
+Data Cubes creating a wrapper to RasterLayer method:
 
     library(stars)
     #> Loading required package: abind
-    # Single raster layer
+    # Start with a raster data cube
     (g <- read_stars(system.file("external/test.grd", package = "raster")))
     #> stars object with 2 dimensions and 1 attribute
     #> attribute(s):
@@ -385,14 +399,22 @@ I will now present `plotKML` function applied to `stars` objects:
     #>  Max.   :1736.1  
     #>  NA's   :6022    
     #> dimension(s):
-    #>   from  to offset delta                       refsys point values    
+    #>   from  to offset delta                       refsys point values x/y
     #> x    1  80 178400    40 +proj=sterea +lat_0=52.15...    NA   NULL [x]
     #> y    1 115 334000   -40 +proj=sterea +lat_0=52.15...    NA   NULL [y]
     plotKML(g, open.kml = FALSE)
-    #> Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'plotKML' for signature '"stars"'
+    #> Plotting the first variable on the list
+    #> KML file opened for writing...
+    #> Warning in proj4string(obj): CRS object has comment, which is lost in output
+    #> Reprojecting to +proj=longlat +datum=WGS84 +no_defs ...
+    #> Writing to KML...
+    #> Closing  obj.kml
+    #> Object written to: obj.kml
 
-    # Rasterbrick: fails since there is no definition of plotKML function for
-    # Rasterbrick objects
+Default methods do not work if the third dimension in a `stars` object
+do not represent a Date or POSIXct object:
+
+    # Test with another example: 
     (L7 <- read_stars(system.file("tif/L7_ETMs.tif", package = "stars")))
     #> stars object with 3 dimensions and 1 attribute
     #> attribute(s):
@@ -404,32 +426,24 @@ I will now present `plotKML` function applied to `stars` objects:
     #>  3rd Qu.: 86.00  
     #>  Max.   :255.00  
     #> dimension(s):
-    #>      from  to  offset delta                       refsys point values    
+    #>      from  to  offset delta                       refsys point values x/y
     #> x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
     #> y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
     #> band    1   6      NA    NA                           NA    NA   NULL
     plotKML(L7, open.kml = FALSE)
-    #> Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'plotKML' for signature '"stars"'
-    as(L7, "Raster")
     #> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
     #>  but +towgs84= values preserved
-    #> class      : RasterBrick 
-    #> dimensions : 352, 349, 122848, 6  (nrow, ncol, ncell, nlayers)
-    #> resolution : 28.5, 28.5  (x, y)
-    #> extent     : 288776.3, 298722.8, 9110729, 9120761  (xmin, xmax, ymin, ymax)
-    #> crs        : +proj=utm +zone=25 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
-    #> source     : memory
-    #> names      : layer.1, layer.2, layer.3, layer.4, layer.5, layer.6 
-    #> min values :      47,      32,      21,       9,       1,       1 
-    #> max values :     255,     255,     255,     255,     255,     255
+    #> Error in .local(obj, ...): Select only one Raster layer or provide a Time series
+
+    # It fails. The problems is that there is no method definition for plotKML function for objects of class RasterBrick. 
 
     # The code behind as(x, "Raster") is defined here: 
     # https://github.com/r-spatial/stars/blob/e0c8506d8e00413721a1dfe83cc7f3d45b16c912/R/raster.R#L116-L124
     # and it says that if length(dim(x)) > 2 (i.e. there is an extra dimension other than x and y), then it creates a RasterBrick object. 
 
-    # I noticed that you defined two classes: RasterBrickTimeSeries and RasterBrickSimulations but I'm not sure if they can be used in this case 
+but we can still plot the raster associated to one of the layers in the
+RasterBrick with a little bit of extra work:
 
-    # I can still plot one of the layers in the RasterBrick (and maybe add an extra argument to plotKML function for Raster Data Cubes)
     plotKML(raster::raster(as(L7, "Raster"), layer = 1), open.kml = FALSE)
     #> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
     #>  but +towgs84= values preserved
@@ -440,6 +454,11 @@ I will now present `plotKML` function applied to `stars` objects:
     #> Writing to KML...
     #> Closing  raster__raster(as(L7,__Raster_),_layer_=_1).kml
     #> Object written to: raster__raster(as(L7,__Raster_),_layer_=_1).kml
+
+We are working on defining an extension to `stars` object with a
+temporal dimension as a wrapper around `RasterBrickTimeSeries` methods.
+
+Let’s focus now on Vector data cubes:
 
     # Vector data cube
     data(air, package = "spacetime")
@@ -462,11 +481,36 @@ I will now present `plotKML` function applied to `stars` objects:
     #>                                                          values
     #> station POINT (9.585911 53.67057),...,POINT (9.446661 49.24068)
     #> time                                                       NULL
-    plotKML(aq[, , 1:1000], open.kml = FALSE) 
-    #> Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'plotKML' for signature '"stars"'
-    # The problem here is that it takes forver to plot the full data and it crashes R and GE
+    (agg = aggregate(aq, "months", mean, na.rm = TRUE))
+    #> stars object with 2 dimensions and 1 attribute
+    #> attribute(s):
+    #>      PM10       
+    #>  Min.   : 2.99  
+    #>  1st Qu.:13.01  
+    #>  Median :16.43  
+    #>  Mean   :17.68  
+    #>  3rd Qu.:20.83  
+    #>  Max.   :68.55  
+    #>  NA's   :4926   
+    #> dimension(s):
+    #>         from  to offset delta                     refsys point
+    #> time       1 144     NA    NA                       Date    NA
+    #> station    1  70     NA    NA +proj=longlat +datum=WGS84  TRUE
+    #>                                                          values
+    #> time                                  1998-01-01,...,2009-12-01
+    #> station POINT (9.585911 53.67057),...,POINT (9.446661 49.24068)
+    plotKML(agg) 
+    #> Plotting the first variable on the list
+    #> KML file opened for writing...
+    #> Warning in proj4string(obj): CRS object has comment, which is lost in output
 
-    # Temporal aggregation? How to aggregate attribute wrt to months? year/months? How to add a new dimension? Then I think I can use st_apply. 
+    #> Warning in proj4string(obj): CRS object has comment, which is lost in output
+    #> Writing to KML...
+    #> Closing  obj.kml
+    #> [1] 0
+
+Unfortunately there is a known bug in `plotKML`/`spacetime` and the
+following example fails:
 
     # Spatial aggregation: 
     (a = aggregate(aq, st_as_sf(DE_NUTS1), mean, na.rm = TRUE))
@@ -490,9 +534,12 @@ I will now present `plotKML` function applied to `stars` objects:
     #> geometry MULTIPOLYGON (((9.65046 49....,...,MULTIPOLYGON (((10.77189 51...
     #> time                                                                  NULL
     plotKML(a) # error
-    #> Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'plotKML' for signature '"stars"'
+    #> Error in from@sp[from@index[, 1], ]: SpatialPolygons selection: can't find plot order if polygons are replicated
 
-    # I think all the examples fail if the second dimension is not a time (which makes sense since we are working with spacetime stuff)
+    # The error is in as(obj, "STIDF"), i.e. the conversion between STFDF and STIDF
+
+Moreover, all the examples fail if the third dimension is not a temporal
+object (since the methods we defined as wrappers around STFDF class):
 
     nc = read_sf(system.file("gpkg/nc.gpkg", package="sf"))
     nc.df = st_set_geometry(nc, NULL)
@@ -510,10 +557,10 @@ I will now present `plotKML` function applied to `stars` objects:
     #>  3rd Qu.: 1784  
     #>  Max.   :30757  
     #> dimension(s):
-    #>        from  to offset delta refsys point             values
-    #> county    1 100     NA    NA     NA    NA Ashe,...,Brunswick
-    #> var       1   3     NA    NA     NA    NA      BIR,...,NWBIR
-    #> year      1   2     NA    NA     NA    NA         1974, 1979
+    #>        from  to offset delta refsys point              values
+    #> county    1 100     NA    NA     NA    NA  Ashe,...,Brunswick
+    #> var       1   3     NA    NA     NA    NA BIR  , SID  , NWBIR
+    #> year      1   2     NA    NA     NA    NA          1974, 1979
     (nc.geom <- st_set_dimensions(nc.st, 1, st_geometry(nc)))
     #> stars object with 3 dimensions and 1 attribute
     #> attribute(s):
@@ -531,7 +578,65 @@ I will now present `plotKML` function applied to `stars` objects:
     #> year    1   2     NA    NA     NA    NA
     #>                                                                 values
     #> sfc  MULTIPOLYGON (((-81.47276 3...,...,MULTIPOLYGON (((-78.65572 3...
-    #> var                                                      BIR,...,NWBIR
+    #> var                                                BIR  , SID  , NWBIR
     #> year                                                        1974, 1979
     plotKML(nc.geom)
-    #> Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'plotKML' for signature '"stars"'
+    #> Error in SpatialPolygonsDataFrame(x, y, match.ID = match.ID, ...): Object length mismatch:
+    #>      x has 100 Polygons objects, but y has 200 rows
+
+We can somehow fix this problem converting the `stars` object into `sf`
+format:
+
+    # We can use the following approach
+    plotKML(st_as_sf(nc.geom), open.kml = FALSE)
+    #> Casting the input MULTIPOLYGON objct into POLYGON object.
+    #> Warning in st_cast.sf(obj, "POLYGON"): repeating attributes for all sub-
+    #> geometries for which they may not be constant
+    #> Plotting the first variable on the list
+    #> KML file opened for writing...
+    #> Writing to KML...
+    #> Closing  st_as_sf(nc.geom).kml
+    #> Object written to: st_as_sf(nc.geom).kml
+
+In some cases, it is still possible to redefine a temporal dimension
+(but unfortunately the example fails for the same bug as the previous
+case):
+
+    (nc.geom <- st_set_dimensions(nc.geom, 3, as.Date(c("1974-01-01","1979-01-01"))))
+    #> stars object with 3 dimensions and 1 attribute
+    #> attribute(s):
+    #>       pop       
+    #>  Min.   :    0  
+    #>  1st Qu.:    8  
+    #>  Median :  538  
+    #>  Mean   : 1657  
+    #>  3rd Qu.: 1784  
+    #>  Max.   :30757  
+    #> dimension(s):
+    #>      from  to     offset     delta refsys point
+    #> sfc     1 100         NA        NA  NAD27 FALSE
+    #> var     1   3         NA        NA     NA    NA
+    #> year    1   2 1974-01-01 1826 days   Date    NA
+    #>                                                                 values
+    #> sfc  MULTIPOLYGON (((-81.47276 3...,...,MULTIPOLYGON (((-78.65572 3...
+    #> var                                                BIR  , SID  , NWBIR
+    #> year                                                              NULL
+    (nc.geom <- split(aperm(nc.geom, c(1,3,2))))
+    #> stars object with 2 dimensions and 3 attributes
+    #> attribute(s):
+    #>       BIR             SID             NWBIR      
+    #>  Min.   :  248   Min.   : 0.000   Min.   :    1  
+    #>  1st Qu.: 1177   1st Qu.: 2.000   1st Qu.:  206  
+    #>  Median : 2265   Median : 5.000   Median :  742  
+    #>  Mean   : 3762   Mean   : 7.515   Mean   : 1202  
+    #>  3rd Qu.: 4451   3rd Qu.: 9.000   3rd Qu.: 1316  
+    #>  Max.   :30757   Max.   :57.000   Max.   :11631  
+    #> dimension(s):
+    #>      from  to     offset     delta refsys point
+    #> sfc     1 100         NA        NA  NAD27 FALSE
+    #> year    1   2 1974-01-01 1826 days   Date    NA
+    #>                                                                 values
+    #> sfc  MULTIPOLYGON (((-81.47276 3...,...,MULTIPOLYGON (((-78.65572 3...
+    #> year                                                              NULL
+    plotKML(nc.geom)
+    #> Error in from@sp[from@index[, 1], ]: SpatialPolygons selection: can't find plot order if polygons are replicated
