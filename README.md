@@ -34,12 +34,23 @@ library(devtools)
 install_github("envirometrix/plotKML")
 ```
 
+Install from CRAN:
+
+``` r
+install.packages("plotKML")
+```
+
 ## Integration with sf
 
 We will now present new `sf` methods and compare them with current `sp`
-approach. Start with POINTS
+approach. If you want to run the examples locally opening the KML files
+with Google Earth, you need to set `open.kml = TRUE` (which is also the
+default value).
+
+Start with POINTS
 
 ``` r
+options("rgdal_show_exportToProj4_warnings" = "none") 
 suppressPackageStartupMessages({
   library(plotKML)
   library(sp)
@@ -50,8 +61,6 @@ suppressPackageStartupMessages({
 data(eberg)
 coordinates(eberg) <- ~ X + Y
 proj4string(eberg) <- CRS("+init=epsg:31467")
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded
-#> datum Deutsches_Hauptdreiecksnetz in CRS definition
 ## subset to 20 percent:
 eberg <- eberg[runif(nrow(eberg)) < .1, ]
 # sp methods
@@ -83,14 +92,16 @@ plotKML(eberg_sf["CLYMHT_A"], open.kml = FALSE)
 #> Writing to KML...
 #> Closing  eberg_sf__CLYMHT_A__.kml
 #> Object written to: eberg_sf__CLYMHT_A__.kml
-plotKML(eberg_sf["CLYMHT_A"], points_names = "", colour_scale = SAGA_pal[[2]], open.kml = FALSE) #Change palette
+#  Change palette
+plotKML(eberg_sf["CLYMHT_A"], points_names = "", colour_scale = SAGA_pal[[2]], open.kml = FALSE)
 #> Plotting the first variable on the list
 #> KML file opened for writing...
 #> Reprojecting to +proj=longlat +datum=WGS84 +no_defs
 #> Writing to KML...
 #> Closing  eberg_sf__CLYMHT_A__.kml
 #> Object written to: eberg_sf__CLYMHT_A__.kml
-plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "", open.kml = FALSE) # Degenerate palette
+# Same colours
+plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "", open.kml = FALSE)
 #> Plotting the first variable on the list
 #> KML file opened for writing...
 #> Reprojecting to +proj=longlat +datum=WGS84 +no_defs
@@ -99,14 +110,15 @@ plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "
 #> Object written to: eberg_sf__CLYMHT_A__.kml
 ```
 
-We can now compare the two implementations:
+Check `?kml_layer` for other examples and `?kml_layer.SpatialPoints` to
+see which aesthethics can be modified using a POINT geometry.
+
+We can now compare the two implementations
 
 ``` r
 all.equal(readLines("eberg__CLYMHT_A__.kml"), readLines("eberg_sf__CLYMHT_A__.kml"))
 #> [1] "2 string mismatches"
 ```
-
-<!-- I think the warning messages are not important here. .  -->
 
 The two string mismatches are simply caused by the different names and
 classes:
@@ -121,24 +133,13 @@ readLines("eberg_sf__CLYMHT_A__.kml")[id_mismatches]
 #> [2] "      <name>sfdata.frame</name>"
 ```
 
-<!-- I don't know if that's a problem, but, here, both approaches return an error:  -->
-
-<!-- ```{r, error = TRUE} -->
-
-<!-- plotKML(eberg, colour = CLYMHT_A, open.kml = FALSE) -->
-
-<!-- plotKML(eberg_sf, colour = CLYMHT_A, open.kml = FALSE) -->
-
-<!-- ``` -->
-
-We can also use `kml_layer` functions:
+We can also build the KML file using lower level functions with
+`kml_layer`. For example:
 
 ``` r
 data(eberg_grid)
 gridded(eberg_grid) <- ~ x + y
 proj4string(eberg_grid) <- CRS("+init=epsg:31467")
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded
-#> datum Deutsches_Hauptdreiecksnetz in CRS definition
 eberg_grid_sf <- st_as_sf(eberg_grid)
 
 # sfc objects
@@ -163,13 +164,15 @@ kml_close("eberg_grid_sf.kml")
 #> Closing  eberg_grid_sf.kml
 ```
 
-This is also a more complex example where we add a legend to the plot:
+We can also modify several aesthethics at the same time and modify the
+legend:
 
 ``` r
 shape = "http://maps.google.com/mapfiles/kml/pal2/icon18.png" 
 kml_file = "kml_file_point.kml"
 legend_file = "kml_legend.png"
 kml_open(kml_file)
+#> KML file opened for writing...
 kml_layer(
   eberg_sf["CLYMHT_A"], 
   colour = CLYMHT_A, 
@@ -179,14 +182,25 @@ kml_layer(
   alpha = 0.75, 
   colour_scale = SAGA_pal[[2]]
 )
+#> Reprojecting to +proj=longlat +datum=WGS84 +no_defs
+#> Writing to KML...
 kml_legend.bar(eberg_sf$CLYMHT_A, legend.file = legend_file, legend.pal = SAGA_pal[[1]])
+#> png 
+#>   2
 kml_screen(image.file = legend_file)
 kml_close(kml_file)
+#> Closing  kml_file_point.kml
+```
+
+If you want to open the KML files with Google Earth you can run:
+
+``` r
 kml_View(kml_file)
 ```
 
-Then we present `sf` methods for MULTIPOINT objects. The idea is exactly
-the same, but MULTIPOINT object are converted to POINT.
+Now we present `sf` methods for MULTIPOINT objects. The idea is exactly
+the same as before, after the automatic conversion of MULTIPOINT into
+POINT.
 
 ``` r
 eberg_sf_MULTIPOINT <- eberg_sf %>% 
@@ -209,31 +223,32 @@ plotKML(eberg_sf_MULTIPOINT["random_ID"], open.kml = FALSE)
 Then we present LINESTRING methods, starting from the `sp` example:
 
 ``` r
-# sp
+# Load data
 data(eberg_contours)
+
+# plot with sp methods
 plotKML(eberg_contours, open.kml = FALSE)
 #> KML file opened for writing...
 #> Reprojecting to +proj=longlat +datum=WGS84 +no_defs ...
-#> Warning in spTransform(xSP, CRSobj, ...): NULL source CRS comment, falling back
-#> to PROJ string
-#> Warning in spTransform(xSP, CRSobj, ...): +init dropped in PROJ string
 #> Writing to KML...
 #> Closing  eberg_contours.kml
 #> Object written to: eberg_contours.kml
 plotKML(eberg_contours, colour = Z, altitude = Z, open.kml = FALSE)
 #> KML file opened for writing...
 #> Reprojecting to +proj=longlat +datum=WGS84 +no_defs ...
-#> Warning in spTransform(xSP, CRSobj, ...): NULL source CRS comment, falling back
-#> to PROJ string
-
-#> Warning in spTransform(xSP, CRSobj, ...): +init dropped in PROJ string
 #> Writing to KML...
 #> Closing  eberg_contours.kml
 #> Object written to: eberg_contours.kml
-# sf
+```
+
+We convert `eberg_contours` as an `sf` object and we repeat the same
+plot:
+
+``` r
+# convert to sf
 eberg_contours_sf <- st_as_sf(eberg_contours)
-#> Warning in CPL_crs_from_input(x): GDAL Message 1: +init=epsg:XXXX syntax is
-#> deprecated. It might return a CRS with a non-EPSG compliant axis order.
+
+# plot with sf methods
 plotKML(eberg_contours_sf, open.kml = FALSE)
 #> KML file opened for writing...
 #> Reprojecting to +proj=longlat +datum=WGS84 +no_defs
@@ -248,29 +263,27 @@ plotKML(eberg_contours_sf, colour = Z, altitude = Z, open.kml = FALSE)
 #> Object written to: eberg_contours_sf.kml
 ```
 
-Again, the kml files are identical but for super small differences (if
-they are present) due to rounding errors:
+Again, the kml files are identical:
 
 ``` r
 all.equal(readLines("eberg_contours.kml"), readLines("eberg_contours_sf.kml"))
 #> [1] "2 string mismatches"
 
 id_mismatches <- which(readLines("eberg_contours.kml") != readLines("eberg_contours_sf.kml"))
-readLines("eberg_contours.kml")[id_mismatches[1:5]]
+readLines("eberg_contours.kml")[id_mismatches]
 #> [1] "    <name>eberg_contours</name>"         
 #> [2] "      <name>SpatialLinesDataFrame</name>"
-#> [3] NA                                        
-#> [4] NA                                        
-#> [5] NA
-readLines("eberg_contours_sf.kml")[id_mismatches[1:5]]
-#> [1] "    <name>eberg_contours_sf</name>" "      <name>sfdata.frame</name>"   
-#> [3] NA                                   NA                                  
-#> [5] NA
+readLines("eberg_contours_sf.kml")[id_mismatches]
+#> [1] "    <name>eberg_contours_sf</name>" "      <name>sfdata.frame</name>"
 ```
 
-The same ideas can be applied to MULTILINESTRING objects. The only
-problem is that some of the features in `eberg_contous_sf` are not valid
-according to the simple feature definition of LINESTRING. For example
+The same ideas can be applied to MULTILINESTRING objects, following the
+same philosophy as POINT/MULTIPOINT. The following example also shows an
+important characteristic of `plotKML` functions: they do not check for
+the validity of `sf` geometries, since they are simply extracting the
+coordinates of POINTS, LINES and POLYGONS. So, if we want to convert
+`eberg_contous_sf` to a MULTILINESTRING object, first we need to
+processes the invalid geometries. For example:
 
 ``` r
 eberg_contours@lines[[4]]
@@ -288,15 +301,15 @@ eberg_contours@lines[[4]]
 #> [1] "3"
 ```
 
-since it would represent a LINESTRING with only 1 point:
+is not valid since it represents a LINESTRING with only 1 point:
 
 ``` r
 st_is_valid(st_geometry(eberg_contours_sf)[[4]], NA_on_exception = FALSE, reason = TRUE)
 #> Error in CPL_geos_is_valid_reason(x): Evaluation error: IllegalArgumentException: point array must contain 0 or >1 elements.
 ```
 
-So we need to exclude these elements and create a MULTILINESTRING
-object,
+So we need to exclude the invalid geometries and create a
+MULTILINESTRING object,
 
 ``` r
 ID_valid <- vapply(
@@ -320,7 +333,8 @@ plotKML(eberg_contous_sf_multi, colour = Z, altitude = Z, open.kml = FALSE)
 #> Object written to: eberg_contous_sf_multi.kml
 ```
 
-We can also use `kml_layer` functions:
+We can also build the KML file using lower level functions with
+`kml_layer`.
 
 ``` r
 # sfc LINESTRING object
@@ -337,36 +351,37 @@ kml_close("eberg_contours_sfc.kml")
 Then we can work with POLYGON geometry, starting from `sp` example:
 
 ``` r
-# sp 
-set.seed(1) # I set the seed to compare the kml files
+# Load data 
 data(eberg_zones)
+
+# plot with sp methods
 plotKML(eberg_zones["ZONES"], open.kml = FALSE)
 #> Plotting the first variable on the list
 #> KML file opened for writing...
 #> Reprojecting to +proj=longlat +datum=WGS84 +no_defs ...
-#> Warning in spTransform(xSP, CRSobj, ...): NULL source CRS comment, falling back
-#> to PROJ string
-#> Warning in spTransform(xSP, CRSobj, ...): +init dropped in PROJ string
 #> Writing to KML...
 #> Closing  eberg_zones__ZONES__.kml
 #> Object written to: eberg_zones__ZONES__.kml
-## add altitude:
+
+# add altitude:
 zmin = 230
+set.seed(1) # I set the seed to compare the kml files
 plotKML(eberg_zones["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 500, open.kml = FALSE)
 #> Plotting the first variable on the list
 #> KML file opened for writing...
 #> Reprojecting to +proj=longlat +datum=WGS84 +no_defs ...
-#> Warning in spTransform(xSP, CRSobj, ...): NULL source CRS comment, falling back
-#> to PROJ string
-
-#> Warning in spTransform(xSP, CRSobj, ...): +init dropped in PROJ string
 #> Writing to KML...
 #> Closing  eberg_zones__ZONES__.kml
 #> Object written to: eberg_zones__ZONES__.kml
+```
 
-# sf objects with sfc_POLYGON geometry
+and then the `sf` counterpart:
+
+``` r
+# sf data
 eberg_zones_sf <- st_as_sf(eberg_zones)
-set.seed(1)
+
+# plot with sf methods. 
 plotKML(eberg_zones_sf["ZONES"], open.kml = FALSE)
 #> Plotting the first variable on the list
 #> KML file opened for writing...
@@ -374,6 +389,7 @@ plotKML(eberg_zones_sf["ZONES"], open.kml = FALSE)
 #> Writing to KML...
 #> Closing  eberg_zones_sf__ZONES__.kml
 #> Object written to: eberg_zones_sf__ZONES__.kml
+set.seed(1)
 plotKML(eberg_zones_sf["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 500, open.kml = FALSE)
 #> Plotting the first variable on the list
 #> KML file opened for writing...
@@ -383,26 +399,11 @@ plotKML(eberg_zones_sf["ZONES"], altitude = zmin + runif(length(eberg_zones)) * 
 #> Object written to: eberg_zones_sf__ZONES__.kml
 ```
 
-and compare the results:
+We can compare the results:
 
 ``` r
 all.equal(readLines("eberg_zones__ZONES__.kml"), readLines("eberg_zones_sf__ZONES__.kml"))
 #> [1] "2 string mismatches"
-```
-
-The differences here (if they are present) are caused by extremely small
-rounding problems:
-
-``` r
-id_mismatches <- readLines("eberg_zones__ZONES__.kml") != readLines("eberg_zones_sf__ZONES__.kml")
-readLines("eberg_zones__ZONES__.kml")[id_mismatches][1:5]
-#> [1] "    <name>eberg_zones__ZONES__</name>"      
-#> [2] "      <name>SpatialPolygonsDataFrame</name>"
-#> [3] NA                                           
-#> [4] NA                                           
-#> [5] NA
-readLines("eberg_zones_sf__ZONES__.kml")[id_mismatches][42]
-#> [1] NA
 ```
 
 Again, the same ideas can be applied to MULTIPOLYGON objects:
@@ -427,7 +428,7 @@ plotKML(eberg_zones_sf_MULTI["ZONES"], open.kml = FALSE)
 
 We will now present `plotKML` methods applied to `stars` objects. We
 extended the `plotKML()` function to `stars` objects representing Raster
-Data Cubes creating a wrapper to RasterLayer method:
+Data Cubes creating a wrapper around RasterLayer method:
 
 ``` r
 library(stars)
@@ -462,7 +463,6 @@ Default methods do not work if the third dimension does not represent a
 `Date` or `POSIXct` object:
 
 ``` r
-# Test with another example: 
 (L7 <- read_stars(system.file("tif/L7_ETMs.tif", package = "stars")))
 #> stars object with 3 dimensions and 1 attribute
 #> attribute(s):
@@ -479,8 +479,6 @@ Default methods do not work if the third dimension does not represent a
 #> y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
 #> band    1   6      NA    NA                           NA    NA   NULL
 plotKML(L7, open.kml = FALSE)
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
-#>  but +towgs84= values preserved
 #> Error in .local(obj, ...): Select only one Raster layer or provide a Time series
 ```
 
@@ -495,8 +493,6 @@ the `RasterBrick` with a little bit of extra work:
 
 ``` r
 plotKML(raster::raster(as(L7, "Raster"), layer = 1), open.kml = FALSE)
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,
-#>  but +towgs84= values preserved
 #> Plotting the first variable on the list
 #> KML file opened for writing...
 #> Warning in proj4string(obj): CRS object has comment, which is lost in output
@@ -507,13 +503,16 @@ plotKML(raster::raster(as(L7, "Raster"), layer = 1), open.kml = FALSE)
 ```
 
 We are working on defining an extension to `stars` object with a
-temporal dimension as a wrapper around `RasterBrickTimeSeries` methods.
+temporal dimension (i.e `Date` or `POSIXct` object) as a wrapper around
+`RasterBrickTimeSeries` methods.
 
-Let’s focus now on Vector Data cubes:
+Let’s focus now on Vector Data cubes. First we need to load some data
+for the examples
 
 ``` r
-# Vector data cube
+# Vector data cube: load data
 data(air, package = "spacetime")
+# Create stars object
 d = st_dimensions(station = st_as_sfc(stations), time = dates)
 (aq = st_as_stars(list(PM10 = air), dimensions = d))
 #> stars object with 2 dimensions and 1 attribute
@@ -533,6 +532,13 @@ d = st_dimensions(station = st_as_sfc(stations), time = dates)
 #>                                                          values
 #> station POINT (9.585911 53.67057),...,POINT (9.446661 49.24068)
 #> time                                                       NULL
+```
+
+then, for simplicity, we can aggregate the temporal data and create the
+map.
+
+``` r
+# Perform temporal aggregation
 (agg = aggregate(aq, "months", mean, na.rm = TRUE))
 #> stars object with 2 dimensions and 1 attribute
 #> attribute(s):
@@ -562,8 +568,9 @@ plotKML(agg, open.kml = FALSE)
 #> Object written to: obj.kml
 ```
 
-Unfortunately there is a known bug in `plotKML`/`spacetime` and the
-following example fails:
+Unfortunately there is a
+[known](https://github.com/Envirometrix/plotKML/issues/3) bug in
+`plotKML`/`spacetime` and the following example fails:
 
 ``` r
 # Spatial aggregation: 
@@ -589,12 +596,11 @@ following example fails:
 #> time                                             1998-01-01,...,2009-12-01
 plotKML(a) # error
 #> Error in from@sp[from@index[, 1], ]: SpatialPolygons selection: can't find plot order if polygons are replicated
-
-# The error is in as(obj, "STIDF"), i.e. the conversion between STFDF and STIDF
 ```
 
-Moreover, all the examples fail if the third dimension is not a temporal
-object (since the methods we defined as wrappers around STFDF class):
+We will fix it as soon as possible. Moreover, all the examples fail if
+the third dimension is not a temporal object (since the methods we
+defined as wrappers around STFDF class):
 
 ``` r
 nc = read_sf(system.file("gpkg/nc.gpkg", package="sf"))
@@ -702,3 +708,6 @@ case):
 plotKML(nc.geom)
 #> Error in from@sp[from@index[, 1], ]: SpatialPolygons selection: can't find plot order if polygons are replicated
 ```
+
+The examples were taken from [here](https://github.com/edzer/OGH20) and
+[here](https://keen-swartz-3146c4.netlify.app/raster.html#datacubes).
