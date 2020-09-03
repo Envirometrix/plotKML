@@ -32,7 +32,6 @@ Install development versions from github:
 ``` r
 library(devtools)
 install_github("envirometrix/plotKML")
-# install_github("envirometrix/plotKML", ref = "stars")
 ```
 
 ## Integration with sf
@@ -100,19 +99,10 @@ plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "
 #> Object written to: eberg_sf__CLYMHT_A__.kml
 ```
 
-Recent version of `sf` could show a warning message relative to the old
-PROJ4string specified by `get("ref_CRS", envir = plotKML.opts)`.
-
-<!-- Maybe `"ref_CRS"` should be changed or updated.  -->
-
 We can now compare the two implementations:
 
 ``` r
 all.equal(readLines("eberg__CLYMHT_A__.kml"), readLines("eberg_sf__CLYMHT_A__.kml"))
-#> Warning in readLines("eberg__CLYMHT_A__.kml"): incomplete final line found on
-#> 'eberg__CLYMHT_A__.kml'
-#> Warning in readLines("eberg_sf__CLYMHT_A__.kml"): incomplete final line found on
-#> 'eberg_sf__CLYMHT_A__.kml'
 #> [1] "2 string mismatches"
 ```
 
@@ -662,6 +652,7 @@ plotKML(st_as_sf(nc.geom), open.kml = FALSE)
 #> geometries for which they may not be constant
 #> Plotting the first variable on the list
 #> KML file opened for writing...
+#> Reprojecting to +proj=longlat +datum=WGS84 +no_defs
 #> Writing to KML...
 #> Closing  st_as_sf(nc.geom).kml
 #> Object written to: st_as_sf(nc.geom).kml

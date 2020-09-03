@@ -36,7 +36,6 @@ Install development versions from github:
 ```{r, eval = FALSE}
 library(devtools)
 install_github("envirometrix/plotKML")
-# install_github("envirometrix/plotKML", ref = "stars")
 ```
 
 ## Integration with sf
@@ -69,13 +68,9 @@ plotKML(eberg_sf["CLYMHT_A"], points_names = "", colour_scale = SAGA_pal[[2]], o
 plotKML(eberg_sf["CLYMHT_A"], colour_scale = rep("#FFFF00", 2), points_names = "", open.kml = FALSE) # Degenerate palette
 ```
 
-Recent version of `sf` could show a warning message relative to the old PROJ4string specified by `get("ref_CRS", envir = plotKML.opts)`. 
-
-<!-- Maybe `"ref_CRS"` should be changed or updated.  -->
-
 We can now compare the two implementations: 
 
-```{r}
+```{r, warning = FALSE}
 all.equal(readLines("eberg__CLYMHT_A__.kml"), readLines("eberg_sf__CLYMHT_A__.kml"))
 ```
 
