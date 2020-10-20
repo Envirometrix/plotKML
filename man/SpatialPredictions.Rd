@@ -31,6 +31,6 @@
 \note{ \code{"SpatialPredictions"} saves results of predictions for a single target variable, which can be of type numeric or factor. Multiple variables can be combined into a list.
 }
 \author{ Tomislav Hengl }
-\seealso{ \code{\link{plotKML-method}}, \code{GSIF::fit.gstatModel}, \code{gstat::gstat-class}, \code{\link{RasterBrickSimulations-class}}
+\seealso{ \code{\link{plotKML-method}}, \code{gstat::gstat-class}, \code{\link{RasterBrickSimulations-class}}
 }
 \keyword{classes}

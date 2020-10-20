@@ -22,16 +22,16 @@ kml.tiles <- function(obj,
   prj.check <- check_projection(obj, control = TRUE)
   if(!prj.check) { suppressMessages( obj <- reproject(obj) ) }
   ## tile object:
-  if(requireNamespace("GSIF", quietly = TRUE)){
+  if(requireNamespace("landmap", quietly = TRUE)){
     if(any(class(obj)=="SpatialPointsDataFrame")){
-      obj.lst <- GSIF::tile(obj, block.x=block.x)
+      obj.lst <- landmap::tile(obj, block.x=block.x)
     } else {
-      obj.lst <- GSIF::tile(obj, block.x=block.x, tmp.file = TRUE)
+      obj.lst <- landmap::tile(obj, block.x=block.x, tmp.file = TRUE)
     }
     ## some tiles might be empty and need to be removed...
     obj.lst <- obj.lst[sapply(obj.lst, length)>0]
   } else {
-    stop("Install and load package 'GSIF'")
+    stop("Install and load package 'landmap'")
   }
   ## list of bounding boxes:
   file.lst <- sapply(1:length(obj.lst), function(j){paste0(folder.name, "_T", j, ".kml")})

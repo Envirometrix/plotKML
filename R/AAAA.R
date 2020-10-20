@@ -244,7 +244,7 @@ plotKML.env <- function(
     if(missing(icon)) { icon <- "icon3.png" }   # "http://maps.google.com/mapfiles/kml/shapes/donut.png"
     if(missing(LabelScale)) { LabelScale <- .5 }
     if(missing(size_range)) { size_range <- c(0.25, 2.5) }
-    if(missing(license_url)) { license_url <- "http://creativecommons.org/licenses/by/3.0/" }
+    if(missing(license_url)) { license_url <- "http://creativecommons.org/licenses/by/4.0/" }
     if(missing(metadata_sel)) { metadata_sel <- c("idinfo.citation.citeinfo.title", "idinfo.descript.abstract", "spdoinfo.ptvctinf.sdtsterm.ptvctcnt", "idinfo.timeperd.timeinfo.rngdates.begdate", "idinfo.timeperd.timeinfo.rngdates.enddate", "distinfo.stdorder.digform.digtopt.onlinopt.computer.networka.networkr", "idinfo.citation.citeinfo.othercit", "idinfo.citation.citeinfo.onlink", "idinfo.datacred", "distinfo.distrib.cntinfo.cntorgp.cntorg", "distinfo.stdorder.digform.digtinfo.formcont", "idinfo.native") }   
     if(missing(kmz)) { kmz <- FALSE }
     if(missing(kml_xsd)) { kml_xsd <- "http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd" }
@@ -265,7 +265,7 @@ plotKML.env <- function(
     if(missing(gdalwarp)) { gdalwarp <- pts$gdalwarp[[1]] }
     if(missing(gdal_translate)) { gdal_translate <- pts$gdal_translate[[1]] }
     if(missing(python)) { python <- pts$python[[1]] }
-    if(missing(home_url)) { home_url <- "http://plotkml.r-forge.r-project.org/" }
+    if(missing(home_url)) { home_url <- "https://github.com/Envirometrix/plotKML" }
  
     ## Create a list and assing it to plotKML.env:
     pl.lst <- list(

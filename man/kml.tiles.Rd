@@ -28,7 +28,7 @@ kml.tiles(obj, folder.name, file.name,
 \dontrun{
 library(sp)
 library(snowfall)
-library(GSIF)
+library(landmap)
 library(rgdal)
 
 data(eberg)

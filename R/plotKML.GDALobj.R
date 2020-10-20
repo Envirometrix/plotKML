@@ -22,9 +22,9 @@ plotKML.GDALobj <- function(obj, file.name, block.x, tiles=NULL, tiles.sel=NULL,
   if(!length(colour_scale)==(length(breaks.lst)-1)&!is.null(breaks.lst)){ stop("'length(colour_scale)' and 'length(breaks.lst)-1' of equal length required") }
   GDALobj.file <- attr(obj, "file")
   if(is.null(tiles)){
-    if(requireNamespace("GSIF", quietly = TRUE)){
+    if(requireNamespace("landmap", quietly = TRUE)){
       ## if missing get tiling system using block.x:
-      tiles <- GSIF::getSpatialTiles(obj, block.x = block.x, return.SpatialPolygons = FALSE)
+      tiles <- landmap::getSpatialTiles(obj, block.x = block.x, return.SpatialPolygons = FALSE)
     }
   }
   if(is.null(tiles.sel)){
@@ -107,7 +107,7 @@ plotKML.GDALobj <- function(obj, file.name, block.x, tiles=NULL, tiles.sel=NULL,
 
 ## auxiliary function:
 .kml_SpatialGrid_tile <- function(i, GDALobj.file, colour, tiles, breaks.lst, colour_scale, altitude, altitudeMode, z.lim, N.min=4, overwrite, CRS){
-  if(any(!c("offset.x", "offset.y", "region.dim.x", "region.dim.y") %in% names(tiles))){ stop("Missing columns in the 'tiles' object. See ?GSIF::tile") }
+  if(any(!c("offset.x", "offset.y", "region.dim.x", "region.dim.y") %in% names(tiles))){ stop("Missing columns in the 'tiles' object. See ?landmap::tile") }
   kml.tile <- set.file.extension(paste0(strsplit(basename(GDALobj.file), "\\.")[[1]][1], "_T", i), ".kml")
   raster_name = set.file.extension(paste0(strsplit(basename(GDALobj.file), "\\.")[[1]][1], "_T", i), ".png")
   r <- readGDAL(GDALobj.file, offset=c(tiles$offset.y[i], tiles$offset.x[i]), region.dim=c(tiles$region.dim.y[i], tiles$region.dim.x[i]), silent=TRUE)

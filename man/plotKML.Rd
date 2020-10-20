@@ -156,7 +156,7 @@
 All ST-classes are coerced to the STIDF format and hence use the plotKML method for STIDFs.
 The \code{sf} objects are processed according to the class of the geometry column. The aestethics are defined in the same way as for their {sp} counterparts. 
 }
-\note{To prepare a list of objects of class \code{"SpatialPointsDataFrame"}, \code{"SpatialLinesDataFrame"}, \code{"SpatialPolygonsDataFrame"}, or \code{"SpatialPixelsDataFrame"} consider using the \code{GSIF::tile} function. Writting large spatial objects via plotKML can be time consuming. Please refer to the package manual for more information.
+\note{To prepare a list of objects of class \code{"SpatialPointsDataFrame"}, \code{"SpatialLinesDataFrame"}, \code{"SpatialPolygonsDataFrame"}, or \code{"SpatialPixelsDataFrame"} consider using the \code{landmap::tile} function. Writting large spatial objects via plotKML can be time consuming. Please refer to the package manual for more information.
 }
 \seealso{ \code{\link{SpatialPredictions-class}}, \code{\link{SpatialVectorsSimulations-class}}, \code{\link{RasterBrickSimulations-class}}, \code{\link{RasterBrickTimeSeries-class}}, \code{\link{SpatialMaxEntOutput-class}}, \code{\link{SpatialSamplingPattern-class}}   
 }
@@ -422,7 +422,7 @@ data(meuse.grid)
 gridded(meuse.grid) <- ~x+y
 proj4string(meuse.grid) <- CRS("+init=epsg:28992")
 \dontrun{## fit a model:
-library(GSIF)
+library(landmap)
 omm <- fit.gstatModel(observations = meuse, formulaString = om~dist, 
    family = gaussian(log), covariates = meuse.grid)
 ## produce SpatialPredictions:
@@ -539,7 +539,7 @@ library(spatstat)
 bigfoot.aea <- as.ppp(spTransform(bigfoot, CRS(aea.prj)))
 ## Load the covariates:
 sel.grids <- c("globedem","nlights03","sdroads","gcarb","twi","globcov")
-library(GSIF)
+library(landmap)
 library(dismo)
 ## run MaxEnt analysis:
 jar <- paste(system.file(package="dismo"), "/java/maxent.jar", sep='')
