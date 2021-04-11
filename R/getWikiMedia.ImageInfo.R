@@ -5,9 +5,9 @@ getWikiMedia.ImageInfo <- function(imagename, APIsource = "https://commons.wikim
   }
   
   if(testURL == TRUE){
-    z <- RCurl::getURI(paste("http://commons.wikimedia.org/wiki/File:", imagename, sep=""), .opts=RCurl::curlOptions(header=TRUE, nobody=TRUE, transfertext=TRUE, failonerror=FALSE, ssl.verifypeer = FALSE))
+    z <- RCurl::getURI(paste("https://commons.wikimedia.org/wiki/File:", imagename, sep=""), .opts=RCurl::curlOptions(header=TRUE, nobody=TRUE, transfertext=TRUE, failonerror=FALSE, ssl.verifypeer = FALSE))
     if(!length(x <- grep(z, pattern="404 Not Found"))==0){
-      stop(paste("File", imagename, "could not be located at http://commons.wikimedia.org"))
+      stop(paste("File", imagename, "could not be located at https://commons.wikimedia.org"))
     }
   }
   

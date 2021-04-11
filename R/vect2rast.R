@@ -21,7 +21,7 @@ vect2rast.SpatialPoints <- function(obj, fname = names(obj)[1], cell.size, bbox,
     
       if(requireNamespace("spatstat", quietly = TRUE)){
         x <- as(obj, "ppp")
-        nd <- spatstat::nndist(x$x, x$y)
+        nd <- spatstat.geom::nndist(x$x, x$y)
         ndb <- boxplot(nd, plot=FALSE)
         cell.size <- signif(ndb$stats[3]/2, 2)
         if(cell.size==0){ stop("Estimated cell size is 0, consider removing duplicate points") }
@@ -103,12 +103,12 @@ vect2rast.SpatialLines <- function(obj, fname = names(obj)[1], cell.size, bbox, 
     if(missing(cell.size)) { 
     # print warning:
     if(length(obj)>1000){
-    warning("Automated derivation of suitable cell size can be time consuming and can lead to artifacts.", immediate. = TRUE)
+      warning("Automated derivation of suitable cell size can be time consuming and can lead to artifacts.", immediate. = TRUE)
     }
     
       if(requireNamespace("spatstat", quietly = TRUE)){
-        x <- as(as(obj, "SpatialLines"), "psp")
-        nd <- spatstat::nndist.psp(x)  # this can be time consuming!
+        x <- as(as(obj, "SpatialLines"), "lpp")
+        nd <- spatstat.linnet::nndist.lpp(x)  # this can be time consuming!
         ndb <- boxplot(nd, plot=FALSE)
         cell.size <- signif(ndb$stats[3]/2, 2)
         if(cell.size==0){ stop("Estimated cell size is 0, consider removing duplicate points") }

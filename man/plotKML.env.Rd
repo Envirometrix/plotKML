@@ -14,7 +14,7 @@
   \item{colour_scale_numeric}{default colour scheme for numeric variables}
   \item{colour_scale_factor}{default colour scheme for factor variables}
   \item{colour_scale_svar}{default colour scheme for model error (e.g. mapping error)}
-  \item{ref_CRS}{the referent CRS \href{http://spatialreference.org/ref/epsg/4326/}{proj4string} (\code{"+proj=longlat +datum=WGS84"})}
+  \item{ref_CRS}{the referent CRS \href{https://spatialreference.org/ref/epsg/4326/}{proj4string} (\code{"+proj=longlat +datum=WGS84"})}
   \item{NAflag}{the default missing value flag (usually \code{"-99999"})}
   \item{icon}{the default icon URL}
   \item{LabelScale}{the default scale factor for labels}
@@ -41,10 +41,10 @@ The external software tools are not required by default and most of operations i
 }
 \references{
 \itemize{
-\item ImageMagick (\url{http://imagemagick.org})
-\item GDAL (\url{http://gdal.org})
+\item ImageMagick (\url{https://imagemagick.org})
+\item GDAL (\url{https://gdal.org})
 \item SAGA GIS (\url{http://www.saga-gis.org})
-\item Python (\url{http://python.org})
+\item Python (\url{https://www.python.org})
 }
 }
 \author{Tomislav Hengl, Dylan Beaudette}

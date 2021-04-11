@@ -5,7 +5,7 @@ setMethod("plotKML", "SpatialPredictions", function(
   file.name = paste(folder.name, ".kml", sep=""),
   colour,
   grid2poly = FALSE,
-  obj.summary = TRUE,
+  obj.summary = FALSE,
   plot.svar = FALSE,
   pngwidth = 210, 
   pngheight = 580,
@@ -69,18 +69,20 @@ setMethod("plotKML", "SpatialPredictions", function(
     kml_layer(svar, colour = colour, colour_scale = get("colour_scale_svar", envir = plotKML.opts), raster_name = paste(svarname, "_svar.png", sep=""), plot.legend = FALSE)
   } 
   
-  kml_layer(obj = locs, points_names = labs)  
+  kml_layer(obj = locs, points_names = labs)
 
   ## plot the correlation graph and variogram:
-  if(all(!is.na(obj@validation$var1.pred)) & all(!is.na(obj@validation$observed))){
-    png(filename=paste(varname, "_gstatplots.png", sep=""), width=pngwidth, height=pngheight, bg="white", pointsize=pngpointsize)
-    plot.SpatialPredictions(obj, plot.predictions=FALSE, vertical=TRUE)
-    dev.off()
-  
-    ## add the SpatialPredictions plot:
-    kml_screen(image.file = paste(varname, "_gstatplots.png", sep=""), position = "LL", sname = "gstatModel summary plot")
+  if(any(names(obj@validation) %in% "var1.pred")){
+    if(all(!is.na(obj@validation$var1.pred)) & all(!is.na(obj@validation$observed))){
+      png(filename=paste(varname, "_gstatplots.png", sep=""), width=pngwidth, height=pngheight, bg="white", pointsize=pngpointsize)
+      plot.SpatialPredictions(obj, plot.predictions=FALSE, vertical=TRUE)
+      dev.off()
+      
+      ## add the SpatialPredictions plot:
+      kml_screen(image.file = paste(varname, "_gstatplots.png", sep=""), position = "LL", sname = "gstatModel summary plot")
+    }
   }
-
+  
   ## close the file:
   kml_close(file.name = file.name)
   if (kmz == TRUE){

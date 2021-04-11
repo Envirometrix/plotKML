@@ -18,7 +18,7 @@ The \code{LST} data frame contains the following layers:
 \author{ Tomislav Hengl and Melita Percec Tadic }
 \references{
 \itemize{
-\item Hengl, T., Heuvelink, G.B.M., Percec Tadic, M., Pebesma, E., (2011) \href{http://dx.doi.org/10.1007/s00704-011-0464-2}{Spatio-temporal prediction of daily temperatures using time-series of MODIS LST images}. Theoretical and Applied Climatology, 107(1-2): 265-277.
+\item Hengl, T., Heuvelink, G.B.M., Percec Tadic, M., Pebesma, E., (2011) Spatio-temporal prediction of daily temperatures using time-series of MODIS LST images. Theoretical and Applied Climatology, 107(1-2): 265-277. \doi{10.1007/s00704-011-0464-2}
 \item MODIS products (\url{https://lpdaac.usgs.gov/data/get-started-data/})
 }
 }

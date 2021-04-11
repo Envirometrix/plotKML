@@ -17,6 +17,6 @@
   }
 }
 \author{ Tomislav Hengl }
-\seealso{ \code{\link{plotKML-method}}, \code{spcosa::spsample}, \code{\link{plotKML-method}}
+\seealso{ \code{\link{plotKML-method}}, \code{\link{plotKML-method}}
 }
 \keyword{classes}

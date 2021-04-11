@@ -16,10 +16,14 @@ kml_layer.SpatialPixels <- function(
   ){
   ## PNG type
   if(missing(png.type)){ 
-    if(.Platform$OS.type == "windows") { 
-      png.type = "cairo-png" 
+    if(capabilities('cairo')){
+      if(.Platform$OS.type == "windows") { 
+        png.type = "cairo-png" 
+      } else {
+        png.type = "cairo"
+      }
     } else {
-      png.type = "cairo"
+      png.type = "quartz"
     }
   }
   ## get our invisible file connection from custom evnrionment
@@ -125,7 +129,7 @@ kml_layer.SpatialPixels <- function(
   dev.off()
 
   ## There is a bug in Google Earth that does not allow transparency of PNGs:
-  ## http://groups.google.com/group/earth-free/browse_thread/thread/1cd6bc29a2b6eb76/62724be63547fab7
+  ## https://groups.google.com/group/earth-free/browse_thread/thread/1cd6bc29a2b6eb76/62724be63547fab7
   ## Solution: add transparency using ImageMagick:
   convert <- get("convert", envir = plotKML.opts)
   if(nchar(convert)==0){

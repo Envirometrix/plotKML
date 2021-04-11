@@ -25,7 +25,7 @@ kml_layer.Raster(obj, subfolder.name = paste(class(obj)), plot.legend = TRUE,
   \item{png.type}{character; PNG type} 
   \item{\dots}{additional \code{\link{aesthetics}} arguments}
 }  
-\details{Google Earth does not properly handle a 24-bit PNG file which has a single transparent color (read more at \href{http://groups.google.com/group/earth-help/}{Google Earth Help}). To force transparency, plotKML will try to set it using the \code{-matte -transparent "\#FFFFFF"} option in the \href{http://www.imagemagick.org/Usage/masking/}{ImageMagick convert program} (ImageMagick needs to be installed separately and located using \code{plotKML.env()}). On some Unix run machines the \code{png.type} argument has to be set manually to avoid producing empty PNGs.
+\details{Google Earth does not properly handle a 24-bit PNG file which has a single transparent color (read more at \href{https://groups.google.com/d/forum/earth-help}{Google Earth Help}). To force transparency, plotKML will try to set it using the \code{-matte -transparent "\#FFFFFF"} option in the \href{https://legacy.imagemagick.org/Usage/masking/}{ImageMagick convert program} (ImageMagick needs to be installed separately and located using \code{plotKML.env()}). On some Unix run machines the \code{png.type} argument has to be set manually to avoid producing empty PNGs.
 }
 \author{Tomislav Hengl, Pierre Roudier and Dylan Beaudette}
 \seealso{ \code{\link{kml-methods}}, \code{\link{kml_open}}, \code{\link{kml_layer.RasterBrick}}, \code{\link{plotKML-method}} }

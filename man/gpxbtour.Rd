@@ -17,7 +17,7 @@
 } 
 \usage{data(gpxbtour)}
 \author{ Tomislav Hengl }
-\note{ The log was produced using the GlobalSat GH-615 GPS watch. The original data log (trackpoints) was first saved to GPX exchange format (\url{http://www.topografix.com/gpx.asp}) and then imported to R using the XML package and formatted to a data frame.
+\note{ The log was produced using the GlobalSat GH-615 GPS watch. The original data log (trackpoints) was first saved to GPX exchange format (\url{https://www.topografix.com/gpx.asp}) and then imported to R using the XML package and formatted to a data frame.
 }
 \examples{
 \dontrun{## load the data:

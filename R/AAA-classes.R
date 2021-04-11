@@ -32,7 +32,7 @@ setClass("SpatialPhotoOverlay", representation(filename = "character", pixmap = 
       return("'SpatialPoints' object of length 1 required.")
     }
     
-    # minimum info [http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html]:
+    # minimum info [https://exiftool.org/]:
     exif.sel <- c("DateTime", "ExposureTime", "FocalLength", "Flash")
     for(i in 1:length(exif.sel)){
     if(length(which(names(object@exif.info) %in% exif.sel[i]))==0)

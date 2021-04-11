@@ -1,6 +1,6 @@
 # Note : Based on the US gov sp metadata standards [http://www.fgdc.gov/metadata/csdgm/], which can be converted to "ISO 19139" XML schema;
 ## Generate a SLD file (using the default legend):
-# [http://docs.geoserver.org/stable/en/user/styling/sld-introduction.html]
+# [https://docs.geoserver.org/stable/en/user/styling/sld-introduction.html]
 
 metadata2SLD.Spatial <- function(obj, ...){
   

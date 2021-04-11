@@ -29,8 +29,8 @@ The \code{eberg_grid} data frame (regular grid at 100 m resolution) contains the
   \item{\code{PRMGEO6}}{a vector containing factors, parent material classes from the geological map (mapping units)}
   \item{\code{DEMSRT6}}{a numeric vector; elevation values from the SRTM DEM}
   \item{\code{TWISRT6}}{a numeric vector; Topographic Wetness Index derived using the SAGA algorithm}
-  \item{\code{TIRAST6}}{a numeric vector; Thermal Infrared (TIR) reflection values from the ASTER L1 image band 14 (2010-06-05T10:26:50Z) obtained via the NASA's \href{http://glovis.usgs.gov}{GloVis browser}}
-  \item{\code{LNCCOR6}}{a vector containing factors; \href{http://www.eea.europa.eu/data-and-maps/data/corine-land-cover-2006-raster-1}{Corine Land Cover 2006} classes}
+  \item{\code{TIRAST6}}{a numeric vector; Thermal Infrared (TIR) reflection values from the ASTER L1 image band 14 (2010-06-05T10:26:50Z) obtained via the NASA's \href{https://glovis.usgs.gov}{GloVis browser}}
+  \item{\code{LNCCOR6}}{a vector containing factors; \href{https://www.eea.europa.eu/data-and-maps/data/clc-2006-raster-1}{Corine Land Cover 2006} classes}
 	\item{\code{x}}{a numeric vector; x-coordinate (m) in DHDN / Gauss-Krueger zone 3 (German coordinate system)}
 	\item{\code{y}}{a numeric vector; y-coordinate (m) in DHDN / Gauss-Krueger zone 3 (German coordinate system)} 
 }

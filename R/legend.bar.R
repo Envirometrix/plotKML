@@ -1,6 +1,18 @@
 
-kml_legend.bar <- function(x, width, height, pointsize = 14, legend.file, legend.pal, z.lim = range(x, na.rm = TRUE, finite = TRUE), factor.labels, png.type = "cairo-png"){
-
+kml_legend.bar <- function(x, width, height, pointsize = 14, legend.file, legend.pal, z.lim = range(x, na.rm = TRUE, finite = TRUE), factor.labels, png.type){
+  
+  if(missing(png.type)){ 
+    if(capabilities('cairo')){
+      if(.Platform$OS.type == "windows") { 
+        png.type = "cairo-png" 
+      } else {
+        png.type = "cairo"
+      }
+    } else {
+      png.type = "quartz"
+    }
+  }
+  
   ## Factor-type variables:
   if(class(x) == "factor" | class(x) == "character") {
  

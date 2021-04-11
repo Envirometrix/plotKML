@@ -1,4 +1,4 @@
-# Note: Combination of the pixmap package and EXIF information [http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html];
+# Note: Combination of the pixmap package and EXIF information [https://exiftool.org/];
 
 ## Generate SpatialPhotoOverlay object:
 spPhoto <- function(

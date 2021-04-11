@@ -17,7 +17,7 @@
 }
 \references{
 \itemize{
-\item GPX data format (\url{http://www.topografix.com/gpx.asp})
+\item GPX data format (\url{https://www.topografix.com/gpx.asp})
 \item XML tutorial (\url{https://github.com/omegahat/XML})
 }
 }
@@ -25,7 +25,7 @@
 \seealso{\code{rgdal::readOGR}, \code{\link{kml_layer.STTDF}}}
 \examples{
 \dontrun{# read GPX file from web:
-fells_loop <- readGPX("http://www.topografix.com/fells_loop.gpx")
+fells_loop <- readGPX("https://www.topografix.com/fells_loop.gpx")
 str(fells_loop)
 }
 }

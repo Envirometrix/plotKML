@@ -42,7 +42,7 @@ The \code{read.metadata} function reads the formatted metadata (\code{.xml}), pr
 \code{spMetadata} tries to automatically generate the most usefull information, so that a user can easily find out about the input data and procedures followed to generate the visualization (KML). Typical metadata entries include e.g. (FGDC):
 \itemize{
 \item \code{metadata[["idinfo"]][["native"]]} --- Session info e.g.: Produced using R version 2.12.2 (2011-02-25) running on Windows 7 x64.
-\item \code{metadata[["spdoinfo"]][["indspref"]]} --- Indirect spatial reference estimated using the \href{https://developers.google.com/maps/web-services/}{Google Maps API Web Services}.
+\item \code{metadata[["spdoinfo"]][["indspref"]]} --- Indirect spatial reference estimated using the \href{https://developers.google.com/maps/documentation}{Google Maps API Web Services}.
 \item \code{metadata[["idinfo"]][["spdom"]][["bounding"]]} --- Bounding box in the WGS84 geographical coordinates estimated by reprojecting the original bounding box.
 }
 and for INSPIRE metadata:

@@ -16,7 +16,7 @@
 \alias{reproject,RasterLayer-method}
 \alias{reproject,RasterBrick-method}
 \title{Methods to reproject maps to a referent coordinate system (WGS84)}
-\description{This wrapper function reprojects any vector or raster spatial data to some referent coordinate system (by default: geographic coordinates on the \href{http://spatialreference.org/ref/epsg/4326/}{World Geodetic System of 1984 / WGS84} datum).}
+\description{This wrapper function reprojects any vector or raster spatial data to some referent coordinate system (by default: geographic coordinates on the \href{https://spatialreference.org/ref/epsg/4326/}{World Geodetic System of 1984 / WGS84} datum).}
 \usage{
 \S4method{reproject}{SpatialPoints}(obj, CRS, \dots)
 \S4method{reproject}{SpatialPolygons}(obj, CRS, \dots)
@@ -41,12 +41,12 @@
   \item{\dots}{arguments evaluated in the context of function \code{projectRaster} from the raster package}
 }
 \details{
-In the case of raster and/or gridded maps, by selecting \code{program = "GDAL"} \code{gdalwarp} functionality will be initiated (otherwise it tries to reproject via the package raster). This requires that \href{http://gdal.org}{GDAL} are installed and located from R via \code{paths()}.
+In the case of raster and/or gridded maps, by selecting \code{program = "GDAL"} \code{gdalwarp} functionality will be initiated (otherwise it tries to reproject via the package raster). This requires that \href{https://gdal.org}{GDAL} are installed and located from R via \code{paths()}.
 }
 \references{
 \itemize{
 \item Raster package (\url{https://CRAN.R-project.org/package=raster})
-\item GDAL (\url{http://GDAL.org})
+\item GDAL (\url{https://gdal.org})
 }
 }
 \author{Pierre Roudier, Tomislav Hengl and Dylan Beaudette}

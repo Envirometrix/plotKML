@@ -8,7 +8,7 @@
   \describe{
     \item{\code{filename}}{object of class "character"; URI of the filename location (typically a URL)}
     \item{\code{pixmap}}{object of class "pixmapRGB"; RGB bands of a bitmapped images}    
-    \item{\code{exif.info}}{object of class "list"; \href{http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html}{EXIF} photo metadata}
+    \item{\code{exif.info}}{object of class "list"; \href{https://exiftool.org/}{EXIF} photo metadata}
     \item{\code{PhotoOverlay}}{object of class "list"; list of the camera geometry parameters (KML specifications)}
     \item{\code{sp}}{object of class "SpatialPoints"; location of the camera}
   }

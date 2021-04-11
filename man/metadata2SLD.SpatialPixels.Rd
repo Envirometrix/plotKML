@@ -1,7 +1,7 @@
 \name{metadata2SLD.SpatialPixels}
 \alias{metadata2SLD.SpatialPixels}
 \title{Writes a Styled Layer Description (\bold{SLD}) file}
-\description{Writes a \href{http://docs.geoserver.org/stable/en/user/styling/}{Styled Layer Description} (\bold{SLD}) file, that can be attached to a spatial layer contributed to GeoServer. }
+\description{Writes a \href{https://docs.geoserver.org/stable/en/user/styling/}{Styled Layer Description} (\bold{SLD}) file, that can be attached to a spatial layer contributed to GeoServer. }
 \usage{
 metadata2SLD.SpatialPixels(obj, 
     Format_Information_Content = xmlValue(obj@xml[["//formcont"]]),
@@ -17,7 +17,7 @@ metadata2SLD.SpatialPixels(obj,
   \item{obj.name}{character; name of the layer}
   \item{sld.file}{character; name of the output file}
   \item{Citation_title}{character; title of the layer}
-  \item{ColorMap_type}{character; type of the colorMap see \url{http://docs.geoserver.org}}
+  \item{ColorMap_type}{character; type of the colorMap see \url{https://docs.geoserver.org}}
   \item{opacity}{logical; specifies the opacity}
   \item{brw.trg}{character; color scheme according to www.colorbrewer2.org; default to 'Greys'}
   \item{target.var}{character; target variable used to calculate the class-intervals}

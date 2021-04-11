@@ -1,5 +1,17 @@
 
-kml_legend.whitening <- function(legend.res = 0.01, width=120, height=300, pointsize = 14, x.lim, e.lim, leg.asp = 0.3*width/height, legend.file = "whitening_legend.png", matte = FALSE, png.type="cairo-png"){
+kml_legend.whitening <- function(legend.res = 0.01, width=120, height=300, pointsize = 14, x.lim, e.lim, leg.asp = 0.3*width/height, legend.file = "whitening_legend.png", matte = FALSE, png.type){
+  
+  if(missing(png.type)){ 
+    if(capabilities('cairo')){
+      if(.Platform$OS.type == "windows") { 
+        png.type = "cairo-png" 
+      } else {
+        png.type = "cairo"
+      }
+    } else {
+      png.type = "quartz"
+    }
+  }
   
   xlg <- seq(.01,1,by=legend.res)
   ylg <- seq(.01,1,by=legend.res)

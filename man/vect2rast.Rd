@@ -36,17 +36,17 @@
 }
 \value{Returns an object of type \code{"SpatialGridDataFrame"}.}
 \details{
-This function basically extends the \code{\link{rasterize}} function available in the raster package. The advantage of \code{vect2rast}, however, is that it requires no input from the user's side i.e. it automatically determines the grid cell size and the bounding box based on the properties of the input data set. The grid cell size is estimated based on the density/size of features in the map (\code{nndist} function in \href{http://www.spatstat.org}{spatstat} package): (a) in the case of \code{"SpatialPoints"} cell size is determined as half the mean distance between the nearest points; (b) in the case of \code{"SpatialLines"} half cell size is determined as half the mean distance between the lines; (c) in the case of polygon data cell size is determined as half the median size (area) of polygons of interest. For more details see \href{http://dx.doi.org/10.1016/j.cageo.2005.11.008}{Hengl (2006)}. To process larger vector maps consider using \code{method="SAGA"}.
+This function basically extends the \code{\link{rasterize}} function available in the raster package. The advantage of \code{vect2rast}, however, is that it requires no input from the user's side i.e. it automatically determines the grid cell size and the bounding box based on the properties of the input data set. The grid cell size is estimated based on the density/size of features in the map (\code{nndist} function in \href{https://spatstat.org}{spatstat} package): (a) in the case of \code{"SpatialPoints"} cell size is determined as half the mean distance between the nearest points; (b) in the case of \code{"SpatialLines"} half cell size is determined as half the mean distance between the lines; (c) in the case of polygon data cell size is determined as half the median size (area) of polygons of interest. For more details see Hengl (2006); \doi{10.1016/j.cageo.2005.11.008}. To process larger vector maps consider using \code{method="SAGA"}.
 }
 \references{
 \itemize{
-\item Hengl T., (2006) \href{http://dx.doi.org/10.1016/j.cageo.2005.11.008}{Finding the right pixel size}. Computers and Geosciences, 32(9): 1283-1298.
+\item Hengl T., (2006) Finding the right pixel size. Computers and Geosciences, 32(9): 1283-1298. \doi{10.1016/j.cageo.2005.11.008}
 \item Raster package (\url{https://CRAN.R-project.org/package=raster})
-\item SpatStat package (\url{http://www.spatstat.org})
+\item SpatStat package (\url{https://spatstat.org})
 }
 }
 \author{Tomislav Hengl }
-\seealso{ \code{\link{vect2rast.SpatialPoints}}, \code{raster::rasterize}, \code{spatstat::nndist}}
+\seealso{ \code{\link{vect2rast.SpatialPoints}}, \code{raster::rasterize}}
 \examples{
 \dontrun{
 data(eberg)

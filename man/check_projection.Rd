@@ -17,7 +17,7 @@ A cartographic projection is KML compatible if: (a) geographical coordinates are
 }
 \references{
 \itemize{
-\item WGS84 (\url{http://spatialreference.org/ref/epsg/4326/})
+\item WGS84 (\url{https://spatialreference.org/ref/epsg/4326/})
 }
 }
 \author{Pierre Roudier, Tomislav Hengl, and Dylan Beaudette}

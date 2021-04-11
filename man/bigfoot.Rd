@@ -3,7 +3,7 @@
 \alias{bigfoot}
 \alias{USAWgrids}
 \title{Bigfoot reports (USA)}
-\description{2984 observations of bigfoot (with attached dates). The field occurrence records have been obtained from the \href{http://www.bfro.net/news/google_earth.asp}{BigFoot Research Organization (BFRO) website}. The BFRO reports generally consist of a description of the event and where it occurred, plus the quality classification. Similar data set has been used by \href{http://dx.doi.org/10.1111/j.1365-2699.2009.02152.x}{Lozier et al. (2009)} to demonstrate possible miss-interpretations of the results of species distribution modeling. The maps in the \code{USAWgrids} data set represent typical gridded environmental covariates used for species distribution modeling.
+\description{2984 observations of bigfoot (with attached dates). The field occurrence records have been obtained from the \href{http://www.bfro.net/news/google_earth.asp}{BigFoot Research Organization (BFRO) website}. The BFRO reports generally consist of a description of the event and where it occurred, plus the quality classification. Similar data set has been used by Lozier et al. (2009) to demonstrate possible miss-interpretations of the results of species distribution modeling. The maps in the \code{USAWgrids} data set represent typical gridded environmental covariates used for species distribution modeling.
 }
 \format{
 The \code{bigfoot} data frame contains the following columns:
@@ -32,11 +32,11 @@ The \code{USAWgrids} data frame (46,018 pixels; Washington, Oregon, Nevada and C
 \author{ Tomislav Hengl }
 \references{
 \itemize{
-\item Lozier, J.D., Aniello, P., Hickerson, M.J., (2009) \href{http://dx.doi.org/10.1111/j.1365-2699.2009.02152.x}{Predicting the distribution of Sasquatch in western North America: anything goes with ecological niche modelling}. Journal of Biogeography, 36(9):1623-1627.
+\item Lozier, J.D., Aniello, P., Hickerson, M.J., (2009) Predicting the distribution of Sasquatch in western North America: anything goes with ecological niche modelling. Journal of Biogeography, 36(9):1623-1627. \doi{10.1111/j.1365-2699.2009.02152.x}
 \item BigFoot Research Organization (\url{http://www.bfro.net})
 }
 }
-\note{According to the \href{http://newsfeed.time.com/2011/10/11/scientists-95-sure-bigfoot-lives-in-russian-tundra}{Time.com}, a team of a dozen-plus experts from as far afield as Canada and Sweden have proclaimed themselves 95 percent certain of the mythical animal's existence on Kemerovo region territory some 3,000 kilometers east of Moscow (announced at the Tashtagol conference in 2011).
+\note{According to the \href{https://newsfeed.time.com/2011/10/11/scientists-95-sure-bigfoot-lives-in-russian-tundra/}{Time.com}, a team of a dozen-plus experts from as far afield as Canada and Sweden have proclaimed themselves 95 percent certain of the mythical animal's existence on Kemerovo region territory some 3,000 kilometers east of Moscow (announced at the Tashtagol conference in 2011).
 }
 \examples{
 \dontrun{# Load the BFRO records:

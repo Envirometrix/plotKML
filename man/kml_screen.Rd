@@ -22,7 +22,7 @@ kml_screen(image.file, sname = "",
 \note{The function, by default, calculates with fractions. If you change the \code{xyunits} type, all other elements need to be expressed in the same units.}
 \references{
 \itemize{
-\item KML Reference (\url{http://code.google.com/apis/kml/documentation/})
+\item KML Reference (\url{https://developers.google.com/kml/documentation/?csw=1})
 }
 }
 \author{ Tomislav Hengl }

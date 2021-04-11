@@ -78,7 +78,7 @@ paths <- function(gdalwarp = "", gdal_translate = "", convert = "", saga_cmd = "
     
         if(is.null(im.dir)){ 
           if(silent==FALSE){
-            warning("Install ImageMagick and add to PATH. See http://imagemagick.org for more info.")
+            warning("Install ImageMagick and add to PATH. See https://imagemagick.org for more info.")
           }
         convert = ""
         }
@@ -105,7 +105,7 @@ paths <- function(gdalwarp = "", gdal_translate = "", convert = "", saga_cmd = "
             gdal_translate = shQuote(utils::shortPathName(normalizePath(file.path(x[[1]]$path, "gdal_translate.exe"))))
         }} else {
           if(silent==FALSE){
-            warning("Could not locate GDAL! Install program and add it to the Windows registry. See http://www.gdal.org/ for more info.")
+            warning("Could not locate GDAL! Install program and add it to the Windows registry. See https://gdal.org/ for more info.")
           }
           gdalwarp = ""
           gdal_translate = ""    
@@ -157,7 +157,7 @@ paths <- function(gdalwarp = "", gdal_translate = "", convert = "", saga_cmd = "
     }
     else { 
       if(silent==FALSE){  
-        warning("Install GDAL and add to PATH. See http://www.gdal.org/ for more info.")
+        warning("Install GDAL and add to PATH. See https://gdal.org/ for more info.")
       }
       gdalwarp = ""
       gdal_translate = ""
@@ -172,7 +172,7 @@ paths <- function(gdalwarp = "", gdal_translate = "", convert = "", saga_cmd = "
       }
     else { 
       if(silent==FALSE){
-        warning("Install Python and add to PATH. See http://python.org for more info.")
+        warning("Install Python and add to PATH. See https://www.python.org for more info.")
       }
       python = ""
     }
@@ -182,7 +182,7 @@ paths <- function(gdalwarp = "", gdal_translate = "", convert = "", saga_cmd = "
     im.dir <- paths[grep(paths, pattern="Magick", ignore.case=TRUE)[1]]
     if(is.null(im.dir)){ 
         if(silent==FALSE){
-          warning("Install ImageMagick and add to PATH. See http://imagemagick.org for more info.")
+          warning("Install ImageMagick and add to PATH. See https://imagemagick.org for more info.")
         }
         convert = ""
     }
@@ -239,7 +239,7 @@ plotKML.env <- function(
 	brewer3 = c("#FEEDDE","#FDBE85","#FD8D3C","#E6550D","#A63603")
     #if(missing(colour_scale_svar)) { colour_scale_svar <- brewer.pal(n = 5, name = "Oranges") }
     if(missing(colour_scale_svar)) { colour_scale_svar <- brewer3 }
-    if(missing(ref_CRS)) { ref_CRS <- CRSargs(CRS("+init=epsg:4326")) }
+    if(missing(ref_CRS)) { ref_CRS <- CRSargs(CRS("EPSG:4326")) }
     if(missing(NAflag)) { NAflag <- -99999 }
     if(missing(icon)) { icon <- "icon3.png" }   # "http://maps.google.com/mapfiles/kml/shapes/donut.png"
     if(missing(LabelScale)) { LabelScale <- .5 }
@@ -247,12 +247,12 @@ plotKML.env <- function(
     if(missing(license_url)) { license_url <- "http://creativecommons.org/licenses/by/4.0/" }
     if(missing(metadata_sel)) { metadata_sel <- c("idinfo.citation.citeinfo.title", "idinfo.descript.abstract", "spdoinfo.ptvctinf.sdtsterm.ptvctcnt", "idinfo.timeperd.timeinfo.rngdates.begdate", "idinfo.timeperd.timeinfo.rngdates.enddate", "distinfo.stdorder.digform.digtopt.onlinopt.computer.networka.networkr", "idinfo.citation.citeinfo.othercit", "idinfo.citation.citeinfo.onlink", "idinfo.datacred", "distinfo.distrib.cntinfo.cntorgp.cntorg", "distinfo.stdorder.digform.digtinfo.formcont", "idinfo.native") }   
     if(missing(kmz)) { kmz <- FALSE }
-    if(missing(kml_xsd)) { kml_xsd <- "http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd" }
-    if(missing(kml_url)) { kml_url <- "http://www.opengis.net/kml/2.2/" }
-    if(missing(kml_gx)) { kml_gx <- "http://www.google.com/kml/ext/2.2" }
-    if(missing(gpx_xsd)) { gpx_xsd <- "http://www.topografix.com/GPX/1/1/gpx.xsd" }
-    if(missing(fgdc_xsd)) { fgdc_xsd <- "http://fgdcxml.sourceforge.net/schema/fgdc-std-012-2002/fgdc-std-012-2002.xsd" }
-    if(missing(inspire_xsd)) { inspire_xsd <- "http://inspire.ec.europa.eu/schemas/common/1.0/common.xsd" }
+    if(missing(kml_xsd)) { kml_xsd <- "https://schemas.opengis.net/kml/2.2.0/ogckml22.xsd" }
+    if(missing(kml_url)) { kml_url <- "https://www.opengis.net/kml/2.2/" }
+    if(missing(kml_gx)) { kml_gx <- "https://www.google.com/kml/ext/2.2" }
+    if(missing(gpx_xsd)) { gpx_xsd <- "https://www.topografix.com/GPX/1/1/gpx.xsd" }
+    if(missing(fgdc_xsd)) { fgdc_xsd <- "https://fgdcxml.sourceforge.net/schema/fgdc-std-012-2002/fgdc-std-012-2002.xsd" }
+    if(missing(inspire_xsd)) { inspire_xsd <- "https://inspire.ec.europa.eu/schemas/common/1.0/common.xsd" }
     
     if(silent == FALSE){
       pts <- paths(show.paths = TRUE)
@@ -265,7 +265,7 @@ plotKML.env <- function(
     if(missing(gdalwarp)) { gdalwarp <- pts$gdalwarp[[1]] }
     if(missing(gdal_translate)) { gdal_translate <- pts$gdal_translate[[1]] }
     if(missing(python)) { python <- pts$python[[1]] }
-    if(missing(home_url)) { home_url <- "https://github.com/Envirometrix/plotKML" }
+    if(missing(home_url)) { home_url <- "https://plotkml.r-forge.r-project.org/" }
  
     ## Create a list and assing it to plotKML.env:
     pl.lst <- list(

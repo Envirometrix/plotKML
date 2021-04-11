@@ -66,14 +66,14 @@
 \begin{document}
 
 %\VignetteIndexEntry{ plotKML: Scientific Visualization of Spatio-temporal Data }
-%% jss options, see http://www.jstatsoft.org/style
+%% jss options, see https://www.jstatsoft.org/style
 
 %% make sure all packages are there already, if not go and get them
 <<echo=false, results=hide>>=
 if(!require(gstat)){install.packages("gstat"); library(gstat)}
 if(!require(raster)){install.packages("raster"); library(raster)}
 if(!require(plotKML)){install.packages("plotKML"); library(plotKML)}
-if(!require(GSIF)){install.packages("GSIF"); library(GSIF)}
+if(!require(landmap)){install.packages("landmap"); library(landmap)}
 @
 
 <<eval=TRUE,echo=FALSE>>=
@@ -104,7 +104,7 @@ Keyhole Markup Language (KML) is an XML language focused on geographic visualiza
 
 Although \proglang{R} is primarily known as a statistical computing environment \citep{RTeam2005R}, it is of increasing interest to the field of geoinformatics and applied spatial data analysis due to its extensibility and the growing diversity of spatial and spatio-temporal data structures \citep{pebesma2005classes,Pebesma2010Ifgi,Bivand2013Springer}. Geo-visualization functions in \proglang{R}, on the other hand, are limited because \proglang{R} was not originally designed for interactive exploration of spatial data or as a GIS platform. Although there are many packages in \proglang{R} already that allow interactive visualization, overlay and animated display of geographical phenomena (via packages \href{http://www.ggobi.org/rggobi/}{\pkg{RGGOBI}} and \pkg{iPlots}; for a review refer to \citep{CookSwayne2007} and/or \citep{theus2009interactive}), \proglang{R} has its limitations for interactively exploring geographical data. \par
 
-There is considerable potential for building connectivity between the sophisticated spatial analysis possible in \proglang{R} and the geo-visualization capacities afforded by Google Earth. However, the export of spatial data from \proglang{R} to KML is not trivial. KML files can be produced using the using GDAL (Geospatial Data Abstraction Library) KML driver, but so far only limited functionality is supported. As the driver description page indicates: \emph{``At this time, only vector layers are handled by the KML driver$\ldots$ limited support is available for fills, line color and other styling attributes.''}\footnote{\url{http://www.gdal.org/ogr/drv_kml.html}}\par
+There is considerable potential for building connectivity between the sophisticated spatial analysis possible in \proglang{R} and the geo-visualization capacities afforded by Google Earth. However, the export of spatial data from \proglang{R} to KML is not trivial. KML files can be produced using the using GDAL (Geospatial Data Abstraction Library) KML driver, but so far only limited functionality is supported. As the driver description page indicates: \emph{``At this time, only vector layers are handled by the KML driver$\ldots$ limited support is available for fills, line color and other styling attributes.''}\footnote{\url{https://gdal.org/ogr/drv_kml.html}}\par
 
 Within the \proglang{R} community, other packages produced specifically to allow creation of KML files include: \pkg{rgdal} \citep{rgdal} and \pkg{raster} \citep{raster}, while truly specialized KML writing packages include \pkg{R2G2} \citep{Arigo2012} and \pkg{RKML}\footnote{\url{http://www.omegahat.org/RKML/}}. Our objective with the \pkg{plotKML} package was to provide a simple interface to generate KML files with a small number of arguments, and allow users to directly plot spatio-temporal data classes, available in \proglang{R} via the \pkg{sp} \citep{pebesma2005classes}, \pkg{spacetime} \citep{spacetime}, \pkg{aqp} \citep{aqp} and \pkg{raster} \citep{raster} packages, in a virtual globe type of browser. \par
 
@@ -115,7 +115,7 @@ This article describes the main functionality and the design of the \pkg{plotKML
 
 \subsection{Scientific visualization of geographic phenomena}
 
-The purpose of scientific visualization is to \emph{``graphically illustrate scientific data to enable scientists to understand, illustrate, and glean insight from their data.''}\footnote{\url{http://en.wikipedia.org/wiki/Scientific_visualization}} According to \citet{Friendly2001}, scientific visualization can be primarily connected with visualization of 3D data \emph{``where the emphasis is on realistic renderings of volumes, surfaces, illumination sources, and so forth, perhaps with a dynamic (time) component.''} In that context, the main purpose of \pkg{plotKML} package is to enable interactive scientific visualization of geographic phenomena i.e.\@ scientific geovisualization \citep{dykes2005exploring}.\par
+The purpose of scientific visualization is to \emph{``graphically illustrate scientific data to enable scientists to understand, illustrate, and glean insight from their data.''}\footnote{\url{https://en.wikipedia.org/wiki/Scientific_visualization}} According to \citet{Friendly2001}, scientific visualization can be primarily connected with visualization of 3D data \emph{``where the emphasis is on realistic renderings of volumes, surfaces, illumination sources, and so forth, perhaps with a dynamic (time) component.''} In that context, the main purpose of \pkg{plotKML} package is to enable interactive scientific visualization of geographic phenomena i.e.\@ scientific geovisualization \citep{dykes2005exploring}.\par
 
 Interactive geovisualization, i.e.\@ dynamic user-controlled visualization of geographical phenomena, can be today closely connected with 3D computer environments referred to as the \emph{`Virtual globe'}, \emph{`Virtual Earth'} or \emph{`Digital Earth'} \citep{gore1998digital,bleisch2011evaluating}. At the beginning of 21st century, the most known virtual globes are \citep{bleisch2011evaluating}:
 
@@ -423,16 +423,19 @@ library("sp")
 demo(meuse, echo=FALSE)
 @
 
-Via the \pkg{GSIF} package we can automate the model fitting and prediction:
+Via the \pkg{landmap} package \citep{landmap} we can automate the model fitting and prediction:
 
-<<>>=
-library("GSIF")
-omm <- fit.gstatModel(meuse, om~dist+ffreq, meuse.grid,
-   family = gaussian(log))
-om.rk <- predict(omm, meuse.grid)
-@
+\begin{CodeChunk}
+\begin{CodeInput}
+R> library("landmap")
+R> sl = c("regr.ranger", "regr.nnet", "regr.glm")
+R > omm <- train.spLearner(meuse["om"], covariates=meuse.grid[,c("dist","ffreq")],
++           lambda=0, parallel=FALSE, SL.library=sl)
+R> pred <- predict(omm)
+\end{CodeInput}
+\end{CodeChunk}
 
-\noindent here the generic function \verb"fit.gstatModel" from the \pkg{GSIF} package \citep{GSIF} tries to fit a linear regression-kriging model following the input samples (\verb"meuse") and gridded maps (\verb"meuse.grid"). The output (object of class \verb'"SpatialPredictions"') can be plotted in Google Earth by running:
+\noindent here the generic function \verb"train.spLearner" from the \pkg{landmap} package tries to fit a spatial prediction model following the input samples (\verb"meuse") and gridded maps (\verb"meuse.grid"). The output (object of class \verb'"SpatialPredictions"') can be plotted in Google Earth by running:
 
 \begin{CodeChunk}
 \begin{CodeInput}
@@ -449,7 +452,7 @@ Closing  om.rk.kml
 \end{CodeOutput}
 \end{CodeChunk}
 
-\noindent which shows most of elements of geostatistical mapping of interest: sampling locations, resulting spatial predictions, but also success of regression model fitting, variogram fitting and cross-validation. Note also that wrapping model fitting and export to KML allows full automation of the mapping process, so that the process can be run on a server \citep{pebesma2011intamap}.\par
+\noindent which shows most of elements of geostatistical mapping of interest: sampling locations, resulting spatial predictions, but also success of regression model fitting. Note also that wrapping model fitting and export to KML allows full automation of the mapping process, so that such processes could also be run on a server \citep{pebesma2011intamap}.\par
 
 \subsection{Visualization of spatio-temporal classes}\label{sec:spacetime_example}
 

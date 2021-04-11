@@ -47,7 +47,7 @@ readGPX <- function(
           for(i in seq_along(lst)) {
           trkpt <- top[[nu[c]]][[lst[i]]]
           ret[[c]][[i]] <- data.frame(NULL)
-          ## get columns (http://www.topografix.com/GPX/1/1/#type_wptType)
+          ## get columns (https://www.topografix.com/GPX/1/1/#type_wptType)
           lon <- as.numeric(xmlSApply(trkpt, xmlGetAttr, "lon"))
           lat <- as.numeric(xmlSApply(trkpt, xmlGetAttr, "lat"))
           ret[[c]][[i]][1:length(lon),"lon"] <- lon

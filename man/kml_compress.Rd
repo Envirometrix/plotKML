@@ -14,7 +14,7 @@ kml_compress(file.name, zip = "", files = "", rm = FALSE, \dots)
 }
 \references{
 \itemize{
-\item KMZ description (\url{http://code.google.com/apis/kml/documentation/})
+\item KMZ description (\url{https://developers.google.com/kml/documentation/?csw=1})
 }
 }
 \author{Pierre Roudier, Tomislav Hengl and Dylan Beaudette}
