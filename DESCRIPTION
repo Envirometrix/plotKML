@@ -2,7 +2,7 @@ Package: plotKML
 Version: 0.8-0
 Date: 2021-04-12
 Title: Visualization of Spatial and Spatio-Temporal Objects in Google Earth
-Author: Tomislav Hengl [aut, ctb], Andrea Gilardi [ctb], Pierre Roudier [ctb], Dylan Beaudette [ctb], Edzer Pebesma [ctb], Michael Blaschek [ctb]
+Author: Tomislav Hengl [cre, aut], Andrea Gilardi [ctb], Pierre Roudier [ctb], Dylan Beaudette [ctb], Edzer Pebesma [ctb], Michael Blaschek [ctb]
 Authors@R: c(person("Tomislav", "Hengl", role = c("cre", "aut"),
         email = "tom.hengl@opengeohub.org"),
     person("Andrea", "Gilardi", role = "ctb"),
