@@ -20,6 +20,8 @@ Suggests:
     rjson,
     animation,
     spatstat,
+    spatstat.linnet,
+    spatstat.geom,
     RCurl,
     rgbif,
     Hmisc,

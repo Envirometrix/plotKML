@@ -27,6 +27,7 @@ Use the same time values for both \code{TimeSpan.begin} and \code{TimeSpan.end} 
 \author{Pierre Roudier, Tomislav Hengl and Dylan Beaudette}
 \seealso{ \code{\link{kml-methods}}, \code{\link{kml_open}}, \code{\link{kml_layer.SpatialPolygons}}, \code{\link{plotKML-method}} }
 \examples{
+\donttest{
 library(rgdal)
 library(sp)
 data(eberg_contours)
@@ -36,6 +37,7 @@ names(eberg_contours)
 kml.file = paste0(tempdir(), "/eberg_contours.kml")
 kml(eberg_contours, file.name = kml.file, 
   colour_scale = SAGA_pal[[1]], colour = Z)
+}
 }
 \keyword{spatial}
 

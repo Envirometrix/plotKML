@@ -19,7 +19,7 @@ vect2rast.SpatialPoints <- function(obj, fname = names(obj)[1], cell.size, bbox,
     warning("Automated derivation of suitable cell size can be time consuming and can lead to artifacts.", immediate. = TRUE)
     }
     
-      if(requireNamespace("spatstat", quietly = TRUE)){
+      if(requireNamespace("spatstat.geom", quietly = TRUE)){
         x <- as(obj, "ppp")
         nd <- spatstat.geom::nndist(x$x, x$y)
         ndb <- boxplot(nd, plot=FALSE)
@@ -106,7 +106,7 @@ vect2rast.SpatialLines <- function(obj, fname = names(obj)[1], cell.size, bbox, 
       warning("Automated derivation of suitable cell size can be time consuming and can lead to artifacts.", immediate. = TRUE)
     }
     
-      if(requireNamespace("spatstat", quietly = TRUE)){
+      if(requireNamespace("spatstat.linnet", quietly = TRUE)){
         x <- as(as(obj, "SpatialLines"), "lpp")
         nd <- spatstat.linnet::nndist.lpp(x)  # this can be time consuming!
         ndb <- boxplot(nd, plot=FALSE)
