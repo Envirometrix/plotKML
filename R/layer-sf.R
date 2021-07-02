@@ -32,10 +32,8 @@
   if (is.na(sf::st_crs(obj)) || is.null(sf::st_crs(obj))) {
     stop("CRS of obj is missing")
   }
-  if (!sf::st_is_longlat(obj)) {
-    obj <- sf::st_transform(obj, crs = get("ref_CRS", envir = plotKML.opts))
-    # AG: Maybe here we should consider redefine ref_CRS according to PROJ/GDAL
-    # versions (i.e. proj4string or EPSG)
+  if (!sf::st_is_longlat(obj) || st_crs(obj) != st_crs(4326)) {
+    obj <- sf::st_transform(obj, crs = 4326)
     message("Reprojecting to ", get("ref_CRS", envir = plotKML.opts))
   }
   
@@ -249,8 +247,8 @@
   if (is.na(sf::st_crs(obj)) || is.null(sf::st_crs(obj))) {
     stop("CRS of obj is missing")
   }
-  if (!sf::st_is_longlat(obj)) {
-    obj <- sf::st_transform(obj, crs = get("ref_CRS", envir = plotKML.opts))
+  if (!sf::st_is_longlat(obj) || st_crs(obj) != st_crs(4326)) {
+    obj <- sf::st_transform(obj, crs = 4326)
     message("Reprojecting to ", get("ref_CRS", envir = plotKML.opts))
   }
   
@@ -449,8 +447,8 @@
   if (is.na(sf::st_crs(obj)) || is.null(sf::st_crs(obj))) {
     stop("CRS of obj is missing")
   }
-  if (!sf::st_is_longlat(obj)) {
-    obj <- sf::st_transform(obj, crs = get("ref_CRS", envir = plotKML.opts))
+  if (!sf::st_is_longlat(obj) || st_crs(obj) != st_crs(4326)) {
+    obj <- sf::st_transform(obj, crs = 4326)
     message("Reprojecting to ", get("ref_CRS", envir = plotKML.opts))
   }
   
