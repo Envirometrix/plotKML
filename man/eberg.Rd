@@ -51,7 +51,7 @@ The \code{eberg_grid25} data frame (regular grid at 25 m resolution) contains th
 \item \enc{Böhner}{Boehner}, J., McCloy, K. R. and Strobl, J. (Eds), (2006) \href{http://www.saga-gis.org/}{SAGA --- Analysis and Modelling Applications}. \enc{Göttinger}{Goettinger} Geographische Abhandlungen, Heft 115. Verlag Erich Goltze GmbH, \enc{Göttingen}{Goettingen}, 117 pp.
 \item Gehrt, E., \enc{Böhner}{Boehner}, J., (2001) Vom punkt zur flache --- probleme des 'upscaling' in der bodenkartierung. In: Diskussionsforum Bodenwissenschaften: Vom Bohrstock zum Bildschirm. FH, \enc{Osnabrück}{Osnabruck}, pp. 17-34.
 \item Skaggs, T. H., Arya, L. M., Shouse, P. J., Mohanty, B. P., (2001) Estimating Particle-Size Distribution from Limited Soil Texture Data. Soil Science Society of America Journal 65 (4): 1038-1044. \doi{10.2136/sssaj2001.6541038x}
-\item \url{http://geomorphometry.org/content/ebergotzen}
+\item \url{https://geomorphometry.org/ebergotzen/}
 }
 }
 \note{Texture by hand method can be used to determine the content of soil earth fractions only to an accuracy of \enc{±}{+-}5--10\% (Skaggs et al., 2001). A surveyor distinguishes to which of the 32 texture classes a soil samples belongs to, and then estimates the content of fractions; e.g. texture class \code{St2} has 10\% clay, 25\% silt and 65\% sand (Ad-hoc-AG Boden, 2005).}

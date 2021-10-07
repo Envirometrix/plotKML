@@ -5,7 +5,7 @@
 \alias{bargrid}
 \alias{barstr}
 \title{Baranja hill case study}
-\description{Baranja hill is a 4 by 4 km large study area in the Baranja region, eastern Croatia (corresponds to a size of an aerial photograph). This data set has been extensively used to describe various DEM modelling and analysis steps (see \href{http://geomorphometry.org/book}{Hengl and Reuter, 2008}; Hengl et al., 2010; \doi{10.5194/hess-14-1153-2010}). Object \code{barxyz} contains 6370 precise observations of elevations (from field survey and digitized from the stereo images); \code{bargrid} contains \emph{observed} probabilities of streams (digitized from the 1:5000 topo map); \code{barstr} contains 100 simulated stream networks (\code{"SpatialLines"}) using \code{barxyz} point data as input (see examples below).}
+\description{Baranja hill is a 4 by 4 km large study area in the Baranja region, eastern Croatia (corresponds to a size of an aerial photograph). This data set has been extensively used to describe various DEM modelling and analysis steps (see \href{https://geomorphometry.org/geomorphometry-concepts-software-applications/}{Hengl and Reuter, 2008}; Hengl et al., 2010; \doi{10.5194/hess-14-1153-2010}). Object \code{barxyz} contains 6370 precise observations of elevations (from field survey and digitized from the stereo images); \code{bargrid} contains \emph{observed} probabilities of streams (digitized from the 1:5000 topo map); \code{barstr} contains 100 simulated stream networks (\code{"SpatialLines"}) using \code{barxyz} point data as input (see examples below).}
 \usage{data(bargrid)}
 \format{
 The \code{bargrid} data frame (regular grid at 30 m intervals) contains the following columns:
@@ -18,9 +18,9 @@ The \code{bargrid} data frame (regular grid at 30 m intervals) contains the foll
 \author{ Tomislav Hengl }
 \references{
 \itemize{
-\item Hengl, T., Reuter, H.I. (eds), (2008) \href{http://geomorphometry.org/book}{Geomorphometry: Concepts, Software, Applications}. Developments in Soil Science, vol. 33, Elsevier, 772 p.
+\item Hengl, T., Reuter, H.I. (eds), (2008) \href{https://geomorphometry.org/geomorphometry-concepts-software-applications/}{Geomorphometry: Concepts, Software, Applications}. Developments in Soil Science, vol. 33, Elsevier, 772 p.
 \item Hengl, T., Heuvelink, G. B. M., van Loon, E. E., (2010) On the uncertainty of stream networks derived from elevation data: the error propagation approach. Hydrology and Earth System Sciences, 14:1153-1165. \doi{10.5194/hess-14-1153-2010}
-\item \url{http://geomorphometry.org/content/baranja-hill}
+\item \url{https://geomorphometry.org/baranja-hill/}
 }
 }
 \note{Consider using the 30 m resolution grid (see \code{bargrid}) as the target resolution (output maps). 
