@@ -12,21 +12,22 @@ paths <- function(gdalwarp = "", gdal_translate = "", convert = "", saga_cmd = "
 
      ## Try locating SAGA GIS (R default setting)...
      if(saga_cmd==""){
-      #require(RSAGA)
-      if(!inherits(try( suppressWarnings( x <- RSAGA::rsaga.env() ), silent = TRUE), "try-error")){
-        if(!is.null(x)){ 
-          if(.Platform$OS.type == "windows") {
-            suppressWarnings( saga_cmd <- utils::shortPathName(normalizePath(paste(x$path, x$cmd, sep="/"))) )
-          } else { 
-            saga_cmd <- paste(x$path, x$cmd, sep="/")
-          } 
-        if(nzchar(saga_cmd)){
-          suppressWarnings( saga.version <- RSAGA::rsaga.get.version() )
-        }
-      } else {
-        saga.version <- ""
-        }
-      }
+       if(requireNamespace("RSAGA", quietly = TRUE)){
+         if(!inherits(try( suppressWarnings( x <- RSAGA::rsaga.env() ), silent = TRUE), "try-error")){
+           if(!is.null(x)){ 
+             if(.Platform$OS.type == "windows") {
+               suppressWarnings( saga_cmd <- utils::shortPathName(normalizePath(paste(x$path, x$cmd, sep="/"))) )
+             } else { 
+               saga_cmd <- paste(x$path, x$cmd, sep="/")
+             } 
+             if(nzchar(saga_cmd)){
+               suppressWarnings( saga.version <- RSAGA::rsaga.get.version() )
+             }
+           } else {
+             saga.version <- ""
+           }
+         }
+       }
      }
      
      ## Try locating path to ImageMagick (R default setting)...

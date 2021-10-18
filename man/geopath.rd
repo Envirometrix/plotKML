@@ -28,11 +28,13 @@ where \code{distc} is the Great Circle Distance.}
 \author{ Tomislav Hengl}
 \seealso{ \code{\link{kml_layer.SpatialLines}}, \code{\link{kml_layer.STTDF}}, \code{fossil::earth.bear}}
 \examples{
+\dontrun{
 library(fossil)
 ams.ny <- geopath(lon1=4.892222, lon2=-74.005973, 
           lat1=52.373056, lat2=40.714353, print.geo=TRUE)
 kml.file = paste0(tempdir(), "/ams.ny.kml")
 # write to a file:
 kml(ams.ny, file.name=kml.file)
+}
 }
 \keyword{spatial}

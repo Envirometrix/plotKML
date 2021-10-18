@@ -12,8 +12,10 @@ Authors@R: c(person("Tomislav", "Hengl", role = c("cre", "aut"),
     person("Michael", "Blaschek", role = "ctb"))
 Maintainer: Tomislav Hengl <tom.hengl@opengeohub.org>
 Depends: R (>= 3.5.0)
-Imports: methods, tools, utils, XML, landmap, sp, raster, rgdal, aqp, gstat, spacetime, colorspace, plotrix, dismo, pixmap, plyr, stringr, colorRamps, scales, zoo, RColorBrewer, RSAGA, classInt, sf, stars
+Imports: methods, tools, gstat, colorRamps, pixmap, utils, XML, dismo, landmap, sp, raster, rgdal, aqp, spacetime, colorspace, plyr, stringr, scales, zoo, RColorBrewer, classInt, sf, stars
 Suggests: 
+    RSAGA,
+    plotrix, 
     adehabitatLT,
     maptools,
     fossil,
@@ -31,7 +33,6 @@ Suggests:
     gdalUtils,
     snowfall,
     parallel,
-    tinytex,
     testthat
 Description: Writes sp-class, spacetime-class, raster-class and similar spatial and spatio-temporal objects to KML following some basic cartographic rules.
 License: GPL

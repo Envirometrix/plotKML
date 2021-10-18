@@ -60,17 +60,17 @@ kml_legend.bar <- function(x, width, height, pointsize = 14, legend.file, legend
   ### Numeric-type variables:
   else {
     if(is.numeric(x)) {
-  
-    if(missing(width)) { width <- 120 } 
-    if(missing(height)) { height <- 240 } 
-    png(filename=legend.file, width=width, height=height, bg="transparent", pointsize=pointsize)
-    par(mar=c(.5,0,.5,4))
-    plot(x=0:5, y=0:5, asp=3, type="n", axes=FALSE, xlab='', ylab='')
-    # get the 2-4 significant digits
-    col.labels <- signif(c(z.lim[1], mean(z.lim), z.lim[2]), 2)
-    color.legend(xl=0, yb=0, xr=5, yt=5, legend=col.labels, rect.col=legend.pal, gradient="y", align="rb", cex=1.4, col=rgb(0.99,0.99,0.99))
-  
-    dev.off()
+      if(requireNamespace("plotrix", quietly = TRUE)){
+        if(missing(width)) { width <- 120 } 
+        if(missing(height)) { height <- 240 } 
+        png(filename=legend.file, width=width, height=height, bg="transparent", pointsize=pointsize)
+        par(mar=c(.5,0,.5,4))
+        plot(x=0:5, y=0:5, asp=3, type="n", axes=FALSE, xlab='', ylab='')
+        # get the 2-4 significant digits
+        col.labels <- signif(c(z.lim[1], mean(z.lim), z.lim[2]), 2)
+        plotrix::color.legend(xl=0, yb=0, xr=5, yt=5, legend=col.labels, rect.col=legend.pal, gradient="y", align="rb", cex=1.4, col=rgb(0.99,0.99,0.99))
+        dev.off()
+      }
   } 
     else { 
       stop("Vector of type 'numeric' or 'factor' expected") 

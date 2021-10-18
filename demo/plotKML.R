@@ -146,7 +146,7 @@ plotKML(DE_kriged, png.width=png.width,
 plotKML(rr, z.lim=z.lim)
 
 ## -------------- STTDF --------- ##
-library(fossil)
+#library(fossil)
 library(spacetime)
 library(adehabitatLT)
 data(gpxbtour)
@@ -310,5 +310,3 @@ bar_sum <- count.GridTopology(gridT, vectL=barstr[1:5])
 plotKML(bar_sum,
     png.width = gridparameters(bargrid)[1,"cells.dim"]*5, 
     png.height = gridparameters(bargrid)[2,"cells.dim"]*5)
-
-## end of tutorial;

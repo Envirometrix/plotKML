@@ -55,7 +55,7 @@ plotKML.GDALobj <- function(obj, file.name, block.x, tiles=NULL, tiles.sel=NULL,
   }
   
   if(missing(file.name)){
-    file.name <- set.file.extension(basename(GDALobj.file), ".kml")
+    file.name <- .set.file.extension(basename(GDALobj.file), ".kml")
   }
   kml_open(file.name)
   kml.out <- get("kml.out", envir=plotKML.fileIO)
@@ -108,8 +108,8 @@ plotKML.GDALobj <- function(obj, file.name, block.x, tiles=NULL, tiles.sel=NULL,
 ## auxiliary function:
 .kml_SpatialGrid_tile <- function(i, GDALobj.file, colour, tiles, breaks.lst, colour_scale, altitude, altitudeMode, z.lim, N.min=4, overwrite, CRS){
   if(any(!c("offset.x", "offset.y", "region.dim.x", "region.dim.y") %in% names(tiles))){ stop("Missing columns in the 'tiles' object. See ?landmap::tile") }
-  kml.tile <- set.file.extension(paste0(strsplit(basename(GDALobj.file), "\\.")[[1]][1], "_T", i), ".kml")
-  raster_name = set.file.extension(paste0(strsplit(basename(GDALobj.file), "\\.")[[1]][1], "_T", i), ".png")
+  kml.tile <- .set.file.extension(paste0(strsplit(basename(GDALobj.file), "\\.")[[1]][1], "_T", i), ".kml")
+  raster_name = .set.file.extension(paste0(strsplit(basename(GDALobj.file), "\\.")[[1]][1], "_T", i), ".png")
   r <- readGDAL(GDALobj.file, offset=c(tiles$offset.y[i], tiles$offset.x[i]), region.dim=c(tiles$region.dim.y[i], tiles$region.dim.x[i]), silent=TRUE)
   proj4string(r) = CRS
   if(sum(!is.na(r@data[,1]))>N.min){

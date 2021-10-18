@@ -35,7 +35,7 @@ spPhoto <- function(
           if(!length(x <- grep(z, pattern="404 Not Found"))==0){
             stop(paste("File", filename, "could not be located."))
           } else {
-            pixmap <- pixmapRGB(bands, ImageHeight, ImageWidth, bbox = bbox) 
+            pixmap <- pixmap::pixmapRGB(bands, ImageHeight, ImageWidth, bbox = bbox) 
           }
        } else {
          stop('package "RCurl" required but missing')

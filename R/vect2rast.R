@@ -53,30 +53,29 @@ vect2rast.SpatialPoints <- function(obj, fname = names(obj)[1], cell.size, bbox,
     }
     
     else{ 
-    if(method=="SAGA"){   # SAGA GIS 2.0.8
-   
-      if(!rsaga.env()[["cmd"]]=="NULL"){
-      
-      tmf <- tempfile()
-      tf <- set.file.extension(tmf, ".shp")
-      if(requireNamespace("maptools", quietly = TRUE)){
-        maptools::writePointsShape(obj, tf)
-      } else {
-        writeOGR(obj, tf, tmf, driver="ESRI Shapefile")
-      }
-      
-      if(missing(file.name)){
-        file.name <- set.file.extension(tempfile(), ".sgrd")
-      }
-      # rasterize map using SAGA GIS:
-      rsaga.geoprocessor("grid_gridding", 0, param=list(INPUT=tf, FIELD=FIELD, MULTIPLE=MULTIPLE, LINE_TYPE=LINE_TYPE, GRID_TYPE=0, TARGET=0, USER_XMIN=bbox[1,1]+cell.size/2, USER_XMAX=bbox[1,2]-cell.size/2, USER_YMIN=bbox[2,1]+cell.size/2, USER_YMAX=bbox[2,2]-cell.size/2, USER_SIZE=cell.size, USER_GRID=file.name, GRID_TYPE=GRID_TYPE), show.output.on.console = silent)
-      res <- readGDAL(set.file.extension(file.name, ".sdat"), silent = silent)
-      names(res) = names(obj)[1]
-      attr(res@bbox, "dimnames") = attr(obj@bbox, "dimnames")
-      attr(res@grid@cellcentre.offset, "names") <- attr(obj@bbox, "dimnames")[[1]]
-      attr(res@grid@cellsize, "names") <- attr(obj@bbox, "dimnames")[[1]]
-      attr(res@grid@cells.dim, "names") <- attr(obj@bbox, "dimnames")[[1]]
-
+    if(method=="SAGA"){
+      if(requireNamespace("RSAGA", quietly = TRUE)){
+        if(!RSAGA::rsaga.env()[["cmd"]]=="NULL"){
+          tmf <- tempfile()
+          tf <- .set.file.extension(tmf, ".shp")
+          if(requireNamespace("maptools", quietly = TRUE)){
+            maptools::writePointsShape(obj, tf)
+          } else {
+            writeOGR(obj, tf, tmf, driver="ESRI Shapefile")
+          }
+          
+          if(missing(file.name)){
+            file.name <- .set.file.extension(tempfile(), ".sgrd")
+          }
+          # rasterize map using SAGA GIS:
+          RSAGA::rsaga.geoprocessor("grid_gridding", 0, param=list(INPUT=tf, FIELD=FIELD, MULTIPLE=MULTIPLE, LINE_TYPE=LINE_TYPE, GRID_TYPE=0, TARGET=0, USER_XMIN=bbox[1,1]+cell.size/2, USER_XMAX=bbox[1,2]-cell.size/2, USER_YMIN=bbox[2,1]+cell.size/2, USER_YMAX=bbox[2,2]-cell.size/2, USER_SIZE=cell.size, USER_GRID=file.name, GRID_TYPE=GRID_TYPE), show.output.on.console = silent)
+          res <- readGDAL(.set.file.extension(file.name, ".sdat"), silent = silent)
+          names(res) = names(obj)[1]
+          attr(res@bbox, "dimnames") = attr(obj@bbox, "dimnames")
+          attr(res@grid@cellcentre.offset, "names") <- attr(obj@bbox, "dimnames")[[1]]
+          attr(res@grid@cellsize, "names") <- attr(obj@bbox, "dimnames")[[1]]
+          attr(res@grid@cells.dim, "names") <- attr(obj@bbox, "dimnames")[[1]]
+        }
       }
       else { stop("SAGA GIS path could not be located. See 'rsaga.env()' for more info.") }
     }  
@@ -140,30 +139,30 @@ vect2rast.SpatialLines <- function(obj, fname = names(obj)[1], cell.size, bbox, 
     }
     
     else{ 
-    if(method=="SAGA"){   # SAGA GIS 2.0.8
-   
-      if(!rsaga.env()[["cmd"]]=="NULL"){
-      
-      tmf <- tempfile()
-      tf <- set.file.extension(tmf, ".shp")
-      if(requireNamespace("maptools", quietly = TRUE)){
-        maptools::writeLinesShape(obj, tf)
-      } else {
-        writeOGR(obj, tf, tmf, driver="ESRI Shapefile")
-      }
-
-      if(missing(file.name)){
-        file.name <- set.file.extension(tempfile(), ".sgrd")
-      }
-      # rasterize map using SAGA GIS:
-      rsaga.geoprocessor("grid_gridding", 0, param=list(INPUT=tf, FIELD=FIELD, MULTIPLE=MULTIPLE, LINE_TYPE=LINE_TYPE, GRID_TYPE=0, TARGET=0, USER_XMIN=bbox[1,1]+cell.size/2, USER_XMAX=bbox[1,2]-cell.size/2, USER_YMIN=bbox[2,1]+cell.size/2, USER_YMAX=bbox[2,2]-cell.size/2, USER_SIZE=cell.size, USER_GRID=file.name, GRID_TYPE=GRID_TYPE), show.output.on.console = silent)
-      res <- readGDAL(set.file.extension(file.name, ".sdat"), silent = silent)
-      names(res) = names(obj)[1]
-      attr(res@bbox, "dimnames") = attr(obj@bbox, "dimnames")
-      attr(res@grid@cellcentre.offset, "names") <- attr(obj@bbox, "dimnames")[[1]]
-      attr(res@grid@cellsize, "names") <- attr(obj@bbox, "dimnames")[[1]]
-      attr(res@grid@cells.dim, "names") <- attr(obj@bbox, "dimnames")[[1]]
-      
+    if(method=="SAGA"){
+      if(requireNamespace("RSAGA", quietly = TRUE)){
+        if(!RSAGA::rsaga.env()[["cmd"]]=="NULL"){
+          
+          tmf <- tempfile()
+          tf <- .set.file.extension(tmf, ".shp")
+          if(requireNamespace("maptools", quietly = TRUE)){
+            maptools::writeLinesShape(obj, tf)
+          } else {
+            writeOGR(obj, tf, tmf, driver="ESRI Shapefile")
+          }
+          
+          if(missing(file.name)){
+            file.name <- .set.file.extension(tempfile(), ".sgrd")
+          }
+          # rasterize map using SAGA GIS:
+          RSAGA::rsaga.geoprocessor("grid_gridding", 0, param=list(INPUT=tf, FIELD=FIELD, MULTIPLE=MULTIPLE, LINE_TYPE=LINE_TYPE, GRID_TYPE=0, TARGET=0, USER_XMIN=bbox[1,1]+cell.size/2, USER_XMAX=bbox[1,2]-cell.size/2, USER_YMIN=bbox[2,1]+cell.size/2, USER_YMAX=bbox[2,2]-cell.size/2, USER_SIZE=cell.size, USER_GRID=file.name, GRID_TYPE=GRID_TYPE), show.output.on.console = silent)
+          res <- readGDAL(.set.file.extension(file.name, ".sdat"), silent = silent)
+          names(res) = names(obj)[1]
+          attr(res@bbox, "dimnames") = attr(obj@bbox, "dimnames")
+          attr(res@grid@cellcentre.offset, "names") <- attr(obj@bbox, "dimnames")[[1]]
+          attr(res@grid@cellsize, "names") <- attr(obj@bbox, "dimnames")[[1]]
+          attr(res@grid@cells.dim, "names") <- attr(obj@bbox, "dimnames")[[1]]
+        }
       }
       else { stop("SAGA GIS path could not be located. See 'rsaga.env()' for more info.") }
     }  
@@ -225,30 +224,31 @@ vect2rast.SpatialPolygons <- function(obj, fname = names(obj)[1], cell.size, bbo
     }
     
     else{ 
-    if(method=="SAGA"){   # SAGA GIS 2.0.8
-   
-      if(!rsaga.env()[["cmd"]]=="NULL"){
-      
-      tmf <- tempfile()
-      tf <- set.file.extension(tmf, ".shp")
-      if(requireNamespace("maptools", quietly = TRUE)){
-        maptools::writePolyShape(obj, tf)
-      } else {
-        writeOGR(obj, tf, tmf, driver="ESRI Shapefile")
-      }   
-      
-      if(missing(file.name)){
-        file.name <- set.file.extension(tempfile(), ".sgrd")
-      }
-      # rasterize map using SAGA GIS:
-      rsaga.geoprocessor("grid_gridding", 0, param=list(INPUT=tf, FIELD=FIELD, MULTIPLE=MULTIPLE, LINE_TYPE=LINE_TYPE, GRID_TYPE=0, TARGET=0, USER_XMIN=bbox[1,1]+cell.size/2, USER_XMAX=bbox[1,2]-cell.size/2, USER_YMIN=bbox[2,1]+cell.size/2, USER_YMAX=bbox[2,2]-cell.size/2, USER_SIZE=cell.size, USER_GRID=file.name, GRID_TYPE=GRID_TYPE), show.output.on.console = silent)
-      res <- readGDAL(set.file.extension(file.name, ".sdat"), silent = silent)
-      names(res) = names(obj)[1]
-      attr(res@bbox, "dimnames") = attr(obj@bbox, "dimnames")
-      attr(res@grid@cellcentre.offset, "names") <- attr(obj@bbox, "dimnames")[[1]]
-      attr(res@grid@cellsize, "names") <- attr(obj@bbox, "dimnames")[[1]]
-      attr(res@grid@cells.dim, "names") <- attr(obj@bbox, "dimnames")[[1]]
-      
+    if(method=="SAGA"){
+      if(requireNamespace("RSAGA", quietly = TRUE)){
+        if(!RSAGA::rsaga.env()[["cmd"]]=="NULL"){
+          
+          tmf <- tempfile()
+          tf <- .set.file.extension(tmf, ".shp")
+          if(requireNamespace("maptools", quietly = TRUE)){
+            maptools::writePolyShape(obj, tf)
+          } else {
+            writeOGR(obj, tf, tmf, driver="ESRI Shapefile")
+          }   
+          
+          if(missing(file.name)){
+            file.name <- .set.file.extension(tempfile(), ".sgrd")
+          }
+          # rasterize map using SAGA GIS:
+          RSAGA::rsaga.geoprocessor("grid_gridding", 0, param=list(INPUT=tf, FIELD=FIELD, MULTIPLE=MULTIPLE, LINE_TYPE=LINE_TYPE, GRID_TYPE=0, TARGET=0, USER_XMIN=bbox[1,1]+cell.size/2, USER_XMAX=bbox[1,2]-cell.size/2, USER_YMIN=bbox[2,1]+cell.size/2, USER_YMAX=bbox[2,2]-cell.size/2, USER_SIZE=cell.size, USER_GRID=file.name, GRID_TYPE=GRID_TYPE), show.output.on.console = silent)
+          res <- readGDAL(.set.file.extension(file.name, ".sdat"), silent = silent)
+          names(res) = names(obj)[1]
+          attr(res@bbox, "dimnames") = attr(obj@bbox, "dimnames")
+          attr(res@grid@cellcentre.offset, "names") <- attr(obj@bbox, "dimnames")[[1]]
+          attr(res@grid@cellsize, "names") <- attr(obj@bbox, "dimnames")[[1]]
+          attr(res@grid@cells.dim, "names") <- attr(obj@bbox, "dimnames")[[1]]
+          
+        }
       }
       else { stop("SAGA GIS path could not be located. See 'rsaga.env()' for more info.") }
     }  

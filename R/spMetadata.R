@@ -549,5 +549,3 @@ read.metadata <- function(xml.file, delim.sign, full.names){
   
   return(metm[,c(1,3,2)])
 }
-
-# end of script;

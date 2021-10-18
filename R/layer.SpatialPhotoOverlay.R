@@ -113,7 +113,7 @@ kml_layer.SpatialPhotoOverlay <- function(
   coords <- matrix(c(X=c(X1, X2, X3, X4), Z=c(ALT1, ALT2, ALT3, ALT4), Y=c(Y1, Y2, Y3, Y4)), ncol=3)
   }
   
-  makeCOLLADA.rectangle(filename = set.file.extension(dae.name, ".dae"), coords = coords, href = href)
+  makeCOLLADA.rectangle(filename = .set.file.extension(dae.name, ".dae"), coords = coords, href = href)
   
   # Object name:
   pl1 = newXMLNode("Folder", parent=kml.out[["Document"]])
@@ -125,7 +125,7 @@ kml_layer.SpatialPhotoOverlay <- function(
   parseXMLAndAdd(txtl, parent=pl1)
 
   # Parse the placemark:
-  txtm <- sprintf('<Placemark><name>monolith</name><TimeStamp><when>%s</when></TimeStamp><Model id="%s"><altitudeMode>relativeToGround</altitudeMode><Location><longitude>%.5f</longitude><latitude>%.5f</latitude><altitude>%.0f</altitude></Location><Orientation><heading>%.1f</heading><tilt>%.1f</tilt><roll>%.1f</roll></Orientation><Scale><x>%.1f</x><y>%.1f</y><z>%.1f</z></Scale><Link><href>%s</href><refreshMode>%s</refreshMode></Link><ResourceMap><Alias><targetHref>%s</targetHref><sourceHref>%s</sourceHref></Alias></ResourceMap></Model></Placemark>', when, dae.name, LON, LAT, max.depth, heading, tilt, roll, scale.x, scale.y, scale.z, set.file.extension(dae.name, ".dae"), refreshMode, href, href)
+  txtm <- sprintf('<Placemark><name>monolith</name><TimeStamp><when>%s</when></TimeStamp><Model id="%s"><altitudeMode>relativeToGround</altitudeMode><Location><longitude>%.5f</longitude><latitude>%.5f</latitude><altitude>%.0f</altitude></Location><Orientation><heading>%.1f</heading><tilt>%.1f</tilt><roll>%.1f</roll></Orientation><Scale><x>%.1f</x><y>%.1f</y><z>%.1f</z></Scale><Link><href>%s</href><refreshMode>%s</refreshMode></Link><ResourceMap><Alias><targetHref>%s</targetHref><sourceHref>%s</sourceHref></Alias></ResourceMap></Model></Placemark>', when, dae.name, LON, LAT, max.depth, heading, tilt, roll, scale.x, scale.y, scale.z, .set.file.extension(dae.name, ".dae"), refreshMode, href, href)
   parseXMLAndAdd(txtm, parent=pl1)
   }
 

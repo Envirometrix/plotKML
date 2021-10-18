@@ -13,26 +13,27 @@ grid2poly <- function(obj, var.name = names(obj)[1], reproject = TRUE, method = 
     
     else{
     if(method=="RSAGA"){
-      if(!rsaga.env()[["cmd"]]=="NULL"){
-        if(tmp.file==TRUE){
-          tf <- tempfile() 
-        } else { 
-          tf <- var.name
-        }
-
-        # first, write SGDF to a file:
-        obj <- as(obj[var.name], "SpatialPixelsDataFrame")
-        writeGDAL(obj[var.name], paste(tf, ".sdat", sep=""), "SAGA")
-        # saga_lib name and saga_module might change in the future versions of SAGA!
-        # SAGA GIS 2.0.8
-        rsaga.geoprocessor(lib=saga_lib, module=saga_module, param=list(GRIDS=paste(tf, ".sgrd", sep=""), SHAPES=paste(tf, ".shp", sep=""), NODATA=TRUE, TYPE=1), show.output.on.console = silent)
-        if(requireNamespace("maptools", quietly = TRUE)){
-          pol <- maptools::readShapePoly(paste(tf, ".shp", sep=""), proj4string=obj@proj4string)
-        } else {
-          pol <- readOGR(paste(tf, ".shp", sep=""))
+      if(requireNamespace("RSAGA", quietly = TRUE)){
+        if(!RSAGA::rsaga.env()[["cmd"]]=="NULL"){
+          if(tmp.file==TRUE){
+            tf <- tempfile() 
+          } else { 
+            tf <- var.name
+          }
+          # first, write SGDF to a file:
+          obj <- as(obj[var.name], "SpatialPixelsDataFrame")
+          writeGDAL(obj[var.name], paste(tf, ".sdat", sep=""), "SAGA")
+          if(requireNamespace("RSAGA", quietly = TRUE)){
+            # saga_lib name and saga_module might change in the future versions of SAGA!
+            RSAGA::rsaga.geoprocessor(lib=saga_lib, module=saga_module, param=list(GRIDS=paste(tf, ".sgrd", sep=""), SHAPES=paste(tf, ".shp", sep=""), NODATA=TRUE, TYPE=1), show.output.on.console = silent)
+            if(requireNamespace("maptools", quietly = TRUE)){
+              pol <- maptools::readShapePoly(paste(tf, ".shp", sep=""), proj4string=obj@proj4string)
+            } else {
+              pol <- readOGR(paste(tf, ".shp", sep=""))
+            }
+          }
         }
       }
-        
         else { stop("SAGA GIS path could not be located. See 'rsaga.env()' for more info.") }
     }
       else {

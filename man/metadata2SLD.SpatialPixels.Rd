@@ -6,7 +6,7 @@
 metadata2SLD.SpatialPixels(obj, 
     Format_Information_Content = xmlValue(obj@xml[["//formcont"]]),
     obj.name = normalizeFilename(deparse(substitute(obj))), 
-    sld.file = set.file.extension(obj.name, ".sld"),
+    sld.file = .set.file.extension(obj.name, ".sld"),
     Citation_title = xmlValue(obj@xml[["//title"]]), 
     ColorMap_type = "intervals", opacity = 1, 
     brw.trg = 'Greys', target.var, \dots)

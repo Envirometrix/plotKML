@@ -18,7 +18,7 @@ metadata2SLD.SpatialPixels <- function(
   obj,  # SpatialMetadata
   Format_Information_Content = xmlValue(obj@xml[["//formcont"]]),
   obj.name = normalizeFilename(deparse(substitute(obj))),
-  sld.file = set.file.extension(obj.name, ".sld"),
+  sld.file = .set.file.extension(obj.name, ".sld"),
   Citation_title = xmlValue(obj@xml[["//title"]]),
   ColorMap_type = "intervals",
   opacity = 1,
@@ -40,7 +40,7 @@ metadata2SLD.SpatialPixels <- function(
     txt <- sprintf('<ColorMapEntry color="%s" quantity="%.2f" label="%s" opacity="%.1f"/>', obj@palette@color, obj@palette@bounds[-1], obj@palette@names, rep(opacity, length(obj@palette@color)))
   } else {
     mm <- classIntervals(target.var, ...)
-    brew.p <- brewer.pal(n = length(mm$brks) - 1, name = brw.trg)
+    brew.p <- RColorBrewer::brewer.pal(n = length(mm$brks) - 1, name = brw.trg)
     op <- findColours(mm, pal = brew.p, under = 'under', over = 'over', between = '-', cutlabels = F)
     txt <- sprintf('<ColorMapEntry color="%s" quantity="%.2f" label="%s" opacity="%.1f"/>', attr(op, 'palette'), mm$brks[-1], attr(attr(op, 'table'), 'dimnames')[[1]], rep(opacity, length(mm$brks[-1])))  
   }

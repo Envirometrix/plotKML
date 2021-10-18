@@ -37,7 +37,7 @@ kml_layer.STTDF <- function(
 
   # object ID names:
   lv <- levels(as.factor(obj@data[,id.name]))
-  line.colours <- hex2kml(brewer.pal(n=2+length(lv), name = "Set1"))
+  line.colours <- hex2kml(RColorBrewer::brewer.pal(n=2+length(lv), name = "Set1"))
   ## names of the coordinate columns:
   nc <- lapply(obj@traj, FUN=function(x){attr(x@sp@coords, "dimname")[[2]]})
   ## strip times:
