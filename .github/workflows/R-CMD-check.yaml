@@ -23,7 +23,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
-          extra-packages: rcmdcheck
+          extra-packages: rcmdcheck,tinytex
           
       - uses: r-lib/actions/setup-pandoc@v1
       - uses: r-lib/actions/setup-tinytex@v1
