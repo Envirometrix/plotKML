@@ -31,7 +31,7 @@ jobs:
       - name: Add latex pkgs
         run: |
           tinytex::tl_pkgs()
-          tinytex::tlmgr_install(c('ae', 'multirow', 'ec', 'cm-super'))
+          tinytex::tlmgr_install(c('ae', 'multirow', 'zapfchan'))
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v1
