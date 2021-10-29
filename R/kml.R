@@ -23,5 +23,6 @@ setMethod("kml", "Raster", kml.Spatial)
 setMethod("kml", "SoilProfileCollection", kml.Spatial)
 setMethod("kml", "SpatialPhotoOverlay", kml.Spatial)
 setMethod("kml", "STIDF", kml.Spatial)
+setMethod("kml", "sf", kml.Spatial)
 
 # end of script;
