@@ -1,6 +1,6 @@
 Package: plotKML
-Version: 0.8-2
-Date: 2021-10-06
+Version: 0.8-3
+Date: 2022-06-05
 Title: Visualization of Spatial and Spatio-Temporal Objects in Google Earth
 Author: Tomislav Hengl [cre, aut], Andrea Gilardi [ctb], Pierre Roudier [ctb], Dylan Beaudette [ctb], Edzer Pebesma [ctb], Michael Blaschek [ctb]
 Authors@R: c(person("Tomislav", "Hengl", role = c("cre", "aut"),
@@ -12,7 +12,7 @@ Authors@R: c(person("Tomislav", "Hengl", role = c("cre", "aut"),
     person("Michael", "Blaschek", role = "ctb"))
 Maintainer: Tomislav Hengl <tom.hengl@opengeohub.org>
 Depends: R (>= 3.5.0)
-Imports: methods, tools, gstat, colorRamps, pixmap, utils, XML, dismo, landmap, sp, raster, rgdal, aqp, spacetime, colorspace, plyr, stringr, scales, zoo, RColorBrewer, classInt, sf, stars
+Imports: methods, tools, gstat, colorRamps, pixmap, utils, XML, dismo, sp, raster, rgdal, aqp, spacetime, colorspace, plyr, stringr, scales, zoo, RColorBrewer, classInt, sf, stars
 Suggests: 
     RSAGA,
     plotrix, 
@@ -28,9 +28,9 @@ Suggests:
     rgbif,
     Hmisc,
     uuid,
+    R.utils,
     intervals,
     reshape,
-    gdalUtils,
     snowfall,
     parallel,
     testthat

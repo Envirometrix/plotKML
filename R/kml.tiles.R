@@ -1,5 +1,6 @@
 
-kml.tiles <- function(obj, 
+kml.tiles <- function(obj,
+  obj.lst,
   folder.name,
   file.name, 
   block.x,
@@ -22,16 +23,10 @@ kml.tiles <- function(obj,
   prj.check <- check_projection(obj, control = TRUE)
   if(!prj.check) { suppressMessages( obj <- reproject(obj) ) }
   ## tile object:
-  if(requireNamespace("landmap", quietly = TRUE)){
-    if(any(class(obj)=="SpatialPointsDataFrame")){
-      obj.lst <- landmap::tile(obj, block.x=block.x)
-    } else {
-      obj.lst <- landmap::tile(obj, block.x=block.x, tmp.file = TRUE)
-    }
-    ## some tiles might be empty and need to be removed...
-    obj.lst <- obj.lst[sapply(obj.lst, length)>0]
+  if(missing(obj.lst)){
+    stop("Generate tiles using 'obj.lst = landmap::tile(obj, block.x)'")
   } else {
-    stop("Install and load package 'landmap'")
+    obj.lst <- obj.lst[sapply(obj.lst, length)>0]
   }
   ## list of bounding boxes:
   file.lst <- sapply(1:length(obj.lst), function(j){paste0(folder.name, "_T", j, ".kml")})

@@ -28,15 +28,15 @@ kml_layer.STIDF <- function(
     }
     kml_layer.RasterBrick(obj = r, dtime=as.numeric(dtime), ...)
   } else {
-    if(is(obj@sp, "SpatialPoints")) {
+    if(is(obj@sp, "SpatialPoints")){
       sp <- SpatialPointsDataFrame(obj@sp, obj@data)
       kml_layer.SpatialPoints(obj = sp, TimeSpan.begin = TimeSpan.begin, TimeSpan.end = TimeSpan.end,  ...)
     } else {
-      if(class(obj@sp)=="SpatialPolygons"|class(obj@sp)=="SpatialPolygonsDataFrame"){
-        sp <- SpatialPolygonsDataFrame(obj@sp, obj@data)   
-        kml_layer.SpatialPolygons(obj = sp, TimeSpan.begin = TimeSpan.begin, TimeSpan.end = TimeSpan.end,  ...)  
+      if(is(obj@sp, "SpatialPolygons")|is(obj@sp, "SpatialPolygonsDataFrame")){
+        sp <- SpatialPolygonsDataFrame(obj@sp, obj@data)
+        kml_layer.SpatialPolygons(obj = sp, TimeSpan.begin = TimeSpan.begin, TimeSpan.end = TimeSpan.end,  ...)
       } else {
-        if(class(obj@sp)=="SpatialLines"|class(obj@sp)=="SpatialLinesDataFrame"){
+        if(is(obj@sp, "SpatialLines")|is(obj@sp, "SpatialLinesDataFrame")){
           sp <- SpatialLinesDataFrame(obj@sp, obj@data)   
           kml_layer.SpatialLines(obj = sp, TimeSpan.begin = TimeSpan.begin, TimeSpan.end = TimeSpan.end,  ...)
         } else { 

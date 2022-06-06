@@ -13,7 +13,7 @@ plotKML.GDALobj(obj, file.name, block.x, tiles=NULL,
   \item{obj}{\code{"GDALobj"} object i.e. a pointer to a spatial layer}
   \item{file.name}{character; output KML file name}
   \item{block.x}{numeric; size of block in meters or corresponding mapping units}
-  \item{tiles}{data.frame; tiling definition generated using \code{landmap::tile}}
+  \item{tiles}{data.frame; tiling definition}
   \item{tiles.sel}{integer; selection of tiles to be plotted}
   \item{altitude}{numeric; altitude of the ground overlay}
   \item{altitudeMode}{character; either \code{"absolute"}, \code{"relativeToGround"} or \code{"clampToGround"}}
@@ -37,7 +37,6 @@ plotKML.GDALobj(obj, file.name, block.x, tiles=NULL,
 \dontrun{
 library(sp)
 library(snowfall)
-library(landmap)
 library(rgdal)
 fn = system.file("pictures/SP27GTIF.TIF", 
  package = "rgdal")
@@ -47,7 +46,7 @@ tiles <- getSpatialTiles(obj, block.x=5000,
 ## plot using tiles:
 plotKML.GDALobj(obj, tiles=tiles, z.lim=c(0,185))
 ## Even better ideas is to first reproject 
-## the large grid using 'gdalUtils::gdalwarp', then tile...
+## the large grid using 'gdalUtilities::gdalwarp', then tile...
 }
 }
 \keyword{spatial}

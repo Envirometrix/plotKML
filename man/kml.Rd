@@ -9,10 +9,9 @@
 \alias{kml,SoilProfileCollection-method}
 \alias{kml,Spatial-method}
 \alias{kml,SpatialPhotoOverlay-method}
-\alias{kml,sf-method}
 \title{Write to a KML file}
 \description{
-Writes any \code{Spatial*} object (from the sp package), \code{sf} object (from the sf package), or \code{Raster*} object (from the raster package) to a KML file via the \code{plotKML.fileIO} environment. Various \emph{aesthetics} parameters can be set via \code{colour}, \code{alpha}, \code{size}, \code{shape} arguments. Their availability depends on the class of the object to plot.
+Writes any \code{Spatial*} object (from the sp package) or \code{Raster*} object (from the raster package) to a KML file via the \code{plotKML.fileIO} environment. Various \emph{aesthetics} parameters can be set via \code{colour}, \code{alpha}, \code{size}, \code{shape} arguments. Their availability depends on the class of the object to plot.
 }
 \usage{
 \S4method{kml}{Raster}(obj, folder.name, file.name, kmz, \dots)
@@ -50,12 +49,6 @@ kml(eberg, file = "eberg-0.kml")
 shape = "http://maps.google.com/mapfiles/kml/pal2/icon18.png"
 kml(eberg, colour = SNDMHT_A, size = CLYMHT_A, 
    alpha = 0.75, file = "eberg-1.kml", shape=shape)
-   
-# sf versions
-eberg_sf = sf::st_as_sf(eberg)
-kml(eberg_sf, file = "eberg-0_sf.kml")
-kml(eberg_sf, colour = SNDMHT_A, size = CLYMHT_A, 
-   alpha = 0.75, file = "eberg-1_sf.kml", shape=shape)
 }
 }
 \keyword{spatial}

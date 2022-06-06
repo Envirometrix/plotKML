@@ -4,7 +4,7 @@
     # if the user passed in TRUE, then we want all of the columns
     # AG: AFAIK, we shouldn't use class(x) == "something" to test for class
     # Maybe: if (is.logical(columns)) ?
-    if (class(columns) == 'logical'){
+    if(is(columns, 'logical')){
         columns <- seq_len(ncol(x)) # use all columns from the dataframe row
     }
     else {     # otherwise, keep only requested columns

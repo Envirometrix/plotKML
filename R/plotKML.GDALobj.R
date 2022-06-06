@@ -2,7 +2,7 @@
 
 plotKML.GDALobj <- function(obj, file.name, block.x, tiles=NULL, tiles.sel=NULL, altitude=0, altitudeMode="relativeToGround", colour_scale, z.lim=NULL, breaks.lst=NULL, kml.logo, overwrite=TRUE, cpus, home.url=".", desc=NULL, open.kml=TRUE, CRS=attr(obj, "projection"), plot.legend=TRUE){
 
-  if(!class(obj)=="GDALobj"){
+  if(!is(obj, "GDALobj")){
     stop("Object of class \"GDALobj\" required.")
   }
   if(missing(colour_scale)){ 
@@ -22,10 +22,7 @@ plotKML.GDALobj <- function(obj, file.name, block.x, tiles=NULL, tiles.sel=NULL,
   if(!length(colour_scale)==(length(breaks.lst)-1)&!is.null(breaks.lst)){ stop("'length(colour_scale)' and 'length(breaks.lst)-1' of equal length required") }
   GDALobj.file <- attr(obj, "file")
   if(is.null(tiles)){
-    if(requireNamespace("landmap", quietly = TRUE)){
-      ## if missing get tiling system using block.x:
-      tiles <- landmap::getSpatialTiles(obj, block.x = block.x, return.SpatialPolygons = FALSE)
-    }
+    stop("Generate tiles using 'tiles = landmap::getSpatialTiles(obj, block.x)'")
   }
   if(is.null(tiles.sel)){
     ## if missing do all tiles:

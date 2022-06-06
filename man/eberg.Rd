@@ -39,16 +39,16 @@ The \code{eberg_grid25} data frame (regular grid at 25 m resolution) contains th
   \item{\code{DEMTOPx}}{a numeric vector; elevation values from the topographic map}
   \item{\code{HBTSOLx}}{a vector containing factors; main soil type according to the German soil classification system (see column "soiltype" above) estimated per crop field} 
   \item{\code{TWITOPx}}{a numeric vector; Topographic Wetness Index derived using the SAGA algorithm }
-  \item{\code{NVILANx}}{a numeric vector; NDVI image derived using the Landsat image from the \href{https://ec.europa.eu/jrc/en}{Image 2000 project}}
+  \item{\code{NVILANx}}{a numeric vector; NDVI image derived using the Landsat image from the \href{https://joint-research-centre.ec.europa.eu}{Image 2000 project}}
 	\item{\code{x}}{a numeric vector; x-coordinate (m) in DHDN / Gauss-Krueger zone 3 (German coordinate system) }
 	\item{\code{y}}{a numeric vector; y-coordinate (m) in DHDN / Gauss-Krueger zone 3 (German coordinate system) } 
-} 
-} 
+}
+}
 \author{The \enc{Ebergötzen}{Ebergoetzen} dataset is courtesy of Gehrt Ernst (\email{Ernst.Gehrt@niedersachsen.de}), the State Authority for Mining, Energy and Geology, Hannover, Germany and Olaf Conrad, University of Hamburg (\email{conrad@geowiss.uni-hamburg.de}). The original data set has been prepared for this exercise by Tomislav Hengl (\email{tom.hengl@opengeohub.org}).}
 \references{
 \itemize{ 
 \item Ad-hoc-AG Boden, (2005) Bodenkundliche Kartieranleitung. 5th Ed, Bundesanstalt \enc{für}{fur} Geowissenschaften und Rohstoffe und Niedersaechsisches Landesamt \enc{für}{fur} Bodenforshung, Hannover, p. 423.
-\item \enc{Böhner}{Boehner}, J., McCloy, K. R. and Strobl, J. (Eds), (2006) \href{http://www.saga-gis.org/}{SAGA --- Analysis and Modelling Applications}. \enc{Göttinger}{Goettinger} Geographische Abhandlungen, Heft 115. Verlag Erich Goltze GmbH, \enc{Göttingen}{Goettingen}, 117 pp.
+\item \enc{Böhner}{Boehner}, J., McCloy, K. R. and Strobl, J. (Eds), (2006) \href{https://saga-gis.sourceforge.io/}{SAGA --- Analysis and Modelling Applications}. \enc{Göttinger}{Goettinger} Geographische Abhandlungen, Heft 115. Verlag Erich Goltze GmbH, \enc{Göttingen}{Goettingen}, 117 pp.
 \item Gehrt, E., \enc{Böhner}{Boehner}, J., (2001) Vom punkt zur flache --- probleme des 'upscaling' in der bodenkartierung. In: Diskussionsforum Bodenwissenschaften: Vom Bohrstock zum Bildschirm. FH, \enc{Osnabrück}{Osnabruck}, pp. 17-34.
 \item Skaggs, T. H., Arya, L. M., Shouse, P. J., Mohanty, B. P., (2001) Estimating Particle-Size Distribution from Limited Soil Texture Data. Soil Science Society of America Journal 65 (4): 1038-1044. \doi{10.2136/sssaj2001.6541038x}
 \item \url{https://geomorphometry.org/ebergotzen/}

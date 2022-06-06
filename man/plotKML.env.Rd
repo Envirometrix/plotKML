@@ -43,7 +43,7 @@ The external software tools are not required by default and most of operations i
 \itemize{
 \item ImageMagick (\url{https://imagemagick.org})
 \item GDAL (\url{https://gdal.org})
-\item SAGA GIS (\url{http://www.saga-gis.org})
+\item SAGA GIS (\url{https://saga-gis.sourceforge.io/})
 \item Python (\url{https://www.python.org})
 }
 }
@@ -57,7 +57,6 @@ in your \code{"/etc/Rprofile.site"}.
 }
 \examples{
 \dontrun{## look for paths:
-library(gdalUtils)
 pts <- paths()
 pts
 plotKML.env(silent = FALSE)

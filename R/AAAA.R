@@ -98,13 +98,12 @@ paths <- function(gdalwarp = "", gdal_translate = "", convert = "", saga_cmd = "
     ## try to locate GDAL / Patyhon:
     if(.Platform$OS.type == "windows"){
       if(gdalwarp==""|gdal_translate==""){
-        if(requireNamespace("gdalUtils", quietly = TRUE)){
-          gdalUtils::gdal_setInstallation(search_path=gdal.dir, rescan=FALSE)
+          .gdal_setInstallation(search_path=gdal.dir, rescan=FALSE)
           x <- getOption("gdalUtils_gdalPath")
           if(!is.null(x[[1]]$path)){
             gdalwarp = shQuote(utils::shortPathName(normalizePath(file.path(x[[1]]$path, "gdalwarp.exe"))))
             gdal_translate = shQuote(utils::shortPathName(normalizePath(file.path(x[[1]]$path, "gdal_translate.exe"))))
-        }} else {
+        } else {
           if(silent==FALSE){
             warning("Could not locate GDAL! Install program and add it to the Windows registry. See https://gdal.org/ for more info.")
           }

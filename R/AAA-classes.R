@@ -1,6 +1,6 @@
 ## Color palette:
 setClass("sp.palette", representation(type = 'character', bounds = 'vector', color = 'character', names = 'character', icons = 'character'), validity = function(object) {
-   if(!class(object@bounds)=="numeric")
+   if(!is(object@bounds, "numeric"))
       return('Vector with upper and lower limits required')
    if((length(object@bounds)-1)!=length(object@color)|(length(object@bounds)-1)!=length(object@names))
       return('Size of bounds (-1), colors and element names must be equal')
@@ -19,7 +19,7 @@ setClass("SpatialMetadata", representation(xml = "XMLInternalDocument", field.na
     field_names <- merge(met, mdnames[,c("metadata","field.names")], by="metadata", all.x=TRUE, all.y=FALSE)[,"field.names"]    
     if(!any(field_names %in% object@field.names))
       return("Field names do not match the column names in the xml slot")
-    if(!class(object@field.names)=="character")
+    if(!is(object@field.names, "character"))
       return("Field names as character vector required")      
 })
 

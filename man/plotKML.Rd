@@ -410,29 +410,6 @@ data(SAGA_pal)
 plotKML(LST.ts, colour_scale=SAGA_pal[[1]])
 }
 
-## -------------- Spatial Predictions --------- ##
-library(sp)
-library(rgdal)
-library(gstat)
-data(meuse)
-coordinates(meuse) <- ~x+y
-proj4string(meuse) <- CRS("+init=epsg:28992")
-## load grids:
-data(meuse.grid)
-gridded(meuse.grid) <- ~x+y
-proj4string(meuse.grid) <- CRS("+init=epsg:28992")
-\dontrun{## fit a model:
-library(landmap)
-omm <- fit.gstatModel(observations = meuse, formulaString = om~dist, 
-   family = gaussian(log), covariates = meuse.grid)
-## produce SpatialPredictions:
-om.rk <- predict(omm, predictionLocations = meuse.grid)
-## plot the whole geostatical mapping project in Google Earth:
-plotKML(om.rk, colour_scale = SAGA_pal[[1]])
-## plot each cell as polygon:
-plotKML(om.rk, colour_scale = SAGA_pal[[1]], grid2poly = TRUE)
-}
-
 ## -------------- RasterBrickSimulations --------- ##
 \dontrun{
 library(sp)
@@ -507,7 +484,6 @@ library(spatstat)
 bigfoot.aea <- as.ppp(spTransform(bigfoot, CRS(aea.prj)))
 ## Load the covariates:
 sel.grids <- c("globedem","nlights03","sdroads","gcarb","twi","globcov")
-library(landmap)
 library(dismo)
 ## run MaxEnt analysis:
 jar <- paste(system.file(package="dismo"), "/java/maxent.jar", sep='')

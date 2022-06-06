@@ -125,7 +125,7 @@ setMethod("plotKML", "SpatialPolygonsDataFrame", function(obj, folder.name = nor
 .plotKML.SpatialPixels <- function(obj, folder.name = normalizeFilename(deparse(substitute(obj, env=parent.frame()))), file.name = paste(folder.name, ".kml", sep=""), colour, raster_name, metadata = NULL, kmz = FALSE, open.kml = TRUE, ...){
 
   # the kml_layer.Raster works only with "Spatial" class:
-  if(class(obj)=="RasterLayer"){
+  if(is(obj, "RasterLayer")){
     obj <- as(obj, "SpatialGridDataFrame")
   }
 
@@ -234,7 +234,7 @@ setMethod("plotKML", "SoilProfileCollection", function(obj, folder.name = normal
       obj@data[,"colour"] <- obj@data[,as.character(colour)]      
     }
   }
-  if(missing(points_names)&class(obj@sp)=="SpatialPoints"){ 
+  if(missing(points_names) & is(obj@sp, "SpatialPoints")){ 
     if(is.numeric(obj@data[,1])){ 
       points_names <- signif(obj@data[,1], 3) 
     } else {
@@ -248,7 +248,7 @@ setMethod("plotKML", "SoilProfileCollection", function(obj, folder.name = normal
   kml_open(folder.name = folder.name, file.name = file.name)
  
   # write layer:
-  if(class(obj@sp)=="SpatialPoints"){
+  if(is(obj@sp, "SpatialPoints")){
     kml_layer(obj, shape = shape, colour = colour, points_names = points_names, ...)
   } else {
     kml_layer(obj, ...)  

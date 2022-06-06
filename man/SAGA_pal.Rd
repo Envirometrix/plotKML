@@ -10,7 +10,7 @@
 data(SAGA_pal)
 data(R_pal)
 }
-\author{\href{http://www.saga-gis.org}{SAGA GIS} has been created by the SAGA GIS development team (lead by J. \enc{Böhner}{Boehner} and O. Conrad, from the Institute of Geography, University of Hamburg, Germany). The colour palettes have been exported from SAGA (as \code{".sprm"} SAGA parameter files) and ported to R. All palletes described here were prepared for R by Tomislav Hengl (\email{tom.hengl@opengeohub.org}).}
+\author{\href{https://saga-gis.sourceforge.io/}{SAGA GIS} has been created by the SAGA GIS development team (lead by J. \enc{Böhner}{Boehner} and O. Conrad, from the Institute of Geography, University of Hamburg, Germany). The colour palettes have been exported from SAGA (as \code{".sprm"} SAGA parameter files) and ported to R. All palletes described here were prepared for R by Tomislav Hengl (\email{tom.hengl@opengeohub.org}).}
 \references{
 \itemize{
 \item Conrad, O., (2007). SAGA --- Entwurf, Funktionsumfang und Anwendung eines Systems \enc{für}{fur} Automatisierte Geowissenschaftliche Analysen. Electronic doctoral dissertation, University of \enc{Göttingen}{Goettingen}.

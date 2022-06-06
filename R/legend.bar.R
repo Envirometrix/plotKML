@@ -14,7 +14,7 @@ kml_legend.bar <- function(x, width, height, pointsize = 14, legend.file, legend
   }
   
   ## Factor-type variables:
-  if(class(x) == "factor" | class(x) == "character") {
+  if(is(x, "factor") | is(x, "character")) {
  
     z.lim <- NA
     if(missing(factor.labels)){ 
