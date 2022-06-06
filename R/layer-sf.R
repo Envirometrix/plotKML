@@ -757,7 +757,7 @@
 ) {
   if (inherits(sf::st_geometry(obj), "sfc_POINT")) {
     .kml_layer_sfc_POINT(obj, ...)
-  } else if (inheritedSlotNames(sf::st_geometry(obj), "sfc_MULTIPOINT")) {
+  } else if (inherits(sf::st_geometry(obj), "sfc_MULTIPOINT")) {
     message("Casting the input MULTIPOINT object into POINT.")
     obj <- st_cast(obj, "POINT")
     .kml_layer_sfc_POINT(obj, ...)
@@ -785,7 +785,7 @@ setMethod("kml_layer", "sfc_MULTIPOINT", function(obj, ...) {
   .kml_layer_sfc_POINT(obj, ...)
 })
 setMethod("kml_layer", "sfc_LINESTRING", .kml_layer_sfc_LINESTRING)
-setMethod("kml_layer", "sfc_LINESTRING", function(obj, ...) {
+setMethod("kml_layer", "sfc_MULTILINESTRING", function(obj, ...) {
   message("Casting the input MULTILINESTRING object into LINESTRING.")
   obj <- st_cast(obj, "LINESTRING")
   .kml_layer_sfc_LINESTRING(obj, ...)
