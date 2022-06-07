@@ -46,7 +46,7 @@ The \code{eberg_grid25} data frame (regular grid at 25 m resolution) contains th
 }
 \author{The \enc{Ebergötzen}{Ebergoetzen} dataset is courtesy of Gehrt Ernst (\email{Ernst.Gehrt@niedersachsen.de}), the State Authority for Mining, Energy and Geology, Hannover, Germany and Olaf Conrad, University of Hamburg (\email{conrad@geowiss.uni-hamburg.de}). The original data set has been prepared for this exercise by Tomislav Hengl (\email{tom.hengl@opengeohub.org}).}
 \references{
-\itemize{ 
+\itemize{
 \item Ad-hoc-AG Boden, (2005) Bodenkundliche Kartieranleitung. 5th Ed, Bundesanstalt \enc{für}{fur} Geowissenschaften und Rohstoffe und Niedersaechsisches Landesamt \enc{für}{fur} Bodenforshung, Hannover, p. 423.
 \item \enc{Böhner}{Boehner}, J., McCloy, K. R. and Strobl, J. (Eds), (2006) \href{https://saga-gis.sourceforge.io/}{SAGA --- Analysis and Modelling Applications}. \enc{Göttinger}{Goettinger} Geographische Abhandlungen, Heft 115. Verlag Erich Goltze GmbH, \enc{Göttingen}{Goettingen}, 117 pp.
 \item Gehrt, E., \enc{Böhner}{Boehner}, J., (2001) Vom punkt zur flache --- probleme des 'upscaling' in der bodenkartierung. In: Diskussionsforum Bodenwissenschaften: Vom Bohrstock zum Bildschirm. FH, \enc{Osnabrück}{Osnabruck}, pp. 17-34.

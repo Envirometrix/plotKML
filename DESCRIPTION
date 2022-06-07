@@ -34,7 +34,7 @@ Suggests:
     snowfall,
     parallel,
     testthat
-Description: Writes sp-class, spacetime-class, raster-class and similar spatial and spatio-temporal objects to KML following some basic cartographic rules.
+Description: Writes spatial-class, spacetime-class, raster-class and similar spatial and spatiotemporal objects to KML following some basic cartographic rules.
 License: GPL
 URL: https://github.com/Envirometrix/plotKML
 LazyLoad: yes 

@@ -36,11 +36,10 @@ tags will be inserted. Temporal support for any spacetime class, if not specifie
 }
 \references{
 \itemize{
-\item \item Pebesma, E. (2012) \href{https://www.jstatsoft.org/v51/i07}{Classes and Methods for Spatio-Temporal Data in R}. Journal of Statistical Software. 51(7): 1-30.
+\item Pebesma, E. (2012) \href{https://www.jstatsoft.org/v51/i07}{Classes and Methods for Spatio-Temporal Data in R}. Journal of Statistical Software. 51(7): 1-30.
 \item spacetime package (\url{https://CRAN.R-project.org/package=spacetime})
 }
 }
 \author{Tomislav Hengl }
-\seealso{ \code{\link{readGPX}}, \code{\link{plotKML-method}}  }
+\seealso{ \code{\link{readGPX}}, \code{\link{plotKML-method}} }
 \keyword{spatial}
-

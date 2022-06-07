@@ -15,7 +15,7 @@ The \code{HRprec08} data frames contain the following columns:
 	\item{\code{PREC}}{daily cummulative precipitation in mm (precipitation from the day before)}
   }
 }
-\author{ Tomislav Hengl and Melita Percec Tadic }
+\author{Tomislav Hengl and Melita Percec Tadic}
 \references{
 \itemize{
 \item Testik, F.Y. and Gebremichael, M. Eds (2011) Rainfall: State of the Science. Geophysical monograph series, Vol. 191, 287 p. \doi{10.1029/GM191}
